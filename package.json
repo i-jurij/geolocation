@@ -1,0 +1,29 @@
+{
+  "name": "geolocation",
+  "version": "1.0.0",
+  "description": "shoose, save to localstorage and show location on page",
+  "main": "geolocation.js",
+  "directories": {
+    "example": "example"
+  },
+  "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
+    "rollup": "^4.13.2"
+  },
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/i-jurij/geolocation.git"
+  },
+  "keywords": [
+    "geolocation"
+  ],
+  "author": "i-jurij",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/i-jurij/geolocation/issues"
+  },
+  "homepage": "https://github.com/i-jurij/geolocation#readme"
+}
