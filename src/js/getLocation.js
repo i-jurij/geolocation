@@ -1,3 +1,10 @@
+//import "../css/style.css"; /* extract the styles to a external css bundle */
+import * as styles from "../css/style.css"; /* import the styles as a string */
+//import {styles} from '../css/style.css' assert { type: "css" }; /* import the styles as a CSSStyleSheet */
+
+import { html } from "./geo/html.js";
+html();
+
 import { geoLocation } from './geo/geoLocation.js';
 geoLocation();
 

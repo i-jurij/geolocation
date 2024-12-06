@@ -24,12 +24,14 @@
 	$geo = new Geolocation\Php\Back();
 	$location = $geo->getLocation();
 	?>
-	
+
+	<div id="location_div"></div>
+
 	<script>
 		let city_from_back = '<?php echo !empty($location['city']) ? $location['city'] : 'Местоположение'; ?>';
 		let region_from_back = '<?php echo !empty($location['region']) ? $location['region'] : ''; ?>';
 	</script>
-	<script  type="module" src="src/js/main.js"></script>
+	<script  type="module" src="build/geolocation.min.js"></script>
 </body>
 
 </html>
