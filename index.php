@@ -19,13 +19,17 @@
     error_reporting(E_ALL);
 	ini_set('display_errors', '1');
 
-	require_once __DIR__.'../vendor/autoload.php';
+	require_once __DIR__.'/vendor/autoload.php';
 
-	use Geo\Location;
-
-	$location = new Location();
+	$geo = new Geolocation\Php\Back();
+	$location = $geo->getLocation();
 	?>
-	<script src="../build/geolocation.min.js"></script>
+	
+	<script>
+		let city_from_back = '<?php echo !empty($location['city']) ? $location['city'] : 'Местоположение'; ?>';
+		let region_from_back = '<?php echo !empty($location['region']) ? $location['region'] : ''; ?>';
+	</script>
+	<script  type="module" src="src/js/main.js"></script>
 </body>
 
 </html>

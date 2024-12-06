@@ -8,8 +8,8 @@
     "require-dev": {},
     "autoload": {
         "psr-4": {
-            "Geo\\Back": "src/php/back/",
-            "Geo\\Front": "src/php/front/"
+            "Geolocation\\Php\\": "src/php/",
+            "Geolocation\\Php\\Lib\\": "src/php/lib/"
         }
     },
     "autoload-dev": {
