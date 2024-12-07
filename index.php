@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
     $fromDb = new Geolocation\Php\Front();
     $fromDb->getAll();
     exit;
-} elseif (isset($_GET['coord'])) {
+} elseif (isset($_GET['coord']) && $_SERVER['HTTP_SEC_FETCH_SITE'] == 'same-origin') {
     $fromCoord = new Geolocation\Php\Front();
     $fromCoord->fromCoord();
     exit;
