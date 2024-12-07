@@ -163,7 +163,7 @@ async function getLoc() {
 
         let coord = { long: longitude, lat: latitude };
 
-        fetch('home.geo/location-from-coord/' + coord.long + '_' + coord.lat, {
+        fetch(url_from_coord + '?coord=' + long + '_' + coord.lat, {
             headers: {
                 'Accept': 'application/json'
             }
@@ -372,10 +372,10 @@ function fromDB() {
         shoose_location.addEventListener('click', function () {
             hideLocationModal();
 
-            fetch(ajax_url, {
+            fetch(url_from_db, {
                 headers: {
                     'Accept': 'application/json',
-                    'X_AJAX': 'geoAjax',
+                    'HTTP_X_FROMDB': 'shooseFromDb',
                 }
             })
                 .then(responce => responce.json())
