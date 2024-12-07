@@ -25,10 +25,6 @@
     display: block;
 }
 
-.modal .overlay~*>*:last-child {
-    margin-bottom: 0;
-}
-
 .modal .overlay~* header,
 .modal .overlay~* section,
 .modal .overlay~*>p {
@@ -37,12 +33,6 @@
 
 .modal .overlay~* section {
     padding: 0.6em 0.8em 0;
-}
-
-.modal .overlay~* hr {
-    border: none;
-    height: 1px;
-    background-color: #aaa;
 }
 
 .modal .overlay~* header {
@@ -57,10 +47,6 @@
     line-height: 1;
     display: inline-block;
     vertical-align: text-bottom;
-}
-
-.modal .overlay~* header:last-child {
-    border-bottom: 0;
 }
 
 .modal .overlay~* footer {
@@ -79,11 +65,6 @@
     margin-bottom: 0;
 }
 
-.modal .overlay~*>p {
-    margin: 0;
-    padding-right: 2.5em;
-}
-
 .modal .overlay~* .close {
     position: absolute;
     top: 0.4em;
@@ -98,9 +79,14 @@
     color: #ff4136;
 }
 
-.modal .overlay~* .dangerous {
-    background: #ff4136;
+.modal .overlay~* .button_close {
     float: right;
+    margin-bottom: 0.5rem;
+}
+
+.modal .overlay~* .button_shoose {
+    float: left;
+    margin-bottom: 0.5rem
 }
 
 .modal {
@@ -163,4 +149,10 @@
     .modal .overlay~* {
         min-width: 90%;
     }
+}
+
+.button {
+    border-radius: 0.2em;
+    border: 1px solid #aaa;
+    padding: 0.5rem;
 }

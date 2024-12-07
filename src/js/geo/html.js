@@ -6,7 +6,7 @@ function outLoc(string) {
 }
 
 let inner = '<div class="">\
-	<label for="modal_1" class="pseudo button">\
+	<label for="modal_1" class="">\
 		<span class="mr1">&#128205;</span>\
 		<span id="location">'
 	+ city_from_back + '&ensp;&#8250;\
@@ -17,20 +17,20 @@ let inner = '<div class="">\
 		<label for="modal_1" class="overlay "></label>\
 		<article class="">\
 			<header class="bgcolor">\
-				<h3>&nbsp;</h3>\
+				<p>&nbsp;</p>\
 				<label for="modal_1" class="close">&times;</label>\
 			</header>\
 			<section class="content bgcontent" id="clients_location_message">'
 	+ outLoc('city') + outLoc('region') +
 	'</section >\
-	<footer class="bgcontent">\
-		<label for="show_city_select" class="button" id="shoose_location">\
-			Выбрать\
-		</label>\
-		<label for="modal_1" class="button dangerous">\
-			Закрыть\
-		</label>\
-	</footer>\
+			<footer class="bgcontent">\
+				<label for="show_city_select" class="button button_shoose" id="shoose_location">\
+					Выбрать\
+				</label>\
+				<label for="modal_1" class="button button_close">\
+					Закрыть\
+				</label>\
+			</footer>\
 		</article >\
 	</div >\
 	<div class="modal">\
@@ -38,7 +38,7 @@ let inner = '<div class="">\
 		<label for="show_city_select" class="overlay "></label>\
 		<article class="">\
 			<header class="bgcolor">\
-				<h3>&nbsp;</h3>\
+				<p>&nbsp;</p>\
 				<label for="show_city_select" class="close">&times;</label>\
 			</header>\
 			<section class="content bgcontent" id="">\
@@ -54,10 +54,10 @@ let inner = '<div class="">\
 					</select>\
 			</section>\
 			<footer class="bgcontent">\
-				<button id="save_city">\
+				<button id="save_city" class="button">\
 					Выбрать\
 				</button>\
-				<label for="show_city_select" class="button dangerous">\
+				<label for="show_city_select" class="button button_close">\
 					Закрыть\
 				</label>\
 			</footer>\

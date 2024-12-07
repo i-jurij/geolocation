@@ -4,39 +4,59 @@ declare(strict_types=1);
 
 namespace Geolocation\Php;
 
-use Geolocation\Php\Lib\Connection;
-
 /**
  * Manages user-related operations such as authentication and adding new users.
  */
 final class Model
 {
-    private Connection $db;
+    public $db;
 
     public function __construct()
     {
-        $this->db = new Connection();
+        $reflector = new \ReflectionClass('Geolocation\Php\Front');
+        $model_file = realpath($reflector->getFileName());
+        $src_dir = dirname($model_file, 2);
+
+        $db = 'geolocation.db';
+
+        $path_to_db = $src_dir.DIRECTORY_SEPARATOR.'sqlite'.DIRECTORY_SEPARATOR.$db;
+
+        $dsn = "sqlite:$path_to_db";
+
+        $opt = [
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+        ];
+
+        if ($this->db == null) {
+            $this->db = new \PDO($dsn, null, null, $opt);
+        }
     }
 
     public function district()
     {
         $query = 'SELECT `id`, `name` FROM `geo_district`';
+        $res = $this->db->query($query);
 
-        return $this->db->fetchAll($query);
+        return $res->fetchAll();
     }
 
     public function region($id)
     {
         $query = 'SELECT `id`, `name` FROM `geo_regions` WHERE district_id = ?';
+        $pre = $this->db->prepare($query);
+        $res = $pre->execute([$id]);
 
-        return $this->db->fetchAll($query, $id);
+        return $res->fetchAll();
     }
 
     public function city($id)
     {
         $query = 'SELECT `id`, `name` FROM `geo_city` WHERE region_id = ?';
+        $pre = $this->db->prepare($query);
+        $res = $pre->execute([$id]);
 
-        return $this->db->fetchAll($query, $id);
+        return $res->fetchAll();
     }
 
     public function getAll(): array
@@ -44,29 +64,29 @@ final class Model
         $query = '  SELECT  d.id AS district_id, d.name AS district, 
                             r.id AS region_id, r.name AS region,
                             c.id AS city_id, c.name AS city
-                    FROM geo_district AS d
-                    INNER JOIN geo_regions AS r ON d.id = r.district_id
-                        INNER JOIN geo_city AS c ON r.id = c.region_id
+                    FROM `geo_district` AS d
+                    INNER JOIN `geo_regions` AS r ON d.id = r.district_id
+                        INNER JOIN `geo_city` AS c ON r.id = c.region_id
         ';
 
         $rows = $this->db->query($query);
-
         foreach ($rows as $row) {
-            $res['district'][$row->district_id]['id'] = $row->district_id;
-            $res['district'][$row->district_id]['name'] = $row->district;
+            $res['district'][$row['district_id']]['id'] = $row['district_id'];
+            $res['district'][$row['district_id']]['name'] = $row['district'];
 
-            $res['district'][$row->district_id]['regions'][$row->region_id]['id'] = $row->region_id;
-            $res['district'][$row->district_id]['regions'][$row->region_id]['name'] = $row->region;
+            $res['district'][$row['district_id']]['regions'][$row['region_id']]['id'] = $row['region_id'];
+            $res['district'][$row['district_id']]['regions'][$row['region_id']]['name'] = $row['region'];
 
-            $res['district'][$row->district_id]['regions'][$row->region_id]['cities'][$row->city_id]['id'] = $row->city_id;
-            $res['district'][$row->district_id]['regions'][$row->region_id]['cities'][$row->city_id]['name'] = $row->city;
+            $res['district'][$row['district_id']]['regions'][$row['region_id']]['cities'][$row['city_id']]['id'] = $row['city_id'];
+            $res['district'][$row['district_id']]['regions'][$row['region_id']]['cities'][$row['city_id']]['name'] = $row['city'];
         }
 
         return $res ?? [];
     }
 
-    public function fromCoord($long_lat)
+    public function fromCoord()
     {
+        $long_lat = filter_input(INPUT_GET, 'coord', FILTER_SANITIZE_ENCODED);
         $locality = [];
         if (!empty($long_lat) && \is_string($long_lat)) {
             list($long, $lat) = explode('_', trim($long_lat));
@@ -99,7 +119,9 @@ final class Model
                                     LIMIT 1;';
             $params = [(float) $lat, (float) $lat, (float) $long, ...$params0];
 
-            $locality = $this->db->fetch($query, ...$params);
+            $pre = $this->db->prepare($query);
+            $res = $pre->execute($params);
+            $locality = $res->fetch();
         }
 
         return $locality;

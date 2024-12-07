@@ -139,9 +139,10 @@ export function fromDB() {
         shoose_location.addEventListener('click', function () {
             hideLocationModal();
 
-            fetch('home.geo/get-all/', {
+            fetch(url_from_db, {
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'HTTP_X_FROMDB': 'shooseFromDb',
                 }
             })
                 .then(responce => responce.json())

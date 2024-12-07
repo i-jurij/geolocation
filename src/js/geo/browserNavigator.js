@@ -1,5 +1,5 @@
 // for city getting from Yandex Geocoder from browser navigator geolocation
-import { yapikey } from "../config/yandex_api.js"
+//import { yapikey } from "../config/yandex_api.js"
 import { locationFromYandexGeocoder } from './locationFromYandexGeocoder.js';
 
 import { outLocation } from './OutLocationOnPage.js'
@@ -25,7 +25,7 @@ export async function getLoc() {
 
         let coord = { long: longitude, lat: latitude };
 
-        fetch('home.geo/location-from-coord/' + coord.long + '_' + coord.lat, {
+        fetch(url_from_coord + '?coord=' + long + '_' + coord.lat, {
             headers: {
                 'Accept': 'application/json'
             }

@@ -1,4 +1,4 @@
-document.head.appendChild(document.createElement("style")).textContent=".modal .overlay~*{position:relative;box-shadow:none;border-radius:0.2em;border:1px solid #aaa;overflow:hidden;text-align:left;background:#fff;margin-bottom:0.6em;padding:0;transition:all 0.3s ease;}.modal .overlay~.hidden,.modal .overlay~:checked+*,.modal .overlay:checked+*{font-size:0;padding:0;margin:0;border:0;}.modal .overlay~*>*{max-width:100%;display:block;}.modal .overlay~*>*:last-child{margin-bottom:0;}.modal .overlay~* header,.modal .overlay~* section,.modal .overlay~*>p{padding:0.6em 0.8em;}.modal .overlay~* section{padding:0.6em 0.8em 0;}.modal .overlay~* hr{border:none;height:1px;background-color:#aaa;}.modal .overlay~* header{font-weight:bold;position:relative;border-bottom:1px solid #aaa;}.modal .overlay~* header h3{padding:0;margin:0 2em 0 0;line-height:1;display:inline-block;vertical-align:text-bottom;}.modal .overlay~* header:last-child{border-bottom:0;}.modal .overlay~* footer{padding:0.8em;}.modal .overlay~* p{margin:0.3em 0;}.modal .overlay~* p:first-child{margin-top:0;}.modal .overlay~* p:last-child{margin-bottom:0;}.modal .overlay~*>p{margin:0;padding-right:2.5em;}.modal .overlay~* .close{position:absolute;top:0.4em;right:0.3em;font-size:1.2em;padding:0 0.5em;cursor:pointer;width:auto;}.modal .overlay~* .close:hover{color:#ff4136;}.modal .overlay~* .dangerous{background:#ff4136;float:right;}.modal{text-align:center;}.modal>input{display:none;}.modal>input~*{opacity:0;max-height:0;overflow:hidden;}.modal .overlay{top:0;left:0;bottom:0;right:0;position:fixed;margin:0;border-radius:0;background:rgba(17,17,17,0.2);transition:all 0.3s;z-index:100000;}.modal .overlay:before,.modal .overlay:after{display:none;}.modal .overlay~*{border:0;position:fixed;top:50%;left:50%;transform:translateX(-50%) translateY(-50%) scale(0.2,0.2);z-index:1000000;transition:all 0.3s;}.modal>input:checked~*{display:block;opacity:1;max-height:10000px;transition:all 0.3s;}.modal>input:checked~.overlay~*{max-height:90%;overflow:auto;-webkit-transform:translateX(-50%) translateY(-50%) scale(1,1);transform:translateX(-50%) translateY(-50%) scale(1,1);}@media (max-width:60em){.modal .overlay~*{min-width:90%;}}";
+document.head.appendChild(document.createElement("style")).textContent=".modal .overlay~*{position:relative;box-shadow:none;border-radius:0.2em;border:1px solid #aaa;overflow:hidden;text-align:left;background:#fff;margin-bottom:0.6em;padding:0;transition:all 0.3s ease;}.modal .overlay~.hidden,.modal .overlay~:checked+*,.modal .overlay:checked+*{font-size:0;padding:0;margin:0;border:0;}.modal .overlay~*>*{max-width:100%;display:block;}.modal .overlay~* header,.modal .overlay~* section,.modal .overlay~*>p{padding:0.6em 0.8em;}.modal .overlay~* section{padding:0.6em 0.8em 0;}.modal .overlay~* header{font-weight:bold;position:relative;border-bottom:1px solid #aaa;}.modal .overlay~* header h3{padding:0;margin:0 2em 0 0;line-height:1;display:inline-block;vertical-align:text-bottom;}.modal .overlay~* footer{padding:0.8em;}.modal .overlay~* p{margin:0.3em 0;}.modal .overlay~* p:first-child{margin-top:0;}.modal .overlay~* p:last-child{margin-bottom:0;}.modal .overlay~* .close{position:absolute;top:0.4em;right:0.3em;font-size:1.2em;padding:0 0.5em;cursor:pointer;width:auto;}.modal .overlay~* .close:hover{color:#ff4136;}.modal .overlay~* .button_close{float:right;margin-bottom:0.5rem;}.modal .overlay~* .button_shoose{float:left;margin-bottom:0.5rem}.modal{text-align:center;}.modal>input{display:none;}.modal>input~*{opacity:0;max-height:0;overflow:hidden;}.modal .overlay{top:0;left:0;bottom:0;right:0;position:fixed;margin:0;border-radius:0;background:rgba(17,17,17,0.2);transition:all 0.3s;z-index:100000;}.modal .overlay:before,.modal .overlay:after{display:none;}.modal .overlay~*{border:0;position:fixed;top:50%;left:50%;transform:translateX(-50%) translateY(-50%) scale(0.2,0.2);z-index:1000000;transition:all 0.3s;}.modal>input:checked~*{display:block;opacity:1;max-height:10000px;transition:all 0.3s;}.modal>input:checked~.overlay~*{max-height:90%;overflow:auto;-webkit-transform:translateX(-50%) translateY(-50%) scale(1,1);transform:translateX(-50%) translateY(-50%) scale(1,1);}@media (max-width:60em){.modal .overlay~*{min-width:90%;}}.button{border-radius:0.2em;border:1px solid #aaa;padding:0.5rem;}";
 
 function outLoc(string) {
 	let con = string + '_from_back';
@@ -8,7 +8,7 @@ function outLoc(string) {
 }
 
 let inner = '<div class="">\
-	<label for="modal_1" class="pseudo button">\
+	<label for="modal_1" class="">\
 		<span class="mr1">&#128205;</span>\
 		<span id="location">'
 	+ city_from_back + '&ensp;&#8250;\
@@ -19,20 +19,20 @@ let inner = '<div class="">\
 		<label for="modal_1" class="overlay "></label>\
 		<article class="">\
 			<header class="bgcolor">\
-				<h3>&nbsp;</h3>\
+				<p>&nbsp;</p>\
 				<label for="modal_1" class="close">&times;</label>\
 			</header>\
 			<section class="content bgcontent" id="clients_location_message">'
 	+ outLoc('city') + outLoc('region') +
 	'</section >\
-	<footer class="bgcontent">\
-		<label for="show_city_select" class="button" id="shoose_location">\
-			Выбрать\
-		</label>\
-		<label for="modal_1" class="button dangerous">\
-			Закрыть\
-		</label>\
-	</footer>\
+			<footer class="bgcontent">\
+				<label for="show_city_select" class="button button_shoose" id="shoose_location">\
+					Выбрать\
+				</label>\
+				<label for="modal_1" class="button button_close">\
+					Закрыть\
+				</label>\
+			</footer>\
 		</article >\
 	</div >\
 	<div class="modal">\
@@ -40,7 +40,7 @@ let inner = '<div class="">\
 		<label for="show_city_select" class="overlay "></label>\
 		<article class="">\
 			<header class="bgcolor">\
-				<h3>&nbsp;</h3>\
+				<p>&nbsp;</p>\
 				<label for="show_city_select" class="close">&times;</label>\
 			</header>\
 			<section class="content bgcontent" id="">\
@@ -56,10 +56,10 @@ let inner = '<div class="">\
 					</select>\
 			</section>\
 			<footer class="bgcontent">\
-				<button id="save_city">\
+				<button id="save_city" class="button">\
 					Выбрать\
 				</button>\
-				<label for="show_city_select" class="button dangerous">\
+				<label for="show_city_select" class="button button_close">\
 					Закрыть\
 				</label>\
 			</footer>\
@@ -102,8 +102,6 @@ function outLocation({ city, adress }) {
     }
 }
 
-const yapikey = '62e46ec4-c446-4e02-b257-50b67d420173';
-
 function getLocality() {
     return JSON.parse(localStorage.getItem('locality'));
 }
@@ -143,6 +141,7 @@ async function locationFromYandexGeocoder(yapikey, { long, lat }, format = 'json
 }
 
 // for city getting from Yandex Geocoder from browser navigator geolocation
+//import { yapikey } from "../config/yandex_api.js"
 
 // get location from browser geolocation and yandex geocoder
 // required user permission for geolocation
@@ -373,9 +372,10 @@ function fromDB() {
         shoose_location.addEventListener('click', function () {
             hideLocationModal();
 
-            fetch('home.geo/get-all/', {
+            fetch(ajax_url, {
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'X_AJAX': 'geoAjax',
                 }
             })
                 .then(responce => responce.json())
@@ -403,9 +403,3 @@ document.onkeydown = function (event) {
         [].forEach.call(mods, function (mod) { mod.checked = false; });
     }
 };
-
-document.addEventListener('DOMContentLoaded', function () {
-    if (navigator.cookieEnabled === false) {
-        alert("Cookies отключены!");
-    }
-}, false);

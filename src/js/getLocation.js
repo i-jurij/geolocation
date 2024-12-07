@@ -20,9 +20,3 @@ document.onkeydown = function (event) {
         [].forEach.call(mods, function (mod) { mod.checked = false; });
     }
 }
-
-document.addEventListener('DOMContentLoaded', function () {
-    if (navigator.cookieEnabled === false) {
-        alert("Cookies отключены!");
-    }
-}, false)
