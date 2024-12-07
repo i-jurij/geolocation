@@ -42,14 +42,14 @@ let inner = '<div class="">\
 				<label for="show_city_select" class="close">&times;</label>\
 			</header>\
 			<section class="content bgcontent" id="">\
-				<input type="text" name="city_search_input" id="city_search_input" placeholder="Поиск">\
-					<select id="shoose_district" class="select mb1">\
+				<input class="d_block" type="text" name="city_search_input" id="city_search_input" placeholder="Поиск">\
+					<select id="shoose_district" class="d_block select mb1">\
 						<option>Округ</option>\
 					</select>\
-					<select id="shoose_region" class="select mb1" disabled>\
+					<select id="shoose_region" class="d_block select mb1" disabled>\
 						<option>Регион (область)</option>\
 					</select>\
-					<select id="shoose_city" class="select" disabled>\
+					<select id="shoose_city" class="d_block select" disabled>\
 						<option>Город</option>\
 					</select>\
 			</section>\

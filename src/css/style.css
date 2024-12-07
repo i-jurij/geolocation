@@ -156,3 +156,11 @@
     border: 1px solid #aaa;
     padding: 0.5rem;
 }
+
+label {
+    cursor: pointer;
+}
+
+.d_block {
+    display: block;
+}
