@@ -3,15 +3,20 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
 require_once __DIR__.'/vendor/autoload.php';
+
 // for js fetch for shoose city from list from db
-if (isset($_SERVER['HTTP_X_FROMDB']) && $_SERVER['HTTP_X_FROMDB'] == 'shooseFromDb') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST'
+    && $_SERVER['HTTP_SEC_FETCH_SITE'] == 'same-origin'
+    && isset($_SERVER['HTTP_X_FROMDB'])
+    && strtolower($_SERVER['HTTP_X_FROMDB']) == 'shoosefromdb'
+) {
     $fromDb = new Geolocation\Php\Front();
     $fromDb->getAll();
-}
-// for js fetch for autofinding city from coord from db or yandex geocoder
-elseif (isset($_SERVER['HTTP_X_FROMCOORD']) && $_SERVER['HTTP_X_FROMCOORD'] == 'fromCoord' && isset($_GET['coord'])) {
+    exit;
+} elseif (isset($_GET['coord'])) {
     $fromCoord = new Geolocation\Php\Front();
     $fromCoord->fromCoord();
+    exit;
 } else {
     $geo = new Geolocation\Php\Back();
     $location = $geo->getLocation();
@@ -37,8 +42,8 @@ elseif (isset($_SERVER['HTTP_X_FROMCOORD']) && $_SERVER['HTTP_X_FROMCOORD'] == '
 		<div id="location_div"></div>
 
 		<script>
-			let url_from_coord = 'index.php';
-			let url_from_db = 'index.php';
+			let url_from_coord = '/';
+			let url_from_db = '/';
 			let yapikey = 'your_yandex_map_api_key'; // use only if city not found in db and can be not configured
 			let city_from_back = '<?php echo !empty($location['city']) ? $location['city'] : 'Местоположение'; ?>';
 			let region_from_back = '<?php echo !empty($location['region']) ? $location['region'] : ''; ?>';

@@ -26,6 +26,7 @@ export async function getLoc() {
         let coord = { long: longitude, lat: latitude };
 
         fetch(url_from_coord + '?coord=' + long + '_' + coord.lat, {
+            credentials: 'same-origin',
             headers: {
                 'Accept': 'application/json'
             }

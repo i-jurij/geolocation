@@ -373,12 +373,14 @@ function fromDB() {
             hideLocationModal();
 
             fetch(url_from_db, {
+                method: 'POST',
+                credentials: 'same-origin',
                 headers: {
                     'Accept': 'application/json',
-                    'HTTP_X_FROMDB': 'shooseFromDb',
+                    'X_FROMDB': 'shooseFromDb',
                 }
             })
-                .then(responce => responce.json())
+                .then((response) => response.ok === true ? response.json() : false)
                 .then(locations => {
                     let districts = locations['district'];
                     districtOut(districts);

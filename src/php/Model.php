@@ -33,32 +33,6 @@ final class Model
         }
     }
 
-    public function district()
-    {
-        $query = 'SELECT `id`, `name` FROM `geo_district`';
-        $res = $this->db->query($query);
-
-        return $res->fetchAll();
-    }
-
-    public function region($id)
-    {
-        $query = 'SELECT `id`, `name` FROM `geo_regions` WHERE district_id = ?';
-        $pre = $this->db->prepare($query);
-        $res = $pre->execute([$id]);
-
-        return $res->fetchAll();
-    }
-
-    public function city($id)
-    {
-        $query = 'SELECT `id`, `name` FROM `geo_city` WHERE region_id = ?';
-        $pre = $this->db->prepare($query);
-        $res = $pre->execute([$id]);
-
-        return $res->fetchAll();
-    }
-
     public function getAll(): array
     {
         $query = '  SELECT  d.id AS district_id, d.name AS district, 
