@@ -44,6 +44,7 @@ final class Model
         ';
 
         $rows = $this->db->query($query);
+
         foreach ($rows as $row) {
             $res['district'][$row['district_id']]['id'] = $row['district_id'];
             $res['district'][$row['district_id']]['name'] = $row['district'];

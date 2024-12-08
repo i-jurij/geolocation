@@ -1,5 +1,9 @@
-export function getLocality() {
-    return JSON.parse(localStorage.getItem('locality'));
+export function getLocalStorage(name) {
+    let item = localStorage.getItem(name);
+    if (item) {
+        return JSON.parse(item);
+    }
+    return false;
 }
 
 export function setLocality({ city, adress = '', id = '' }) {
@@ -9,4 +13,8 @@ export function setLocality({ city, adress = '', id = '' }) {
 
 export function removeLocality() {
     localStorage.removeItem("locality");
+}
+
+export function setAllLocality(data_array) {
+    localStorage.setItem('all_locality', JSON.stringify(data_array));
 }

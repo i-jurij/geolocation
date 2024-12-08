@@ -3,13 +3,13 @@ import { outLocation } from './OutLocationOnPage.js'
 import { getLoc } from './browserNavigator.js'
 
 import { setLocality } from './localStorage.js'
-import { getLocality } from './localStorage.js'
+import { getLocalStorage } from './localStorage.js'
 
 export function geoLocation() {
     document.addEventListener('DOMContentLoaded', () => {
         // search in localstorage keeped data with user location
         //let locality = JSON.parse(localStorage.getItem('locality'));
-        let locality = getLocality();
+        let locality = getLocalStorage('locality');
 
         const substring = "Местоположение";
 

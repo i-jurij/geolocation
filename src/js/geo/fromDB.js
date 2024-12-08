@@ -1,5 +1,5 @@
 import { outLocation } from './OutLocationOnPage.js'
-import { setLocality } from './localStorage.js'
+import { getLocalStorage, setLocality, setAllLocality } from './localStorage.js'
 
 function districtOut(districts) {
     let inner = '<option value="" id="empty_district">Округ</option>';
@@ -133,26 +133,42 @@ function saveCity(city_text, region_text, city_id) {
     }
 }
 
+function allOut(locations) {
+    let districts = locations.district;
+    districtOut(districts);
+    regionOutAndCityOutAndSave(districts);
+}
+
+function fetchToServer() {
+    fetch(url_from_db, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Accept': 'application/json',
+            'X_FROMDB': 'shooseFromDb',
+        }
+    })
+        .then((response) => response.ok === true ? response.json() : false)
+        .then(locations => {
+
+            /* !!! remove after ended */ //console.log(locations)
+
+            setAllLocality(locations);
+            allOut(locations);
+        });
+}
+
 export function fromDB() {
     let shoose_location = document.querySelector('#shoose_location');
     if (shoose_location) {
         shoose_location.addEventListener('click', function () {
             hideLocationModal();
-
-            fetch(url_from_db, {
-                method: 'POST',
-                credentials: 'same-origin',
-                headers: {
-                    'Accept': 'application/json',
-                    'X_FROMDB': 'shooseFromDb',
-                }
-            })
-                .then((response) => response.ok === true ? response.json() : false)
-                .then(locations => {
-                    let districts = locations['district'];
-                    districtOut(districts);
-                    regionOutAndCityOutAndSave(districts);
-                });
+            let all_locality = getLocalStorage('all_locality');
+            if (all_locality) {
+                allOut(all_locality);
+            } else {
+                fetchToServer();
+            }
         }, false);
 
     }

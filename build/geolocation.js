@@ -102,13 +102,21 @@ function outLocation({ city, adress }) {
     }
 }
 
-function getLocality() {
-    return JSON.parse(localStorage.getItem('locality'));
+function getFromLocalStorage(name) {
+    let item = localStorage.getItem(name);
+    if (item) {
+        return JSON.parse(item);
+    }
+    return false;
 }
 
 function setLocality({ city, adress = '', id = '' }) {
     let data_object = { city, adress, id };
     localStorage.setItem('locality', JSON.stringify(data_object));
+}
+
+function setAllLocality(data_array) {
+    localStorage.setItem('all_locality', JSON.stringify(data_array));
 }
 
 async function locationFromYandexGeocoder(yapikey, { long, lat }, format = 'json', kind = 'locality', results = 1) {
@@ -212,7 +220,7 @@ function geoLocation() {
     document.addEventListener('DOMContentLoaded', () => {
         // search in localstorage keeped data with user location
         //let locality = JSON.parse(localStorage.getItem('locality'));
-        let locality = getLocality();
+        let locality = getFromLocalStorage('locality');
 
         const substring = "Местоположение";
 
@@ -367,26 +375,46 @@ function saveCity(city_text, region_text, city_id) {
     }
 }
 
+function allOut(locations) {
+    let districts = locations.district;
+
+    console.log(districts);
+
+
+    districtOut(districts);
+    regionOutAndCityOutAndSave(districts);
+}
+
+function fetchToServer() {
+    fetch(url_from_db, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Accept': 'application/json',
+            'X_FROMDB': 'shooseFromDb',
+        }
+    })
+        .then((response) => response.ok === true ? response.json() : false)
+        .then(locations => {
+
+            /* !!! remove after ended */ //console.log(locations)
+
+            setAllLocality(locations);
+            allOut(locations);
+        });
+}
+
 function fromDB() {
     let shoose_location = document.querySelector('#shoose_location');
     if (shoose_location) {
         shoose_location.addEventListener('click', function () {
             hideLocationModal();
-
-            fetch(url_from_db, {
-                method: 'POST',
-                credentials: 'same-origin',
-                headers: {
-                    'Accept': 'application/json',
-                    'X_FROMDB': 'shooseFromDb',
-                }
-            })
-                .then((response) => response.ok === true ? response.json() : false)
-                .then(locations => {
-                    let districts = locations['district'];
-                    districtOut(districts);
-                    regionOutAndCityOutAndSave(districts);
-                });
+            let all_locality = getFromLocalStorage('all_locality');
+            if (all_locality) {
+                allOut(all_locality);
+            } else {
+                fetchToServer();
+            }
         }, false);
 
     }
