@@ -39,6 +39,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
 
 		<body style="width:100%;background-color:whitesmoke;color:black;">
 
+		<noscript>
+			<style type="text/css">
+				.pagecontainer {display:none;}
+			</style>
+			<div class="noscriptmsg">
+				You don't have javascript enabled.
+			</div>
+		</noscript>
+
 		<div id="location_div"></div>
 
 		<script>
