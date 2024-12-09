@@ -42,7 +42,7 @@ let inner = '<div class="">\
 				<label for="show_city_select" class="close">&times;</label>\
 			</header>\
 			<section class="content bgcontent" id="">\
-				<input class="d_block" type="text" name="city_search_input" id="city_search_input" placeholder="Поиск">\
+				<input class="d_block" name="city_search_input" id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1">\
 					<select id="shoose_district" class="d_block select mb1">\
 						<option>Округ</option>\
 					</select>\

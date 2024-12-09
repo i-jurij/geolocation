@@ -7,9 +7,10 @@
     "example": "example"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-terser": "^0.4.4",
-    "rollup-plugin-import-css": "^3.5.7",
-    "rollup": "^4.13.2"
+    "rollup": "^4.13.2",
+    "rollup-plugin-import-css": "^3.5.7"
   },
   "scripts": {
     "build": "rollup -c"
@@ -26,6 +27,5 @@
   "bugs": {
     "url": "https://github.com/i-jurij/geolocation/issues"
   },
-  "homepage": "https://github.com/i-jurij/geolocation#readme",
-  "dependencies": {}
+  "homepage": "https://github.com/i-jurij/geolocation#readme"
 }

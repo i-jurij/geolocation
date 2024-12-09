@@ -1,6 +1,9 @@
 import { outLocation } from './OutLocationOnPage.js'
 import { getLocalStorage, setLocality, setAllLocality } from './localStorage.js'
 
+import * as autoCompleteStyles from "../autoComplete.js-10.2.9/dist/css/autoComplete.02.css"; /* import the styles as a string */
+import autoComplete from '../autoComplete.js-10.2.9/src/autoComplete.js'
+
 function districtOut(districts) {
     let inner = '<option value="" id="empty_district">Округ</option>';
 
@@ -133,10 +136,75 @@ function saveCity(city_text, region_text, city_id) {
     }
 }
 
-function allOut(locations) {
-    let districts = locations.district;
-    districtOut(districts);
-    regionOutAndCityOutAndSave(districts);
+function sanitize(string) {
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#x27;',
+        "/": '&#x2F;',
+    };
+    const reg = /[&<>"'/]/ig;
+    return string.replace(reg, (match) => (map[match]));
+}
+
+function dataForLiveSearch(loc) {
+    let districts = loc.district;
+    let data_for_livesearch = [];
+    for (let e of Object.keys(districts)) {
+        for (let el of Object.keys(districts[e]['regions'])) {
+            for (let ele of Object.keys((districts[e]['regions'][el]['cities']))) {
+                let region_name = districts[e]['regions'][el].name;
+                let city_name = districts[e]['regions'][el]['cities'][ele].name;
+                let city_id = districts[e]['regions'][el]['cities'][ele].id;
+                data_for_livesearch.push({
+                    id: city_id,
+                    city: city_name,
+                    region: region_name
+                });
+            }
+        }
+    }
+    return data_for_livesearch;
+}
+
+function allOut(loc) {
+    let distr = loc.district;
+    districtOut(distr);
+    regionOutAndCityOutAndSave(distr);
+
+    let config_live_search = {
+        selector: "#autoComplete",
+        placeHolder: "Поиск...",
+        data: {
+            src: dataForLiveSearch(loc),
+            keys: ["city"],
+            cache: true,
+        },
+        resultsList: {
+            element: (list, data) => {
+                if (!data.results.length) {
+                    // Create "No Results" message element
+                    const message = document.createElement("div");
+                    // Add class to the created element
+                    message.setAttribute("class", "no_result");
+                    message.style.padding = "1rem";
+                    // Add message text content
+                    message.innerHTML = `<span class="p1">Не найдено "${data.query}"</span>`;
+                    // Append message element to the results list
+                    list.prepend(message);
+                }
+            },
+            noResults: true,
+        },
+        resultItem: {
+            highlight: true,
+        }
+    };
+
+    const autoCompleteJS = new autoComplete(config_live_search);
+
 }
 
 function fetchToServer() {
@@ -150,9 +218,6 @@ function fetchToServer() {
     })
         .then((response) => response.ok === true ? response.json() : false)
         .then(locations => {
-
-            /* !!! remove after ended */ //console.log(locations)
-
             setAllLocality(locations);
             allOut(locations);
         });

@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
 			let city_from_back = '<?php echo !empty($location['city']) ? $location['city'] : 'Местоположение'; ?>';
 			let region_from_back = '<?php echo !empty($location['region']) ? $location['region'] : ''; ?>';
 		</script>
-		<script  type="module" src="build/geolocation.min.js"></script>
+		<script src="build/geolocation.min.js"></script>
 		</body>
 		</html>
 	<?php
