@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
 			<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 			<meta name="author" content="ijuij" >
 			<!-- <link rel="icon" href="favicon.png" /> -->
+			<link rel="stylesheet" type="text/css" href="node_modules/oswc2_styles/oswc2_styles.min.css">
 		</head>
 
 		<body style="width:100%;background-color:whitesmoke;color:black;">

@@ -3,24 +3,23 @@
   position: relative;
 }
 
-.autoComplete_wrapper > input {
+.autoComplete_wrapper>input {
   width: 370px;
   height: 40px;
-  padding-left: 20px;
+  padding-left: 10px;
   font-size: 1rem;
-  color: rgba(123, 123, 123, 1);
-  border-radius: 8px;
-  border: 0;
+  color: rgb(116, 116, 116);
+  border-radius: 4px;
+  border: 1px solid rgba(33, 33, 33, 0.2);
   outline: none;
-  background-color: #f1f3f4;
 }
 
-.autoComplete_wrapper > input::placeholder {
+.autoComplete_wrapper>input::placeholder {
   color: rgba(123, 123, 123, 0.5);
   transition: all 0.3s ease;
 }
 
-.autoComplete_wrapper > ul {
+.autoComplete_wrapper>ul {
   position: absolute;
   max-height: 226px;
   overflow-y: scroll;
@@ -29,30 +28,21 @@
   right: 0;
   padding: 0;
   margin: 0.5rem 0 0 0;
-  border-radius: 0.6rem;
+  border-radius: 4px;
   background-color: #fff;
-  box-shadow: 0 3px 6px rgba(149, 157, 165, 0.15);
-  border: 1px solid rgba(33, 33, 33, 0.07);
+  border: 1px solid rgba(33, 33, 33, 0.1);
   z-index: 1000;
   outline: none;
 }
 
-.autoComplete_wrapper > ul[hidden],
-.autoComplete_wrapper > ul:empty {
-  display: block;
-  opacity: 0;
-  transform: scale(0);
-}
-
-.autoComplete_wrapper > ul > li {
-  margin: 0.3rem;
-  padding: 0.3rem 0.5rem;
+.autoComplete_wrapper>ul>li {
+  padding: 10px 20px;
   list-style: none;
   text-align: left;
-  font-size: 1rem;
+  font-size: 16px;
   color: #212121;
   transition: all 0.1s ease-in-out;
-  border-radius: 0.35rem;
+  border-radius: 3px;
   background-color: rgba(255, 255, 255, 1);
   white-space: nowrap;
   overflow: hidden;
@@ -60,33 +50,33 @@
   transition: all 0.2s ease;
 }
 
-.autoComplete_wrapper > ul > li::selection {
+.autoComplete_wrapper>ul>li::selection {
   color: rgba(#ffffff, 0);
   background-color: rgba(#ffffff, 0);
 }
 
-.autoComplete_wrapper > ul > li:hover {
+.autoComplete_wrapper>ul>li:hover {
   cursor: pointer;
   background-color: rgba(123, 123, 123, 0.1);
 }
 
-.autoComplete_wrapper > ul > li mark {
+.autoComplete_wrapper>ul>li mark {
   background-color: transparent;
   color: rgba(255, 122, 122, 1);
   font-weight: bold;
 }
 
-.autoComplete_wrapper > ul > li mark::selection {
+.autoComplete_wrapper>ul>li mark::selection {
   color: rgba(#ffffff, 0);
   background-color: rgba(#ffffff, 0);
 }
 
-.autoComplete_wrapper > ul > li[aria-selected="true"] {
+.autoComplete_wrapper>ul>li[aria-selected="true"] {
   background-color: rgba(123, 123, 123, 0.1);
 }
 
 @media only screen and (max-width: 600px) {
-  .autoComplete_wrapper > input {
+  .autoComplete_wrapper>input {
     width: 18rem;
   }
 }

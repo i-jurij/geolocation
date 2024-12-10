@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/i-jurij/geolocation/issues"
   },
+  "dependencies": {
+    "oswc2_styles": "github:i-jurij/oswc2_styles"
+  },
   "homepage": "https://github.com/i-jurij/geolocation#readme"
 }

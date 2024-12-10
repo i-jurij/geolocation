@@ -1,10 +1,10 @@
 // rollup.config.mjs
 import terser from '@rollup/plugin-terser';
 import css from "rollup-plugin-import-css";
-import resolve from '@rollup/plugin-node-resolve';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 export default {
-	input: 'src/js/getLocation.js',
+	input: 'src/js/geolocation.js',
 	output: [
 		{
 			file: 'build/geolocation.js',
@@ -22,16 +22,6 @@ export default {
 			minify: true,
 			inject: true
 		}),
-		resolve()
-	],
-	moduleContext: (id) => {
-		const modules = ["src/js/autocomplete.js-10.2.9/dist/autoComplete.min.js"];
-
-		if (modules.some(_id => id.trim().endsWith(id))) {
-			return "window";
-		}
-
-		return undefined;
-	}
-
+		nodeResolve()
+	]
 };

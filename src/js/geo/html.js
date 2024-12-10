@@ -1,7 +1,9 @@
-function outLoc(string) {
-	let con = string + '_from_back';
-	if (window[con]) {
-		return '<p id="p_' + string + '">' + window[con] + '</p>';
+function outLoc() {
+	if (city_from_back != region_from_back) {
+		return '<p id="p_city">' + city_from_back + '</p>' +
+			'<p id="p_region">' + region_from_back + '</p>';
+	} else {
+		return '<p id="p_city">' + city_from_back + '</p>';
 	}
 }
 
@@ -21,13 +23,13 @@ let inner = '<div class="">\
 				<label for="modal_1" class="close">&times;</label>\
 			</header>\
 			<section class="content bgcontent" id="clients_location_message">'
-	+ outLoc('city') + outLoc('region') +
+	+ outLoc() +
 	'</section >\
 			<footer class="bgcontent">\
 				<label for="show_city_select" class="button button_shoose" id="shoose_location">\
 					Выбрать\
 				</label>\
-				<label for="modal_1" class="button button_close">\
+				<label for="modal_1" class="button dangerous">\
 					Закрыть\
 				</label>\
 			</footer>\
@@ -38,26 +40,28 @@ let inner = '<div class="">\
 		<label for="show_city_select" class="overlay "></label>\
 		<article class="">\
 			<header class="bgcolor">\
-				<p>&nbsp;</p>\
+				<p>Выбор города</p>\
 				<label for="show_city_select" class="close">&times;</label>\
 			</header>\
 			<section class="content bgcontent" id="">\
-				<input class="d_block" name="city_search_input" id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1">\
-					<select id="shoose_district" class="d_block select mb1">\
-						<option>Округ</option>\
-					</select>\
-					<select id="shoose_region" class="d_block select mb1" disabled>\
-						<option>Регион (область)</option>\
-					</select>\
-					<select id="shoose_city" class="d_block select" disabled>\
-						<option>Город</option>\
-					</select>\
+				<p>По названию:</p>\
+				<input class="" name="city_search_input" id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1">\
+				<p>Или из списка:</p>\
+				<select id="shoose_district" class=" select mb1">\
+					<option>Округ</option>\
+				</select>\
+				<select id="shoose_region" class=" select mb1" disabled>\
+					<option>Регион (область)</option>\
+				</select>\
+				<select id="shoose_city" class=" select" disabled>\
+					<option>Город</option>\
+				</select>\
 			</section>\
 			<footer class="bgcontent">\
 				<button id="save_city" class="button">\
 					Выбрать\
 				</button>\
-				<label for="show_city_select" class="button button_close">\
+				<label for="show_city_select" class="button dangerous">\
 					Закрыть\
 				</label>\
 			</footer>\

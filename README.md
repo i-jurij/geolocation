@@ -112,6 +112,10 @@ function asyncFromDb(): void {
 ```
 
 Then template or View:
+to head put link to [oswc2_styles](https://github.com/i-jurij/oswc2_styles) 
+```
+<link rel="stylesheet" type="text/css" href="www/oswc2_styles/oswc2_styles.min.css">
+```
 ```
 	<div id="location_div"></div>
 

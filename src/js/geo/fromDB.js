@@ -1,7 +1,7 @@
 import { outLocation } from './OutLocationOnPage.js'
 import { getLocalStorage, setLocality, setAllLocality } from './localStorage.js'
 
-import * as autoCompleteStyles from "../autoComplete.js-10.2.9/dist/css/autoComplete.02.css"; /* import the styles as a string */
+import * as autoCompleteStyles from "../autoComplete.js-10.2.9/dist/css/autoComplete.geolocation.css"; /* import the styles as a string */
 import autoComplete from '../autoComplete.js-10.2.9/src/autoComplete.js'
 
 function districtOut(districts) {
@@ -123,7 +123,7 @@ function cityOutAndSave(regions) {
 function saveCity(city_text, region_text, city_id) {
     let save_city = document.querySelector('#save_city');
     if (save_city) {
-        save_city.addEventListener('click', function () {
+        function sc_common() {
             //let opt_adress = region_text + ' ' + district_text;
             let opt_adress = region_text;
             setLocality({ city: city_text, adress: opt_adress, id: city_id });
@@ -132,7 +132,9 @@ function saveCity(city_text, region_text, city_id) {
             if (show_city_select) {
                 show_city_select.checked = false;
             }
-        });
+        }
+        save_city.addEventListener('click', sc_common());
+        save_city.addEventListener('touchstart', sc_common());
     }
 }
 
@@ -182,6 +184,9 @@ function allOut(loc) {
             keys: ["city"],
             cache: true,
         },
+        threshold: 3,
+        debounce: 300, // Milliseconds value
+        searchEngine: "strict",
         resultsList: {
             element: (list, data) => {
                 if (!data.results.length) {
@@ -191,7 +196,7 @@ function allOut(loc) {
                     message.setAttribute("class", "no_result");
                     message.style.padding = "1rem";
                     // Add message text content
-                    message.innerHTML = `<span class="p1">Не найдено "${data.query}"</span>`;
+                    message.innerHTML = '<span>Не найдено ' + sanitize(data.query) + '</span>';
                     // Append message element to the results list
                     list.prepend(message);
                 }
@@ -200,11 +205,19 @@ function allOut(loc) {
         },
         resultItem: {
             highlight: true,
-        }
+        },
+        //submit: true,
     };
 
     const autoCompleteJS = new autoComplete(config_live_search);
+    document.querySelector("#autoComplete").addEventListener("selection", function (event) {
+        // "event.detail" carries the autoComplete.js "feedback" object
+        //console.log(event.detail.selection.value);
+        let vall = event.detail.selection.value;
+        document.querySelector('#autoComplete').value = '';
+        saveCity(vall.city, vall.region, vall.id);
 
+    });
 }
 
 function fetchToServer() {
@@ -226,14 +239,21 @@ function fetchToServer() {
 export function fromDB() {
     let shoose_location = document.querySelector('#shoose_location');
     if (shoose_location) {
-        shoose_location.addEventListener('click', function () {
-            hideLocationModal();
+        function shloc_common() {
             let all_locality = getLocalStorage('all_locality');
             if (all_locality) {
                 allOut(all_locality);
             } else {
                 fetchToServer();
             }
+        }
+        shoose_location.addEventListener('click', function () {
+            hideLocationModal();
+            shloc_common();
+        }, false);
+        shoose_location.addEventListener('touchstart', function () {
+            hideLocationModal();
+            shloc_common();
         }, false);
 
     }

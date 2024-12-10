@@ -9,7 +9,7 @@ export function outLocation({ city, adress }) {
         let adr = '';
         if (typeof adress == 'string' && adress && adress.includes(city + ' ')) {
             adr = '<div class="my2">' + adress + '</div>';
-        } else if (typeof adress == 'string' && adress && !adress.includes(city + ' ')) {
+        } else if (typeof adress == 'string' && adress && !adress.includes(city + ' ') && adress != city) {
             adr = '<div class="mt2">' + city + '</div><div class="mb2">' + adress + '</div>';
         } else {
             adr = '<div class="my2">' + city + '.</div>'
