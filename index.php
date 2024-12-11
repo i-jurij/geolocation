@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
 			<link rel="stylesheet" type="text/css" href="node_modules/oswc2_styles/oswc2_styles.min.css">
 		</head>
 
-		<body style="width:100%;background-color:whitesmoke;color:black;">
+		<body>
 
 		<noscript>
 			<style type="text/css">
