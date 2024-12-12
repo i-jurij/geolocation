@@ -34,11 +34,6 @@
   transition: all 0.2s ease;
 }
 
-.autoComplete_wrapper>ul>li::selection {
-  color: rgba(#ffffff, 0);
-  background-color: rgba(#ffffff, 0);
-}
-
 .autoComplete_wrapper>ul>li:hover {
   cursor: pointer;
   background-color: rgba(193, 193, 193, 0.1);
@@ -48,11 +43,6 @@
   background-color: transparent;
   color: rgb(77, 183, 44);
   font-weight: bold;
-}
-
-.autoComplete_wrapper>ul>li mark::selection {
-  color: rgba(#ffffff, 0);
-  background-color: rgba(#ffffff, 0);
 }
 
 .autoComplete_wrapper>ul>li[aria-selected="true"] {
