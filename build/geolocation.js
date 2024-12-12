@@ -111,7 +111,7 @@
 
 	function getLocalStorage(name) {
 	    let item = localStorage.getItem(name);
-	    if (item) {
+	    if (item != null){
 	        return JSON.parse(item);
 	    }
 	    return false;
@@ -127,66 +127,91 @@
 	}
 
 	async function locationFromYandexGeocoder(yapikey, { long, lat }, format = 'json', kind = 'locality', results = 1) {
-	    const url = "https://geocode-maps.yandex.ru/1.x/?apikey=" + yapikey + "&geocode=" + long + "," + lat + "&format=" + format + "&results=" + results + "&kind=" + kind;
-	    try {
-	        const response = await fetch(url, {
-	            headers: {
-	                'Accept': 'application/json'
+	        const url = "https://geocode-maps.yandex.ru/1.x/?apikey=" + yapikey + "&geocode=" + long + "," + lat + "&format=" + format + "&results=" + results + "&kind=" + kind;
+	        try {
+	            const response = await fetch(url, {
+	                headers: {
+	                    'Accept': 'application/json'
+	                }
+	            });
+	            
+	            if (!response.ok) {
+	                throw new Error(`Response status from geocode-maps.yandex.ru: ${response.status}`);
 	            }
-	        });
-	        if (!response.ok) {
-	            throw new Error(`Response status: ${response.status}`);
+	    
+	            const json = await response.json();
+	    
+	            let jr = json.response;
+	            if (jr) {
+	                let name = jr.GeoObjectCollection.featureMember[0].GeoObject.name;
+	                let description = jr.GeoObjectCollection.featureMember[0].GeoObject.description;
+	        
+	                if (name && description) {
+	                    outLocation({ city: name, adress: description });
+	                    setLocality({ city: name, adress: description });
+	                } else {
+	                    outLocation({ city: '', adress: '' });
+	                    console.error('No location data in responce from geocode-maps.yandex.ru');
+	                }
+	            }  
+	        } catch (error) {
+	            outLocation({ city: '', adress: '' });
+	            console.error(error.message);
 	        }
-
-	        const json = await response.json();
-
-	        let name = json.response.GeoObjectCollection.featureMember[0].GeoObject.name;
-	        let description = json.response.GeoObjectCollection.featureMember[0].GeoObject.description;
-
-	        if (name && description) {
-	            outLocation({ city: name, adress: description });
-	            setLocality({ city: name, adress: description });
-	        } else {
-	            console.error('No location data in responce from geocode-maps.yandex.ru');
-	        }
-	        //return { city: name, adress: description };
-	    } catch (error) {
-	        console.error(error.message);
-	    }
 	}
 
 	// for city getting from Yandex Geocoder from browser navigator geolocation
-	//import { yapikey } from "../config/yandex_api.js"
+	//import { yapikey } from "../config/yapikey.js"
 
 	// get location from browser geolocation and yandex geocoder
 	// required user permission for geolocation
 	async function getLoc() {
-	    async function getLocation() {
-	        if (navigator.geolocation) {
-	            navigator.geolocation.getCurrentPosition(getCoords, showError, positionOption);
+	    
+	    function outSave({ city, adress, id }) {
+	        outLocation({ city, adress });
+	        setLocality({ city, adress, id });
+	    }
+
+	    function checkResponce(obj) {
+	        if (typeof obj === 'object' && 'city' in obj && obj.city != '' && obj.city != 'undefined' && typeof obj.city == 'string') {
+	            return true;
 	        } else {
-	            outLocation({ city: '', adress: '' });
-	            console.warn("WARNING! Geolocation is not supported by this browser.");
+	            return false;
 	        }
 	    }
 
+	    function yandexGeo(yapikey, coord){
+	        if (yapikey) {
+	            locationFromYandexGeocoder(yapikey, coord);
+	        } else {
+	            outLocation({ city: '', adress: '' });
+	            console.warn("WARNING! Yandex API key is undefined");
+	        }
+	    }
+	    
 	    let positionOption = { timeout: 5000, /* maximumAge: 24 * 60 * 60, /* enableHighAccuracy: true */ };
 
-	    function getCoords(position) {
+	   async function getCoords(position) {
 	        const latitude = position.coords.latitude;
 	        const longitude = position.coords.longitude;
 
 	        let coord = { long: longitude, lat: latitude };
 
-	        fetch(url_from_coord + '?coord=' + long + '_' + coord.lat, {
+	        let response = await fetch(url_from_coord + '?coord=' + coord.long + '_' + coord.lat, {
 	            credentials: 'same-origin',
 	            headers: {
 	                'Accept': 'application/json'
 	            }
-	        })
-	            .then(response => response.json())
-	            .then(response => checkResponce(response) ? outSave(response) : locationFromYandexGeocoder(yapikey, coord))
-	            .catch(error => console.error(error));
+	        });
+
+	        //const data = response.clone();
+	        const json = await response.json();
+	        try {
+	            checkResponce(json) ? outSave(json) : yandexGeo(yapikey, coord);
+	        } catch (error) {
+	            yandexGeo(yapikey, coord);
+	            console.warn(`API response is not JSON.`, error);
+	        }            
 	    }
 
 	    function showError(error) {
@@ -207,19 +232,16 @@
 	                break;
 	        }
 	    }
-
-	    function outSave({ city, adress, id }) {
-	        outLocation({ city, adress });
-	        setLocality({ city, adress, id });
-	    }
-
-	    function checkResponce(obj) {
-	        if (typeof obj === 'object' && 'city' in obj && obj.city != '' && obj.city != 'undefined' && typeof obj.city == 'string') {
-	            return true;
+	    
+	    async function getLocation() {
+	        if (navigator.geolocation) {
+	            navigator.geolocation.getCurrentPosition(getCoords, showError, positionOption);
 	        } else {
-	            return false;
+	            outLocation({ city: '', adress: '' });
+	            console.warn("WARNING! Geolocation is not supported by this browser.");
 	        }
 	    }
+	    
 	    getLocation();
 	}
 

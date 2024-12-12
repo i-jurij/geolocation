@@ -95,8 +95,11 @@ final class Model
             $params = [(float) $lat, (float) $lat, (float) $long, ...$params0];
 
             $pre = $this->db->prepare($query);
-            $res = $pre->execute($params);
-            $locality = $res->fetch();
+            if ($pre != false) {
+                if ($pre->execute($params)) {
+                    $locality = $pre->fetch();
+                }
+            }
         }
 
         return $locality;

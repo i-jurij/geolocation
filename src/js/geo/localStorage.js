@@ -1,6 +1,6 @@
 export function getLocalStorage(name) {
     let item = localStorage.getItem(name);
-    if (item) {
+    if (item != null){
         return JSON.parse(item);
     }
     return false;

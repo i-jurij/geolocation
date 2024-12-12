@@ -54,11 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
 		<script>
 			let url_from_coord = '/';
 			let url_from_db = '/';
-			let yapikey = 'your_yandex_map_api_key'; // use only if city not found in db and can be not configured
+			let yapikey = ''; // use only if city not found in db and must be undefined or empty if not use
 			let city_from_back = '<?php echo !empty($location['city']) ? $location['city'] : 'Местоположение'; ?>';
 			let region_from_back = '<?php echo !empty($location['region']) ? $location['region'] : ''; ?>';
 		</script>
-		<script src="build/geolocation.min.js"></script>
+		<script src="build/geolocation.js"></script>
 		</body>
 		</html>
 	<?php
