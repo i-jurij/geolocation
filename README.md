@@ -61,7 +61,7 @@ And add to your page or template
 		let city_from_back = '<?php echo !empty($location['city']) ? $location['city'] : 'Местоположение'; ?>';
 		let region_from_back = '<?php echo !empty($location['region']) ? $location['region'] : ''; ?>';
 	</script>
-	<script  type="module" src="build/geolocation.min.js"></script>
+	<script src="build/geolocation.min.js"></script>
 ```
 
 Then app will try get city and out it to page.  
@@ -121,13 +121,13 @@ and put to template or View:
 	<div id="location_div"></div>
 
 	<script>
-        let url_from_coord = 'url_for_ajax_processing'; // or {Url::('Controller:asyncGeo')} eg
-        let url_from_db = 'index.php';
+        let url_from_coord = 'url_from_coord'; // or {Url::('Controller:asyncGeo')} eg
+        let url_from_db = 'url_from_db';
         let yapikey = 'your_yandex_map_api_key'; // can be not configured
 		let city_from_back = '<?php echo !empty($location['city']) ? $location['city'] : 'Местоположение'; ?>';
 		let region_from_back = '<?php echo !empty($location['region']) ? $location['region'] : ''; ?>';
 	</script>
-	<script  type="module" src="build/geolocation.min.js"></script>
+	<script src="build/geolocation.min.js"></script>
 ```
 
 ## Work

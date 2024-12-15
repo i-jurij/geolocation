@@ -44,9 +44,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
 			<style type="text/css">
 				.pagecontainer {display:none;}
 			</style>
-			<div class="noscriptmsg">
-				You don't have javascript enabled.
-			</div>
+			<div class="modal">
+				<input id="modal_1" type="checkbox" checked/>
+				<label for="modal_1" class="overlay"></label>
+				<article>
+					<header class="red center">
+						<h3>!</h3>
+					<label for="modal_1" class="close">&times;</label>
+					</header>
+					<section class="content red ">
+						Javascript выключен. Многие функции будут недоступны.
+					</section>
+					<footer>
+					<label for="modal_1" class="button dangerous">
+						Cancel
+					</label>
+					</footer>
+				</article>
+				</div>
 		</noscript>
 
 		<div id="location_div"></div>
