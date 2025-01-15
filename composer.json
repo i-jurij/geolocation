@@ -1,0 +1,24 @@
+{
+    "name": "i-jurij/geolocation",
+    "description": "PHP class for geolocation",
+    "type": "library",
+    "version": "3.0",
+    "license": "Apache-2.0",
+    "autoload": {
+        "psr-4": {
+            "Ijurij\\Geolocation\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "I-Jurij",
+            "email": "yjurij@gmail.com"
+        }
+    ],
+    "config": {
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {}
+}
