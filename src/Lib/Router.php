@@ -23,7 +23,7 @@ final class Router
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             // default callback (first request or empty GET request)
             $this->callback = [
-                'controller' => 'Geolocation\Controller',
+                'controller' => 'Ijurij\Geolocation\Controller',
                 'method' => 'default',
                 'parameters' => [],
             ];
