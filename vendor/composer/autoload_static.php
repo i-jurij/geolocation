@@ -22,12 +22,16 @@ class ComposerStaticInit651d553758db8401ae6f4617adcfa173
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Ijurij\\Geolocation\\Config' => __DIR__ . '/../..' . '/src/Config.php',
+        'Ijurij\\Geolocation\\Controller' => __DIR__ . '/../..' . '/src/Controller.php',
         'Ijurij\\Geolocation\\Geolocation' => __DIR__ . '/../..' . '/src/Geolocation.php',
         'Ijurij\\Geolocation\\Lib\\Csrf' => __DIR__ . '/../..' . '/src/Lib/Csrf.php',
         'Ijurij\\Geolocation\\Lib\\Ip' => __DIR__ . '/../..' . '/src/Lib/Ip.php',
         'Ijurij\\Geolocation\\Lib\\Isbot' => __DIR__ . '/../..' . '/src/Lib/Isbot.php',
         'Ijurij\\Geolocation\\Lib\\Router' => __DIR__ . '/../..' . '/src/Lib/Router.php',
+        'Ijurij\\Geolocation\\Model' => __DIR__ . '/../..' . '/src/Model.php',
         'Ijurij\\Geolocation\\Provider\\GeoPlugin' => __DIR__ . '/../..' . '/src/Provider/GeoPlugin.php',
+        'Ijurij\\Geolocation\\View' => __DIR__ . '/../..' . '/src/View.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
