@@ -4,9 +4,16 @@ declare(strict_types=1);
 
 namespace Ijurij\Geolocation\Lib;
 
+/**
+ * Get ip from request headers, call Ip->get().
+ */
 class Ip
 {
-    public static function get(): string // array
+    /**
+     * Get ip from request headers.
+     * Return array('ip' => $ip, 'suspected' => $ipSus, 'network' => $ipAll).
+     */
+    public static function get(): array
     {
         $ip = '';
         $ipAll = []; // networks IP
@@ -42,18 +49,10 @@ class Ip
         $ipAll = array_unique($ipAll);
         $ip = (sizeof($ipSus) > 0) ? $ipSus[0] : $ip;
 
-        /*
-                return [
-                    'ip' => $ip,
-                    'suspected' => $ipSus,
-                    'network' => $ipAll,
-                ];
-        */
-        $userIP = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE);
-        if ($userIP) {
-            return trim($userIP);
-        } else {
-            return '';
-        }
+        return [
+            'ip' => $ip,
+            'suspected' => $ipSus,
+            'network' => $ipAll,
+        ];
     }
 }

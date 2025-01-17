@@ -7,7 +7,7 @@ namespace Ijurij\Geolocation\Lib;
 class Isbot
 {
     // прочие боты
-    public array $bots = [
+    public const BOTS = [
         'yandex', 'google', 'bot', 'spider', 'crawler', 'curl',
         'Accoona', 'ia_archiver', 'Ask Jeeves', 'W3C_Validator', 'WebAlta', 'YahooFeedSeeker',
         'Yahoo!', 'Ezooms', 'SiteStatus', 'Nigma.ru', 'Baiduspider', 'SISTRIX', 'findlinks',
@@ -24,7 +24,7 @@ class Isbot
         if (empty($user_agent)) {
             return false;
         }
-        foreach (self::$bots as $bot) {
+        foreach (self::BOTS as $bot) {
             if (stripos($user_agent, $bot) !== false) {
                 return true;
             }

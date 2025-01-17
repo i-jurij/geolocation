@@ -26,6 +26,11 @@ final class Model
         }
     }
 
+    /**
+     * Get all location for manual user choice if js disabled.
+     * Send json in response.
+     * Response is array of nested arrays: [district [regions => [cities]]].
+     */
     public function getAll(): array
     {
         $query = '  SELECT  d.id AS district_id, d.name AS district, 
@@ -52,12 +57,21 @@ final class Model
         return $res ?? [];
     }
 
-    public function fromCoord()
+    /**
+     * Get location by coordinates.
+     * Response is array of nested arrays: [district [regions => [cities]]].
+     *
+     * @param array $coord,
+     */
+    public function fromCoord($coord)
     {
-        $long_lat = filter_input(INPUT_GET, 'coord', FILTER_SANITIZE_ENCODED);
-        $locality = [];
-        if (!empty($long_lat) && \is_string($long_lat)) {
-            list($long, $lat) = explode('_', trim($long_lat));
+        $regex_lat = '/'.Config::REGEX_LAT.'/';
+        $regex_long = '/'.Config::REGEX_LONG.'/';
+
+        $long = $coord['parameters']['long'];
+        $lat = $coord['parameters']['lat'];
+
+        if (\preg_match($regex_lat, $lat) && \preg_match($regex_long, $long)) {
             $area = (1 / 111) * 100; // ~100km (1° ~ 111 км, 1 км = 1 / 111 = 0,009009009009009°.)
 
             $lat_dist_minus = (float) $lat - $area;
@@ -65,37 +79,40 @@ final class Model
             $long_dist_minus = (float) $long - $area;
             $long_dist_plus = (float) $long + $area;
 
-            $params0 = [$lat_dist_minus, $lat_dist_plus, $long_dist_minus, $long_dist_plus];
-
             $query = 'SELECT `city`, `adress`, `id`
                                     FROM (
                                             SELECT `id`, `city`, `adress`, `distance`
                                                 FROM (
                                                         SELECT `gc`.`id`, `gc`.`name` AS city, `r`.`name` AS adress,
-                                                            ACOS(SIN(PI()*gc.latitude/180.0)*SIN(PI()*?/180.0)
-                                                                +COS(PI()*gc.latitude/180.0)*COS(PI()*?/180.0)
-                                                                *COS(PI()*?/180.0-PI()*gc.longitude/180.0))*6371 AS distance
+                                                            ACOS(SIN(PI()*gc.latitude/180.0)*SIN(PI()*:lat1/180.0)
+                                                                +COS(PI()*gc.latitude/180.0)*COS(PI()*:lat2/180.0)
+                                                                *COS(PI()*:long/180.0-PI()*gc.longitude/180.0))*6371 AS distance
                                                         FROM `geo_city` AS gc
                                                         INNER JOIN `geo_regions` AS r ON `r`.`id` = `gc`.`region_id`
-                                                        WHERE gc.latitude BETWEEN ? AND ?
-                                                        AND gc.longitude BETWEEN ? AND ?
+                                                        WHERE gc.latitude BETWEEN :lat_dist_minus AND :lat_dist_plus
+                                                        AND gc.longitude BETWEEN :long_dist_minus AND :long_dist_plus
                                                 ) AS subquery
                                             ORDER BY distance
                                             LIMIT 5
                                     ) AS limited
                                     ORDER BY distance
                                     LIMIT 1;';
-            $params = [(float) $lat, (float) $lat, (float) $long, ...$params0];
 
             $pre = $this->db->prepare($query);
-            if ($pre != false) {
-                if ($pre->execute($params)) {
-                    $locality = $pre->fetch();
-                }
+            $pre->bindParam('lat1', $lat);
+            $pre->bindParam('lat2', $lat);
+            $pre->bindParam('long', $long);
+            $pre->bindParam('lat_dist_minus', $lat_dist_minus);
+            $pre->bindParam('lat_dist_plus', $lat_dist_plus);
+            $pre->bindParam('long_dist_minus', $long_dist_minus);
+            $pre->bindParam('long_dist_plus', $long_dist_plus);
+
+            if ($pre != false && $pre->execute()) {
+                $locality = $pre->fetch();
             }
         }
 
-        return $locality;
+        return (is_array($locality)) ? $locality : [];
     }
 
     public function getDistrict($city): array
