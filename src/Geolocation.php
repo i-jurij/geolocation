@@ -49,15 +49,14 @@ final class Geolocation
     ) {
         $this->session = $this->router->session;
         // assign a value $this->locality
+        if (Isbot::check()) {
+            return;
+        }
         $this->getLocality();
     }
 
     public function run()
     {
-        if (Isbot::check()) {
-            return;
-        }
-
         call_user_func_array($this->getCM(), ['params' => $this->getP()]);
     }
 
