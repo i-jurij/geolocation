@@ -12,16 +12,9 @@ class YandexGeocoder
     ) {
     }
 
-    public function getLocation($params)
+    public function getLocation($yandex_api_key, $long, $lat, $format, $results, $kind): array
     {
         $locality = [];
-
-        $long = $params['parameters']['long'];
-        $lat = $params['parameters']['lat'];
-        $yandex_api_key = $params['parameters']['yandex_api_key'];
-        $format = $params['parameters']['yandex_format'];
-        $results = $params['parameters']['yandex_results'];
-        $kind = $params['parameters']['yandex_kind'];
 
         if (!empty($yandex_api_key) && \is_string($yandex_api_key)) {
             if (\preg_match('/'.Config::REGEX_LAT.'/', $lat) && \preg_match('/'.Config::REGEX_LONG.'/', $long)) {
@@ -39,8 +32,14 @@ class YandexGeocoder
 
                 if (isset($name) && isset($description)) {
                     $locality = ['city' => $name, 'region' => $description];
+                } else {
+                    return ['error' => 'City name not received. Check response structure.'];
                 }
+            } else {
+                return ['error' => 'Longitude or latitude has wrong value'];
             }
+        } else {
+            return ['error' => 'API key not isset'];
         }
 
         return $locality;

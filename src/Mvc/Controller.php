@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace Ijurij\Geolocation\Mvc;
 
+use Ijurij\Geolocation\Lib\Session;
 use Ijurij\Geolocation\Provider\YandexGeocoder;
 
 final class Controller
 {
     private View $view;
+    private Session $session;
 
     public function __construct()
     {
         $this->view = new View();
+        $this->session = new Session();
+        $this->session->start();
     }
 
     // for php html
@@ -69,18 +73,27 @@ final class Controller
      */
     public function fromCoordYg($params)
     {
-        $this->sendJson((new YandexGeocoder())->getLocation($params));
+        $long = $params['long'];
+        $lat = $params['lat'];
+        $yandex_api_key = $params['yandex_api_key'];
+        $format = $params['yandex_format'];
+        $results = $params['yandex_results'];
+        $kind = $params['yandex_kind'];
+        $this->sendJson((new YandexGeocoder())->getLocation($yandex_api_key, $long, $lat, $format, $results, $kind));
     }
 
     // if get location from front
-    /*
     public function afterUserCityChoice($params)
     {
-        $data = $params;
-
-        echo $this->view->generate($data, \Ijurij\Geolocation\Config::$template);
+        // set session locality
+        $this->session->setArray([
+            'city' => $params['city'],
+            'region' => (!empty($this->locality['region'])) ? $this->locality['region'] : '',
+            'id' => (!empty($this->locality['city_id'])) ? $this->locality['city_id'] : '',
+        ]);
+        // html out
+        echo $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
     }
-    */
 
     public function sendJson($data)
     {

@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Ijurij\Geolocation;
 
+use Ijurij\Geolocation\Lib\Session;
+
 final class Router
 {
     public array $callback;
 
-    public function __construct()
+    public function __construct(public Session $session = new Session())
     {
+        $this->session->start();
+
         $this->callback = [];
 
         $methods = [
@@ -44,13 +48,6 @@ final class Router
         }
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            /*
-            if ($_SESSION['csrf'] !== $_POST['csrf']) {
-                return;
-                return 404 (403);
-            }
-            */
-
             // http request for get all locations from db for manual user choice if js disabled
             if (filter_input(INPUT_POST, 'all_loc') == 'fromDbPhp') {
                 $this->callback['method'] = $methods['fromDbPhp'];

@@ -4,8 +4,7 @@
 ## Description
 Приложение пытается определить местоположение пользователя.     
 При первом запросе от клиента приложение (php часть) определяет местонахождение браузера по его ip  
-и выдает на страницу.  
-
+и выдает HTML в ответе. Если местонахождение не определено, JS пытается найти его по координатам.   
 Если местоположение не определено, пользователь может указать его вручную (только РФ).   
 
 При отключенном JS данные формы       
@@ -13,8 +12,8 @@
 !!!!!!!! отправляются по адресу текущей страницы (по умолчанию) или заданному в   
 `(new Geolocation\Php\View())->post_url = 'your_url';`.   
 
-PHP часть приложения полученные данные не хранит ни на сервере, ни на клиенте   
-(куки или сессионные переменные не использует).  
+PHP часть приложения полученные данные хранит на сервере в сессионных переменных   
+$_SESSION['city'] и $_SESSION['region'].
 
 JS проверяет наличие сохраненных данных о местоположении в LocalStorage   
 (`{ city: 'city name', adress: 'region name', id: 'id of city from db table' }`), и, если они там есть,   
@@ -62,7 +61,6 @@ And javascript receive  city from user choice to url_save_to_backend (user must 
 
 !!!!!
 ## Install
-### Upload
 It contain two parts:   
 php and js (+ small css into js),   
 it can be install by composer (composer.json) or npm (package.json) or both.   
@@ -104,7 +102,8 @@ For automatic resolving autoloading of php class from "vendor" directory and
 javascript import from "node_modules" directory you can `composer install` and `npm install` both execute.   
 Package weight ~50Kb.  
 
-#### Example
+!!!
+## Example
 If your site not use MVC model example is into `index.php` into root directory.   
 
 If MVC:   
@@ -217,3 +216,10 @@ If all right app out city name to element with id "location_div" and put locatio
 where   
 `data_object = { city: 'city name', adress: 'region name', id: 'city id' };`  
 and where id - id of city from db table or empty string if city was received from yandex geocoder.     
+
+## Class Ijurij\Geolocation\Geolocation
+
+
+## Errors
+PHP errors, exceptions, warnings are not intercepted or processed.   
+JS print errors in console.log 
