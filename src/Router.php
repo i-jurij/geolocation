@@ -48,22 +48,24 @@ final class Router
         }
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // http request for get all locations from db for manual user choice if js disabled
-            if (filter_input(INPUT_POST, 'all_loc') == 'fromDbPhp') {
-                $this->callback['method'] = $methods['fromDbPhp'];
-            }
-            // js fetch for get all locations from db for manual user choice
-            if (filter_input(INPUT_POST, 'all_loc') == 'fromdb') {
-                $this->callback['method'] = $methods['fromDb'];
+            if (isset($_POST['all_loc'])) {
+                // http request for get all locations from db for manual user choice if js disabled
+                if (filter_input(INPUT_POST, 'all_loc') != 'fromdb') {
+                    $this->callback['method'] = $methods['fromDbPhp'];
+                }
+                // js fetch for get all locations from db for manual user choice
+                if (filter_input(INPUT_POST, 'all_loc') == 'fromdb') {
+                    $this->callback['method'] = $methods['fromDb'];
+                }
             }
 
             // if get location from front
             if (!empty($_POST['region']) && !empty($_POST['city'])) {
                 $this->callback['method'] = $methods['afterUserCityChoice'];
-                $this->callback['parameters']['region'] = filter_input(INPUT_POST, 'region', FILTER_SANITIZE_SPECIAL_CHARS);
-                $this->callback['parameters']['city'] = filter_input(INPUT_POST, 'city', FILTER_SANITIZE_SPECIAL_CHARS);
+                $this->callback['parameters']['locality']['region'] = filter_input(INPUT_POST, 'region', FILTER_SANITIZE_SPECIAL_CHARS);
+                $this->callback['parameters']['locality']['city'] = filter_input(INPUT_POST, 'city', FILTER_SANITIZE_SPECIAL_CHARS);
                 if (filter_input(INPUT_POST, 'id') !== false) {
-                    $this->callback['parameters']['id'] = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+                    $this->callback['parameters']['locality']['id'] = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
                 }
             }
         }

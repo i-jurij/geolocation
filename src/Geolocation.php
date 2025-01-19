@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ijurij\Geolocation;
 
+use Ijurij\Geolocation\Lib\Csrf;
 use Ijurij\Geolocation\Lib\Isbot;
 use Ijurij\Geolocation\Lib\Session;
 use Ijurij\Geolocation\Provider\Ipprovider;
@@ -13,7 +14,7 @@ use Ijurij\Geolocation\Provider\Ipprovider;
  * // url for getting data by locality
  * $geo->url_location_to_server = '/';
  * // provider for getting locality by ip (can be not set, default GeoPlugin)
- * $geo->ip_provider = 'GeoPlugin'; // GeoPlugin, SypexGeo, (make YandexMaps, GoogleMaps, OSM etc)
+ * $geo->ip_provider = 'geoplugin'; // geoplugin, sypexgeo
  * // for language of provider answer
  * $geo->lang = 'ru';
  * // if you plan to use yandex geocoder (in most cases this is not necessary)
@@ -34,6 +35,7 @@ final class Geolocation
 
     public function __construct(
         private Router $router = new Router(),
+        private Csrf $csrf = new Csrf(),
 
         public string $ip_provider = 'GeoPlugin',// SypexGeo, (make YandexMaps, GoogleMaps, OSM etc)
         public string $lang = 'ru',
@@ -93,16 +95,16 @@ final class Geolocation
         $params = [];
         $params['locality'] = $this->locality;
         $params['url_location_to_server'] = $this->url_location_to_server;
-
+        $params['token_id'] = $this->csrf->get_token_id();
+        $params['token_value'] = $this->csrf->get_token($params['token_id']);
+        if ($this->router->callback['method'] === 'fromCoordYg') {
+            $params['yandex_api_key'] = $this->yandex_api_key;
+            $params['yandex_format'] = $this->yandex_format;
+            $params['yandex_kind'] = $this->yandex_kind;
+            $params['yandex_results'] = $this->yandex_results;
+        }
         if (!empty($this->router->callback['parameters'])) {
-            $params = $this->router->callback['parameters'];
-
-            if ($this->router->callback['method'] === 'fromCoordYg') {
-                $params['yandex_api_key'] = $this->yandex_api_key;
-                $params['yandex_format'] = $this->yandex_format;
-                $params['yandex_kind'] = $this->yandex_kind;
-                $params['yandex_results'] = $this->yandex_results;
-            }
+            $params = \array_merge($params, $this->router->callback['parameters']);
         }
 
         return $params;

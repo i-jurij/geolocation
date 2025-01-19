@@ -9,7 +9,7 @@ namespace Ijurij\Geolocation\Lib;
 session_start();
 include 'csrf.class.php';
 
-$csrf = new csrf();
+$csrf = new Csrf();
 
 
 // Генерация id и значения токена

@@ -11,7 +11,7 @@ final class Ipprovider
     private string $ip;
 
     public function __construct(
-        public string $ip_provider = 'GeoPlugin',
+        public string $ip_provider = 'geoplugin',
         public string $lang = 'ru',
     ) {
         $ip = (new Ip())->get()['ip'];
@@ -22,14 +22,14 @@ final class Ipprovider
 
     public function getLocality(): array
     {
-        if (\method_exists($this, $this->ip_provider)) {
+        if (\method_exists($this, strtolower($this->ip_provider))) {
             return $this->{$this->ip_provider}();
         }
 
         return [];
     }
 
-    public function geoPlugin(): array
+    public function geoplugin(): array
     {
         $geoplugin = new GeoPlugin();
         $geoplugin->lang = $this->lang;
@@ -41,5 +41,12 @@ final class Ipprovider
         $region = $geoplugin->region ?? '';
 
         return ['city' => $city_name, 'region' => $region];
+    }
+
+    public function sypexgeo(): array
+    {
+        $geoplugin = new SypexGeo();
+
+        return $geoplugin->locate($this->ip);
     }
 }

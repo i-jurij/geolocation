@@ -25,19 +25,17 @@ final class Controller
      */
     public function default($params)
     {
-        $data = $params;
-
-        echo $this->view->generate($data, \Ijurij\Geolocation\Config::$template);
+        echo $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
     }
 
     /**
      * Get all location for manual user choice if js disabled.
      * Send full html template in response.
      */
-    public function fromDbPhp()
+    public function fromDbPhp($params)
     {
-        $locations = (new Model())->getAll();
-        echo $this->view->generate($locations, \Ijurij\Geolocation\Config::$template);
+        $params['locations'] = (new Model())->getAll();
+        echo $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
     }
 
     // for js fetch
@@ -49,7 +47,7 @@ final class Controller
      * response['district'][$n]['regions'] = {{id: id, name: name, cities: {...}}, ..., {id: id, name: name, cities: {...}}}
      * response['district'][$n]['regions'][$k] = cities {{id: id, name: name}, ..., {id: id, name: name}}.
      */
-    public function fromDb()
+    public function fromDb($params)
     {
         $this->sendJson((new Model())->getAll());
     }
@@ -87,9 +85,9 @@ final class Controller
     {
         // set session locality
         $this->session->setArray([
-            'city' => $params['city'],
-            'region' => (!empty($this->locality['region'])) ? $this->locality['region'] : '',
-            'id' => (!empty($this->locality['city_id'])) ? $this->locality['city_id'] : '',
+            'city' => $params['locality']['city'],
+            'region' => (!empty($params['locality']['region'])) ? $params['locality']['region'] : '',
+            'id' => (!empty($params['locality']['id'])) ? $params['locality']['id'] : '',
         ]);
         // html out
         echo $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
