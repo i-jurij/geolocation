@@ -73,6 +73,7 @@ final class Csrf
         if ($method == 'post' || $method == 'get') {
             $post = $_POST;
             $get = $_GET;
+
             if (isset(${$method}[$this->get_token_id()]) && (${$method}[$this->get_token_id()] == $this->get_token())) {
                 return true;
             } else {

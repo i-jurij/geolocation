@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace Ijurij\Geolocation\Mvc;
 
+use Ijurij\Geolocation\Lib\Csrf;
 use Ijurij\Geolocation\Lib\Session;
 use Ijurij\Geolocation\Provider\YandexGeocoder;
 
 final class Controller
 {
-    private View $view;
-    private Session $session;
-
-    public function __construct()
-    {
-        $this->view = new View();
-        $this->session = new Session();
+    public function __construct(
+        private View $view = new View(),
+        private Csrf $csrf = new Csrf(),
+        private Session $session = new Session()
+    ) {
         $this->session->start();
     }
 
@@ -49,7 +48,9 @@ final class Controller
      */
     public function fromDb($params)
     {
-        $this->sendJson((new Model())->getAll());
+        if ($this->csrf->check_valid('post')) {
+            $this->sendJson((new Model())->getAll());
+        }
     }
 
     /**
@@ -83,14 +84,16 @@ final class Controller
     // if get location from front
     public function afterUserCityChoice($params)
     {
-        // set session locality
-        $this->session->setArray([
-            'city' => $params['locality']['city'],
-            'region' => (!empty($params['locality']['region'])) ? $params['locality']['region'] : '',
-            'id' => (!empty($params['locality']['id'])) ? $params['locality']['id'] : '',
-        ]);
-        // html out
-        echo $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
+        if ($this->csrf->check_valid('post')) {
+            // set session locality
+            $this->session->setArray([
+                'city' => $params['locality']['city'],
+                'region' => (!empty($params['locality']['region'])) ? $params['locality']['region'] : '',
+                'id' => (!empty($params['locality']['id'])) ? $params['locality']['id'] : '',
+            ]);
+            // html out
+            echo $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
+        }
     }
 
     public function sendJson($data)
