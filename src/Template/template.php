@@ -22,10 +22,12 @@ if ($city === 'Местоположение') {
     $message = '<p>Ваше местоположение:</p><p>'.$locality.'</p><p>Если нет - выберите его, нажав на кнопку "Выбрать"</p>';
 }
 $button = ' <noscript>
-                    <form action="/" method="post" id="to_city_choice"></form>
+                <form action="/" method="post" id="to_city_choice" class="left">
                     <input type="hidden" name="'.$data['token_id'].'" value="'.$data['token_value'].'" />
-                    <input type="submit" form="to_city_choice" name="all_loc" value="Выбрать" class="button" />
-                </noscript>';
+                </form>
+                <input type="submit" form="to_city_choice" name="all_loc" value="Выбрать" class="button" />
+            </noscript>';
+
 // for city choice form
 $checkd = '';
 $alllochtml = '';
@@ -100,7 +102,7 @@ function alllocHtml(array $all_loc): string
 		<section class="content bgcontent" id="clients_location_message">
             <?php echo $message; ?>
         </section >
-		<footer class="bgcontent"  id="footer_city_message">
+		<footer class="bgcontent clearfix"  id="footer_city_message">
             <?php echo $button; ?>
             <label for="modal_1" class="button dangerous">
 			    Закрыть

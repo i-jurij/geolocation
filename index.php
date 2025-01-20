@@ -35,8 +35,8 @@ $geo->yandex_results = 1;
 		<meta HTTP-EQUIV="Content-language" CONTENT="ru-RU">
 		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 		<meta name="author" content="i-jurij" >
-		<!-- <link rel="icon" href="favicon.png" /> -->
-		<link rel="stylesheet" type="text/css" href="https://cdn.statically.io/gh/i-jurij/oswc2_styles/refs/heads/main/oswc2_styles.min.css">
+		<link rel="stylesheet" type="text/css" href="https://cdn.statically.io/gh/i-jurij/oswc2_styles/refs/heads/main/oswc2_styles.min.css"> 
+		<!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/picnic/7.1.0/picnic.min.css"> -->
 	</head>
 
 	<body>
@@ -48,7 +48,7 @@ $geo->yandex_results = 1;
 
 		<script>
             // url or route for js fetch to geolocation class
-			let url_for_fetch = '/';
+			let url_for_fetch = '/'; // Url::get('Home', 'default') eg
 			let url_save_to_backend = '<?php echo $geo->url_location_to_server; ?>';
 		</script>
 		<!-- <script src="build/geolocation2.js"></script>-->

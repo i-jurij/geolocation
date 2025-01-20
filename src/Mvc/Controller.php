@@ -33,8 +33,10 @@ final class Controller
      */
     public function fromDbPhp($params)
     {
-        $params['locations'] = (new Model())->getAll();
-        echo $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
+        if ($this->csrf->check_valid('post')) {
+            $params['locations'] = (new Model())->getAll();
+            echo $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
+        }
     }
 
     // for js fetch
