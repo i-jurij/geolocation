@@ -4,7 +4,7 @@ $session = new Ijurij\Geolocation\Lib\Session();
 
 $city = ($session->has('city')) ? $session->get('city') : 'Местоположение';
 $region = ($session->has('region')) ? $session->get('region') : '';
-$id = ($session->has('id')) ? $session->get('id') : '';
+// $id = ($session->has('id')) ? $session->get('id') : '';
 
 $checked = '';
 if ($city === 'Местоположение') {

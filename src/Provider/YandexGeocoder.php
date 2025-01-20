@@ -20,7 +20,7 @@ class YandexGeocoder
             if (\preg_match('/'.Config::REGEX_LAT.'/', $lat) && \preg_match('/'.Config::REGEX_LONG.'/', $long)) {
                 $ch = curl_init('https://geocode-maps.yandex.ru/1.x/?apikey='.$yandex_api_key.'&geocode='.$long.','.$lat.'&format='.$format.'&results='.$results.'&kind='.$kind);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // ???
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // ???
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // ???
                 curl_setopt($ch, CURLOPT_HEADER, false); // ??? Header nadoo nastroit
                 $res = curl_exec($ch);
                 curl_close($ch);

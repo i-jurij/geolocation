@@ -61,7 +61,9 @@ final class Controller
      */
     public function fromCoord($params)
     {
-        $this->sendJson((new Model())->fromCoord($params));
+        $long = $params['long'];
+        $lat = $params['lat'];
+        $this->sendJson((new Model())->fromCoord($long, $lat));
     }
 
     /**

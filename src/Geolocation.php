@@ -68,7 +68,7 @@ final class Geolocation
             $this->locality = [
                 'city' => $this->session->get('city'),
                 'region' => ($this->session->has('region')) ? $this->session->get('region') : '',
-                'id' => ($this->session->has('city_id')) ? $this->session->get('city_id') : '',
+                // 'id' => ($this->session->has('id')) ? $this->session->get('id') : '',
             ];
         } else {
             $this->provider->ip_provider = $this->ip_provider;
@@ -116,7 +116,7 @@ final class Geolocation
             $this->session->setArray([
                 'city' => $this->locality['city'],
                 'region' => (!empty($this->locality['region'])) ? $this->locality['region'] : '',
-                'id' => (!empty($this->locality['city_id'])) ? $this->locality['city_id'] : '',
+                // 'id' => (!empty($this->locality['id'])) ? $this->locality['id'] : '',
             ]);
         }
     }

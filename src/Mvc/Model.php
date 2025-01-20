@@ -60,16 +60,11 @@ final class Model
     /**
      * Get location by coordinates.
      * Response is array of nested arrays: [district [regions => [cities]]].
-     *
-     * @param array $coord,
      */
-    public function fromCoord($coord)
+    public function fromCoord($long, $lat)
     {
         $regex_lat = '/'.Config::REGEX_LAT.'/';
         $regex_long = '/'.Config::REGEX_LONG.'/';
-
-        $long = $coord['parameters']['long'];
-        $lat = $coord['parameters']['lat'];
 
         if (\preg_match($regex_lat, $lat) && \preg_match($regex_long, $long)) {
             $area = (1 / 111) * 100; // ~100km (1° ~ 111 км, 1 км = 1 / 111 = 0,009009009009009°.)
@@ -79,11 +74,11 @@ final class Model
             $long_dist_minus = (float) $long - $area;
             $long_dist_plus = (float) $long + $area;
 
-            $query = 'SELECT `city`, `adress`, `id`
+            $query = 'SELECT `city`, `region`, `id`
                                     FROM (
-                                            SELECT `id`, `city`, `adress`, `distance`
+                                            SELECT `id`, `city`, `region`, `distance`
                                                 FROM (
-                                                        SELECT `gc`.`id`, `gc`.`name` AS city, `r`.`name` AS adress,
+                                                        SELECT `gc`.`id`, `gc`.`name` AS city, `r`.`name` AS region,
                                                             ACOS(SIN(PI()*gc.latitude/180.0)*SIN(PI()*:lat1/180.0)
                                                                 +COS(PI()*gc.latitude/180.0)*COS(PI()*:lat2/180.0)
                                                                 *COS(PI()*:long/180.0-PI()*gc.longitude/180.0))*6371 AS distance
