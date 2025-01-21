@@ -57,6 +57,6 @@ if (!empty($_POST['city'])) {
 			let url_for_fetch = '/'; // Url::get('Geo', 'geo') eg
 			let url_location_to_server_js = 'url_location_to_server_js'; 
 		</script>
-		<!-- <script src="build/geolocation2.js"></script>-->
+		<script type="module" src="src/geolocation.js"></script>
 	</body>
 </html>

@@ -6,6 +6,7 @@ namespace Ijurij\Geolocation;
 
 use Ijurij\Geolocation\Lib\Csrf;
 use Ijurij\Geolocation\Lib\Isbot;
+use Ijurij\Geolocation\Lib\Router;
 use Ijurij\Geolocation\Lib\Session;
 use Ijurij\Geolocation\Provider\Ipprovider;
 

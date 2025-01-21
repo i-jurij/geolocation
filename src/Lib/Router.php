@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ijurij\Geolocation;
-
-use Ijurij\Geolocation\Lib\Session;
+namespace Ijurij\Geolocation\Lib;
 
 final class Router
 {
