@@ -24,7 +24,7 @@ final class Controller
      */
     public function default($params)
     {
-        echo $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
+        return $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
     }
 
     /**
@@ -35,7 +35,8 @@ final class Controller
     {
         if ($this->csrf->check_valid('post')) {
             $params['locations'] = (new Model())->getAll();
-            echo $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
+
+            return $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
         }
     }
 
@@ -93,10 +94,16 @@ final class Controller
             $this->session->setArray([
                 'city' => $params['locality']['city'],
                 'region' => (!empty($params['locality']['region'])) ? $params['locality']['region'] : '',
-                'id' => (!empty($params['locality']['id'])) ? $params['locality']['id'] : '',
+                // 'id' => (!empty($params['locality']['id'])) ? $params['locality']['id'] : '',
             ]);
-            // html out
-            echo $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
+
+            // check not js fetch request (post var 'js' must be set in form on page)
+            if (!isset($params['locality']['js'])) {
+                // html out
+                return $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
+            }
+            // if js then nothing send, locality can be get from php session,
+            // data can be send from other controller by url for js fetch
         }
     }
 

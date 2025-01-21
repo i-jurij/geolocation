@@ -31,7 +31,7 @@ use Ijurij\Geolocation\Provider\Ipprovider;
  */
 final class Geolocation
 {
-    private Session $session;
+    public Session $session;
 
     public function __construct(
         private Router $router = new Router(),
@@ -40,7 +40,10 @@ final class Geolocation
         public string $ip_provider = 'GeoPlugin',// SypexGeo, (make YandexMaps, GoogleMaps, OSM etc)
         public string $lang = 'ru',
         private Ipprovider $provider = new Ipprovider(),
-        private array $locality = [],
+        private array $locality = [
+            'city' => '',
+            'region' => '',
+        ],
 
         public string $url_location_to_server = '/',
 
@@ -54,18 +57,19 @@ final class Geolocation
         if (Isbot::check()) {
             return;
         }
-        $this->getLocality();
+
+        $this->locality = $this->getLocality();
     }
 
     public function run()
     {
-        call_user_func_array($this->getCM(), ['params' => $this->getP()]);
+        return call_user_func_array($this->getCM(), ['params' => $this->getP()]);
     }
 
-    protected function getLocality(): void
+    protected function getLocality(): array
     {
         if ($this->session->has('city')) {
-            $this->locality = [
+            $locality = [
                 'city' => $this->session->get('city'),
                 'region' => ($this->session->has('region')) ? $this->session->get('region') : '',
                 // 'id' => ($this->session->has('id')) ? $this->session->get('id') : '',
@@ -73,10 +77,12 @@ final class Geolocation
         } else {
             $this->provider->ip_provider = $this->ip_provider;
             $this->provider->lang = $this->lang;
-            $this->locality = $this->provider->getLocality();
+            $locality = $this->provider->getLocality();
             // save locality to session
-            $this->setSessionLocality();
+            $this->setSessionLocality($locality);
         }
+
+        return $locality;
     }
 
     protected function getCM()
@@ -110,14 +116,12 @@ final class Geolocation
         return $params;
     }
 
-    private function setSessionLocality()
+    private function setSessionLocality($locality)
     {
-        if (!empty($this->locality['city'])) {
-            $this->session->setArray([
-                'city' => $this->locality['city'],
-                'region' => (!empty($this->locality['region'])) ? $this->locality['region'] : '',
-                // 'id' => (!empty($this->locality['id'])) ? $this->locality['id'] : '',
-            ]);
-        }
+        $this->session->setArray([
+            'city' => $locality['city'],
+            'region' => (!empty($locality['region'])) ? $locality['region'] : '',
+            // 'id' => (!empty($this->locality['id'])) ? $this->locality['id'] : '',
+        ]);
     }
 }

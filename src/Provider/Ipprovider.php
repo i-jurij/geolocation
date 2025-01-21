@@ -45,8 +45,16 @@ final class Ipprovider
 
     public function sypexgeo(): array
     {
+        $res = ['city' => '', 'region' => ''];
         $geoplugin = new SypexGeo();
 
-        return $geoplugin->locate($this->ip);
+        $res = $geoplugin->locate($this->ip);
+        if ($res !== false) {
+            $city_name = $geo['city']['name_ru'] ?? '';
+            $region = $geo['region']['name_ru'] ?? '';
+            $res = ['city' => $city_name, 'region' => $region];
+        }
+
+        return $res;
     }
 }

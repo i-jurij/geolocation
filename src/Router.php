@@ -64,8 +64,14 @@ final class Router
                 $this->callback['method'] = $methods['afterUserCityChoice'];
                 $this->callback['parameters']['locality']['region'] = filter_input(INPUT_POST, 'region', FILTER_SANITIZE_SPECIAL_CHARS);
                 $this->callback['parameters']['locality']['city'] = filter_input(INPUT_POST, 'city', FILTER_SANITIZE_SPECIAL_CHARS);
+                /*
                 if (filter_input(INPUT_POST, 'id') !== false) {
                     $this->callback['parameters']['locality']['id'] = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+                }
+                */
+                // check js fetch (post var 'js' must be set in form on page)
+                if (!empty($_POST['js'])) {
+                    $this->callback['parameters']['locality']['js'] = 'js';
                 }
             }
         }

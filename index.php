@@ -21,6 +21,12 @@ $geo->yandex_kind = 'locality';
 $geo->yandex_results = 1;
 */
 
+// ------- block for getting data by location -------
+$data = 'Before city change';
+// get post data after request by url_location_to_server
+if (!empty($_POST['city'])) {
+    $data = 'After city change';
+}
 ?>
 
 <!DOCTYPE html>
@@ -44,12 +50,12 @@ $geo->yandex_results = 1;
 		<div id="location_div"><?php print_r($geo->run()); ?></div>
 
         <!-- for outputting data from server after sending location to server -->
-		<div id="data_by_location"><?php echo (isset($data)) ? $data : ''; ?></div>
+		<div id="data_by_location"><?php echo $data; ?></div>
 
 		<script>
             // url or route for js fetch to geolocation class
-			let url_for_fetch = '/'; // Url::get('Home', 'default') eg
-			let url_save_to_backend = '<?php echo $geo->url_location_to_server; ?>';
+			let url_for_fetch = '/'; // Url::get('Geo', 'geo') eg
+			let url_location_to_server_js = 'url_location_to_server_js'; 
 		</script>
 		<!-- <script src="build/geolocation2.js"></script>-->
 	</body>
