@@ -1,10 +1,12 @@
 <?php
-
+/*
 $session = new Ijurij\Geolocation\Lib\Session();
-
 $city = ($session->has('city')) ? $session->get('city') : 'Местоположение';
 $region = ($session->has('region')) ? $session->get('region') : '';
 // $id = ($session->has('id')) ? $session->get('id') : '';
+*/
+$city = !empty($data['locality']['city']) ? $data['locality']['city'] : 'Местоположение';
+$region = !empty($data['locality']['region']) ? $data['locality']['region'] : '';
 
 $checked = '';
 if ($city === 'Местоположение') {

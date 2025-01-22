@@ -53,12 +53,11 @@ final class Geolocation
         public string $yandex_kind = 'locality',
         public int $yandex_results = 1,
     ) {
-        $this->session = $this->router->session;
-        // assign a value $this->locality
         if (Isbot::check()) {
             return;
         }
-
+        $this->session = $this->router->session;
+        // assign a value $this->locality
         $this->locality = $this->getLocality();
     }
 
@@ -100,7 +99,7 @@ final class Geolocation
     private function getP()
     {
         $params = [];
-        $params['locality'] = $this->locality;
+
         $params['url_location_to_server'] = $this->url_location_to_server;
         $params['token_id'] = $this->csrf->get_token_id();
         $params['token_value'] = $this->csrf->get_token($params['token_id']);
@@ -110,6 +109,14 @@ final class Geolocation
             $params['yandex_kind'] = $this->yandex_kind;
             $params['yandex_results'] = $this->yandex_results;
         }
+        // set new locality after user city choice
+        if (!empty($this->router->callback['parameters']['locality']['city'])
+                && !empty($this->router->callback['parameters']['locality']['region'])) {
+            $this->locality = $this->router->callback['parameters']['locality'];
+            unset($this->router->callback['parameters']['locality']);
+            $params['locality'] = $this->locality;
+        }
+        // add params from router
         if (!empty($this->router->callback['parameters'])) {
             $params = \array_merge($params, $this->router->callback['parameters']);
         }

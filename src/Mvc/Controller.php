@@ -35,9 +35,9 @@ final class Controller
     {
         if ($this->csrf->check_valid('post')) {
             $params['locations'] = (new Model())->getAll();
-
-            return $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
         }
+
+        return $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
     }
 
     // for js fetch
@@ -96,15 +96,15 @@ final class Controller
                 'region' => (!empty($params['locality']['region'])) ? $params['locality']['region'] : '',
                 // 'id' => (!empty($params['locality']['id'])) ? $params['locality']['id'] : '',
             ]);
-
-            // check not js fetch request (post var 'js' must be set in form on page)
-            if (!isset($params['locality']['js'])) {
-                // html out
-                return $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
-            }
-            // if js then nothing send, locality can be get from php session,
-            // data can be send from other controller by url for js fetch
         }
+
+        // check not js fetch request (post var 'js' must be set in form on page or into formdata from js)
+        if (!isset($params['locality']['js'])) {
+            // html out
+            return $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
+        }
+        // if js then nothing send, locality can be get from php session,
+        // data can be send from other controller by url for js fetch
     }
 
     public function sendJson($data)
