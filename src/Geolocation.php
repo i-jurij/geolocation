@@ -6,9 +6,10 @@ namespace Ijurij\Geolocation;
 
 use Ijurij\Geolocation\Lib\Csrf;
 use Ijurij\Geolocation\Lib\Isbot;
+use Ijurij\Geolocation\Lib\Locality;
 use Ijurij\Geolocation\Lib\Router;
 use Ijurij\Geolocation\Lib\Session;
-use Ijurij\Geolocation\Provider\Ipprovider;
+use Ijurij\Geolocation\Mvc\Controller;
 
 /**
  * $geo = new Ijurij\Geolocation\Geolocation();
@@ -32,19 +33,11 @@ use Ijurij\Geolocation\Provider\Ipprovider;
  */
 final class Geolocation
 {
-    public Session $session;
-
     public function __construct(
+        private Locality $locality = new Locality(),
         private Router $router = new Router(),
-        private Csrf $csrf = new Csrf(),
-
-        public string $ip_provider = 'GeoPlugin',// SypexGeo, (make YandexMaps, GoogleMaps, OSM etc)
+        public string $ip_provider = 'geoplugin',// sypexgeo
         public string $lang = 'ru',
-        private Ipprovider $provider = new Ipprovider(),
-        private array $locality = [
-            'city' => '',
-            'region' => '',
-        ],
 
         public string $url_location_to_server = '/',
 
@@ -56,38 +49,21 @@ final class Geolocation
         if (Isbot::check()) {
             return;
         }
-        $this->session = $this->router->session;
-        // assign a value $this->locality
-        $this->locality = $this->getLocality();
+        Session::start();
     }
 
-    public function run()
+    public function display()
     {
-        return call_user_func_array($this->getCM(), ['params' => $this->getP()]);
+        // set provider and lang for class Locality
+        $this->locality->ip_provider = $this->ip_provider;
+        $this->locality->lang = $this->lang;
+
+        return call_user_func_array($this->getControllerMethod(), ['params' => $this->getParams()]);
     }
 
-    protected function getLocality(): array
+    protected function getControllerMethod()
     {
-        if ($this->session->has('city')) {
-            $locality = [
-                'city' => $this->session->get('city'),
-                'region' => ($this->session->has('region')) ? $this->session->get('region') : '',
-                // 'id' => ($this->session->has('id')) ? $this->session->get('id') : '',
-            ];
-        } else {
-            $this->provider->ip_provider = $this->ip_provider;
-            $this->provider->lang = $this->lang;
-            $locality = $this->provider->getLocality();
-            // save locality to session
-            $this->setSessionLocality($locality);
-        }
-
-        return $locality;
-    }
-
-    protected function getCM()
-    {
-        $controller = new $this->router->callback['controller']();
+        $controller = new Controller();
         if (\method_exists($controller, $this->router->callback['method'])) {
             $method = $this->router->callback['method'];
         }
@@ -95,41 +71,32 @@ final class Geolocation
         return [$controller, $method];
     }
 
-    // get parameters
-    private function getP()
+    private function getParams()
     {
         $params = [];
 
+        // add params from router
+        if (!empty($this->router->callback['parameters'])) {
+            $params = $this->router->callback['parameters'];
+        }
+
+        // get locality and receive to controller
+        $params['locality'] = $this->locality->get();
+
+        // url for processing locality after users city choice
         $params['url_location_to_server'] = $this->url_location_to_server;
-        $params['token_id'] = $this->csrf->get_token_id();
-        $params['token_value'] = $this->csrf->get_token($params['token_id']);
+
+        // set crf data for form on page or url for js fetch request
+        $params['csrf'] = Csrf::display();
+
+        // receive config if it is js fetch request to yandex geocoder (get locality from coord)
         if ($this->router->callback['method'] === 'fromCoordYg') {
             $params['yandex_api_key'] = $this->yandex_api_key;
             $params['yandex_format'] = $this->yandex_format;
             $params['yandex_kind'] = $this->yandex_kind;
             $params['yandex_results'] = $this->yandex_results;
         }
-        // set new locality after user city choice
-        if (!empty($this->router->callback['parameters']['locality']['city'])
-                && !empty($this->router->callback['parameters']['locality']['region'])) {
-            $this->locality = $this->router->callback['parameters']['locality'];
-            unset($this->router->callback['parameters']['locality']);
-            $params['locality'] = $this->locality;
-        }
-        // add params from router
-        if (!empty($this->router->callback['parameters'])) {
-            $params = \array_merge($params, $this->router->callback['parameters']);
-        }
 
         return $params;
-    }
-
-    private function setSessionLocality($locality)
-    {
-        $this->session->setArray([
-            'city' => $locality['city'],
-            'region' => (!empty($locality['region'])) ? $locality['region'] : '',
-            // 'id' => (!empty($this->locality['id'])) ? $this->locality['id'] : '',
-        ]);
     }
 }

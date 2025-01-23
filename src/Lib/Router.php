@@ -8,10 +8,8 @@ final class Router
 {
     public array $callback;
 
-    public function __construct(public Session $session = new Session())
+    public function __construct()
     {
-        $this->session->start();
-
         $this->callback = [];
 
         $methods = [
@@ -25,7 +23,6 @@ final class Router
 
         // default callback (any request except requests after this definitions)
         $this->callback = [
-            'controller' => 'Ijurij\Geolocation\Mvc\Controller',
             'method' => 'default',
             'parameters' => [],
         ];
@@ -60,16 +57,9 @@ final class Router
             // if get location from front
             if (!empty($_POST['region']) && !empty($_POST['city'])) {
                 $this->callback['method'] = $methods['afterUserCityChoice'];
-                $this->callback['parameters']['locality']['region'] = filter_input(INPUT_POST, 'region', FILTER_SANITIZE_SPECIAL_CHARS);
-                $this->callback['parameters']['locality']['city'] = filter_input(INPUT_POST, 'city', FILTER_SANITIZE_SPECIAL_CHARS);
-                /*
-                if (filter_input(INPUT_POST, 'id') !== false) {
-                    $this->callback['parameters']['locality']['id'] = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-                }
-                */
                 // check js fetch (post var 'js' must be set in form on page)
                 if (!empty($_POST['js'])) {
-                    $this->callback['parameters']['locality']['js'] = 'js';
+                    $this->callback['parameters']['js'] = 'js';
                 }
             }
         }

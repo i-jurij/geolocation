@@ -5,17 +5,13 @@ declare(strict_types=1);
 namespace Ijurij\Geolocation\Mvc;
 
 use Ijurij\Geolocation\Lib\Csrf;
-use Ijurij\Geolocation\Lib\Session;
 use Ijurij\Geolocation\Provider\YandexGeocoder;
 
 final class Controller
 {
     public function __construct(
-        private View $view = new View(),
-        private Csrf $csrf = new Csrf(),
-        private Session $session = new Session()
+        private View $view = new View()
     ) {
-        $this->session->start();
     }
 
     // for php html
@@ -33,7 +29,7 @@ final class Controller
      */
     public function fromDbPhp($params)
     {
-        if ($this->csrf->check_valid('post')) {
+        if (Csrf::isValid() || Csrf::isRecent()) {
             $params['locations'] = (new Model())->getAll();
         }
 
@@ -51,7 +47,7 @@ final class Controller
      */
     public function fromDb($params)
     {
-        if ($this->csrf->check_valid('post')) {
+        if (Csrf::isValid() || Csrf::isRecent()) {
             $this->sendJson((new Model())->getAll());
         }
     }
@@ -89,15 +85,6 @@ final class Controller
     // if get location from front
     public function afterUserCityChoice($params)
     {
-        if ($this->csrf->check_valid('post')) {
-            // set session locality
-            $this->session->setArray([
-                'city' => $params['locality']['city'],
-                'region' => (!empty($params['locality']['region'])) ? $params['locality']['region'] : '',
-                // 'id' => (!empty($params['locality']['id'])) ? $params['locality']['id'] : '',
-            ]);
-        }
-
         // check not js fetch request (post var 'js' must be set in form on page or into formdata from js)
         if (!isset($params['locality']['js'])) {
             // html out

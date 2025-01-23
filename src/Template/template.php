@@ -25,7 +25,7 @@ if ($city === 'Местоположение') {
 }
 $button = ' <noscript>
                 <form action="/" method="post" id="to_city_choice" class="left">
-                    <input type="hidden" name="'.$data['token_id'].'" value="'.$data['token_value'].'" />
+                    '.$data['csrf'].'
                 </form>
                 <input type="submit" form="to_city_choice" name="all_loc" value="Выбрать" class="button" />
             </noscript>';
@@ -124,7 +124,7 @@ function alllocHtml(array $all_loc): string
 		<section class="content bgcontent" id="section_city_choice">
             <noscript>
                 <form method="post" action="<?php echo $data['url_location_to_server']; ?>" id="form_city_choice">
-                    <input type="hidden" name="<?php echo $data['token_id']; ?>" value="<?php echo $data['token_value']; ?>" />
+                    <?php echo $data['csrf']; ?>
                     <?php echo $alllochtml; ?>
                 </form>
             </noscript>

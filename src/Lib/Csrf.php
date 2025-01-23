@@ -1,144 +1,119 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Ijurij\Geolocation\Lib;
 
-/* Example of usage
-<?php
-session_start();
-include 'csrf.class.php';
-
-$csrf = new Csrf();
-
-
-// Генерация id и значения токена
-$token_id = $csrf->get_token_id();
-$token_value = $csrf->get_token($token_id);
-
-// Генерация случайных названий для полей формы
-$form_names = $csrf->form_names(array('user', 'password'), false);
-
-
-if(isset($_POST[$form_names['user']], $_POST[$form_names['password']])) {
-    // Проверяем являются ли валидными id и значение токена.
-    if($csrf->check_valid('post')) {
-        // Получаем переменные формы.
-        $user = $_POST[$form_names['user']];
-        $password = $_POST[$form_names['password']];
-
-        // Метод формы идет тут
-    }
-    // Генерируем новое случайное значение для формы.
-    $form_names = $csrf->form_names(array('user', 'password'), true);
-}
-
-?>
-
-<form action="index.php" method="post">
-<input type="hidden" name="<?= $token_id; ?>" value="<?= $token_value; ?>" />
-<input type="text" name="<?= $form_names['user']; ?>" /><br/>
-<input type="text" name="<?= $form_names['password']; ?>" />
-<input type="submit" value="Login"/>
-</form>
-*/
-final class Csrf
+/**
+ * Cross Site Request Forgery (CSRF) Class.
+ *
+ * @Author Matt Kent (Matt_Kent9)
+ *
+ * @License MIT
+ *
+ * session_start(); must be called before this is utilised.
+ */
+class Csrf
 {
-    public function get_token_id()
+    // Empty constructor to avoid "Constructor cannot be static" error.
+    public function __construct()
     {
-        if (isset($_SESSION['token_id'])) {
-            return $_SESSION['token_id'];
-        } else {
-            $token_id = $this->random(10);
-            $_SESSION['token_id'] = $token_id;
-
-            return $token_id;
-        }
     }
 
-    public function get_token()
-    {
-        if (isset($_SESSION['token_value'])) {
-            return $_SESSION['token_value'];
-        } else {
-            $token = hash('sha256', $this->random(500));
-            $_SESSION['token_value'] = $token;
+    // Used for is_recent() method.
+    private static $max_elapsed = 60 * 60 * 24; // 1 day
 
-            return $token;
-        }
+    /**
+     * Generates token for use but doesn't store it.
+     */
+    private static function token(int $length): string
+    {
+        $randomString = bin2hex(random_bytes($length));
+
+        return substr($randomString, 0, $length);
     }
 
-    public function check_valid($method)
+    /**
+     * Generate and store CSRF token in user session.
+     * Requires session to have been started already.
+     */
+    private static function createToken(): string
     {
-        if ($method == 'post' || $method == 'get') {
-            $post = $_POST;
-            $get = $_GET;
+        $token = self::token(64);
 
-            if (isset(${$method}[$this->get_token_id()]) && (${$method}[$this->get_token_id()] == $this->get_token())) {
-                return true;
-            } else {
-                return false;
-            }
+        $data = [
+            'token' => $token,
+            'token_time' => time(),
+        ];
+        Session::setArray($data);
+
+        return $token;
+    }
+
+    /**
+     * Destroys a token by removing it from the session.
+     */
+    private static function destroyToken(): bool
+    {
+        Session::destroy('token');
+        Session::destroy('token_time');
+
+        return true;
+    }
+
+    /**
+     * Return HTML tag for use in a form.
+     */
+    public static function display(): string
+    {
+        return '<input type="hidden" name="token" value="'.self::createToken().'" />';
+    }
+
+    /**
+     * Returns true if user-submitted POST token is
+     * identical to the previously stored SESSION token.
+     * Returns false otherwise.
+     */
+    public static function isValid()
+    {
+        if (isset($_POST['token'])) {
+            $user_token = $_POST['token'];
+        } else {
+            return false;
+        }
+        if (Session::has('token')) {
+            $stored_token = Session::get('token');
+
+            return hash_equals($stored_token, $user_token);
         } else {
             return false;
         }
     }
 
-    public function form_names($names, $regenerate)
+    /**
+     * You can simply check the token validity and
+     * handle the failure yourself, or you can use
+     * this "stop-everything-on-failure" method.
+     */
+    public static function exitOnFailure()
     {
-        $values = [];
-        foreach ($names as $n) {
-            if ($regenerate == true) {
-                unset($_SESSION[$n]);
-            }
-            $s = isset($_SESSION[$n]) ? $_SESSION[$n] : $this->random(10);
-            $_SESSION[$n] = $s;
-            $values[$n] = $s;
+        if (!self::isValid()) {
+            exit('Invalid Security Token.');
         }
-
-        return $values;
     }
 
-    private function random($len)
+    /**
+     * This doesn't have to be used but it
+     * checks to see if the token is recent.
+     */
+    public static function isRecent()
     {
-        if (function_exists('openssl_random_pseudo_bytes')) {
-            $byteLen = intval(($len / 2) + 1);
-            $return = substr(bin2hex(openssl_random_pseudo_bytes($byteLen)), 0, $len);
-        } elseif (@is_readable('/dev/urandom')) {
-            $f = fopen('/dev/urandom', 'r');
-            $urandom = fread($f, $len);
-            fclose($f);
-            $return = '';
+        if (isset($_SESSION['token_time'])) {
+            $stored_time = $_SESSION['token_time'];
+
+            return ($stored_time + self::$max_elapsed) >= time();
+        } else {
+            self::destroyToken();
+
+            return false;
         }
-
-        if (empty($return)) {
-            for ($i = 0; $i < $len; ++$i) {
-                if (!isset($urandom)) {
-                    if ($i % 2 == 0) {
-                        mt_srand(time() % 2147 * 1000000 + (float) microtime() * 1000000);
-                    }
-                    $rand = 48 + mt_rand() % 64;
-                } else {
-                    $rand = 48 + ord($urandom[$i]) % 64;
-                }
-
-                if ($rand > 57) {
-                    $rand += 7;
-                }
-                if ($rand > 90) {
-                    $rand += 6;
-                }
-
-                if ($rand == 123) {
-                    $rand = 52;
-                }
-                if ($rand == 124) {
-                    $rand = 53;
-                }
-                $return .= chr($rand);
-            }
-        }
-
-        return $return;
     }
 }

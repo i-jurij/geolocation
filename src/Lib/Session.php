@@ -23,34 +23,34 @@ class Session
         }
     }
 
-    public function has($name)
+    public static function has($name)
     {
-        static::start();
+        self::start();
 
         return isset($_SESSION[$name]);
     }
 
-    public function set($name, $value)
+    public static function set($name, $value)
     {
-        static::start();
+        self::start();
         if ($name && $value) {
             $_SESSION[$name] = $value;
         }
         session_write_close();
     }
 
-    public function setArray(array $vars)
+    public static function setArray(array $vars)
     {
-        static::start();
+        self::start();
         foreach ($vars as $name => $value) {
-            $this->set($name, $value);
+            self::set($name, $value);
             session_write_close();
         }
     }
 
-    public function get($name)
+    public static function get($name)
     {
-        static::start();
+        self::start();
 
         return (!empty($_SESSION[$name])) ? $_SESSION[$name] : false;
     }
@@ -61,9 +61,9 @@ class Session
      *
      * @param $message - string or null
      */
-    public function flash(?string $message = null)
+    public static function flash(?string $message = null)
     {
-        static::start();
+        self::start();
         if ($message) {
             $_SESSION['flash'] = $message;
         } else {
@@ -76,9 +76,9 @@ class Session
     /**
      * @param $name - Уничтожаем $name
      */
-    public function destroy($name)
+    public static function destroy($name)
     {
-        static::start();
+        self::start();
         unset($_SESSION[$name]);
         session_write_close();
     }
