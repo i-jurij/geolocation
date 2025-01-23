@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ijurij\Geolocation;
 
-use Ijurij\Geolocation\Lib\Csrf;
 use Ijurij\Geolocation\Lib\Isbot;
 use Ijurij\Geolocation\Lib\Locality;
 use Ijurij\Geolocation\Lib\Router;
@@ -85,9 +84,6 @@ final class Geolocation
 
         // url for processing locality after users city choice
         $params['url_location_to_server'] = $this->url_location_to_server;
-
-        // set crf data for form on page or url for js fetch request
-        $params['csrf'] = Csrf::display();
 
         // receive config if it is js fetch request to yandex geocoder (get locality from coord)
         if ($this->router->callback['method'] === 'fromCoordYg') {

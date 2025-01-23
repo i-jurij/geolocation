@@ -29,7 +29,7 @@ final class Controller
      */
     public function fromDbPhp($params)
     {
-        if (Csrf::isValid() || Csrf::isRecent()) {
+        if (Csrf::isValid() && Csrf::isRecent()) {
             $params['locations'] = (new Model())->getAll();
         }
 

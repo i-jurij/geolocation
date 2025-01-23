@@ -1,10 +1,6 @@
 <?php
-/*
-$session = new Ijurij\Geolocation\Lib\Session();
-$city = ($session->has('city')) ? $session->get('city') : 'Местоположение';
-$region = ($session->has('region')) ? $session->get('region') : '';
-// $id = ($session->has('id')) ? $session->get('id') : '';
-*/
+
+$scrf = Ijurij\Geolocation\Lib\Csrf::display();
 $city = !empty($data['locality']['city']) ? $data['locality']['city'] : 'Местоположение';
 $region = !empty($data['locality']['region']) ? $data['locality']['region'] : '';
 
@@ -25,7 +21,7 @@ if ($city === 'Местоположение') {
 }
 $button = ' <noscript>
                 <form action="/" method="post" id="to_city_choice" class="left">
-                    '.$data['csrf'].'
+                    '.$scrf.'
                 </form>
                 <input type="submit" form="to_city_choice" name="all_loc" value="Выбрать" class="button" />
             </noscript>';
@@ -124,7 +120,7 @@ function alllocHtml(array $all_loc): string
 		<section class="content bgcontent" id="section_city_choice">
             <noscript>
                 <form method="post" action="<?php echo $data['url_location_to_server']; ?>" id="form_city_choice">
-                    <?php echo $data['csrf']; ?>
+                    <?php echo $scrf; ?>
                     <?php echo $alllochtml; ?>
                 </form>
             </noscript>
