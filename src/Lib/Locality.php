@@ -48,8 +48,8 @@ final class Locality
         if ((Csrf::isValid() || Csrf::isRecent())
                 && !empty($_POST['region']) && !empty($_POST['city'])) {
             $locality = [
-                'city' => preg_replace("/[^\p{Cyrillic}\p{Latin}]/ui", '', filter_input(INPUT_POST, 'city', FILTER_SANITIZE_SPECIAL_CHARS)),
-                'region' => preg_replace("/[^\p{Cyrillic}\p{Latin}]/ui", '', filter_input(INPUT_POST, 'region', FILTER_SANITIZE_SPECIAL_CHARS)),
+                'city' => preg_replace("/[^ ()\p{Cyrillic}\p{Latin}]/ui", '', filter_input(INPUT_POST, 'city', FILTER_SANITIZE_SPECIAL_CHARS)),
+                'region' => preg_replace("/[^ ()\p{Cyrillic}\p{Latin}]/ui", '', filter_input(INPUT_POST, 'region', FILTER_SANITIZE_SPECIAL_CHARS)),
             ];
 
             $this->set($locality);
