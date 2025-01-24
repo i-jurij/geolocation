@@ -15,7 +15,7 @@ $geo->yandex_kind = 'locality';
 $geo->yandex_results = 1;
 */
 
-$html = $geo->display();
+$html = $geo->getHtml();
 $city = $geo->session->has('city') ? $geo->session->get('city') : 'default';
 $region = $geo->session->has('region') ? $geo->session->get('region') : '';
 $param = [$html, $city, $region];

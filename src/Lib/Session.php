@@ -1,18 +1,21 @@
 <?php
 /*
 * example of using a class:
-* $session = new Session();
-* $session->start();
-* if( !$session->has('counter') ) { $session->set('counter', 0); }
-* $counter = $session->get('counter');
-* $session->set('counter', ++$counter);
+* Session::start();
+* if( !Session::has('counter') ) { Session::set('counter', 0); }
+* $counter = Session::get('counter');
+* Session::set('counter', ++$counter);
 * $response->getBody()->write("Вы посетили сайт $counter раз/a");
 * // массовая установка значений
-* $session->setArray(['one' => 1, 'two' => 2, 'three' => 3]);
+* Session::setArray(['one' => 1, 'two' => 2, 'three' => 3]);
 */
 
 namespace Ijurij\Geolocation\Lib;
 
+/**
+ * class include methods start, has(name), set(name), setArray(array of name-value),
+ * get(name), flash(string), destroy(name).
+ */
 class Session
 {
     public static function start()

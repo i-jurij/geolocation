@@ -47,7 +47,7 @@ if (!empty($_POST['city'])) {
 
 	<body>
         <!-- for outputting city and location -->
-		<div id="location_div"><?php print_r($geo->display()); ?></div>
+		<div id="location_div"><?php print_r($geo->getHtml()); ?></div>
 
         <!-- for outputting data from server after sending location to server -->
 		<div id="data_by_location"><?php echo $data; ?></div>

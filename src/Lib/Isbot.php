@@ -4,15 +4,31 @@ declare(strict_types=1);
 
 namespace Ijurij\Geolocation\Lib;
 
+/**
+ * Isbot::check() return true if it is bots user agent, false if not.
+ */
 class Isbot
 {
     // прочие боты
     public const BOTS = [
-        'yandex', 'google', 'bot', 'spider', 'crawler', 'curl',
-        'Accoona', 'ia_archiver', 'Ask Jeeves', 'W3C_Validator', 'WebAlta', 'YahooFeedSeeker',
-        'Yahoo!', 'Ezooms', 'SiteStatus', 'Nigma.ru', 'Baiduspider', 'SISTRIX', 'findlinks',
-        'proximic', 'OpenindexSpider', 'statdom.ru', 'Spider', 'Snoopy', 'heritrix', 'Yeti',
-        'DomainVader', 'StackRambler',
+        'bot', 'crawler', 'curl', 'parser', 'spider', 'python-requests', 'Monitoring',
+        'Accoona', 'Analyzer', 'Ask Jeeves', 'a.pr-cy.ru',
+        'Baiduspider',
+        'DomainVader',
+        'facebookexternalhit', 'findlinks',
+        'google',
+        'heritrix',
+        'Ezooms',
+        'ia_archiver',
+        'ltx71',
+        'Nigma.ru',
+        'OpenindexSpider',
+        'proximic', 'PEAR',
+        'Riddler',
+        'SiteStatus', 'SISTRIX', 'StackRambler', 'statdom.ru', 'Spider', 'Snoopy', 'slurp',
+        'vkShare',
+        'W3C_Validator', 'WebAlta',
+        'YahooFeedSeeker', 'Yahoo!', 'yandex', 'Yeti',
     ];
 
     /**

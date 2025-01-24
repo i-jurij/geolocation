@@ -14,7 +14,6 @@ final class Controller
     ) {
     }
 
-    // for php html
     /**
      * Send full html template in response.
      */
@@ -23,6 +22,7 @@ final class Controller
         return $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
     }
 
+    // ONLY FOR PHP
     /**
      * Get all location for manual user choice if js disabled.
      * Send full html template in response.
@@ -33,10 +33,10 @@ final class Controller
             $params['locations'] = (new Model())->getAll();
         }
 
-        return $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
+        return $this->default($params);
     }
 
-    // for js fetch
+    // ONLY FOR JS FETCH ------------------------------
     /**
      * Get all location for manual user choice after js fetch.
      * Send json in response
@@ -81,19 +81,27 @@ final class Controller
         $kind = $params['yandex_kind'];
         $this->sendJson((new YandexGeocoder())->getLocation($yandex_api_key, $long, $lat, $format, $results, $kind));
     }
+    // END ONLY FOR JS FETCH -----------------------------
 
-    // if get location from front
+    /**
+     *  Processing location after receiving it from front.
+     */
     public function afterUserCityChoice($params)
     {
         // check not js fetch request (post var 'js' must be set in form on page or into formdata from js)
         if (!isset($params['locality']['js'])) {
             // html out
-            return $this->view->generate($params, \Ijurij\Geolocation\Config::$template);
+            return $this->default($params);
         }
-        // if js then nothing send, locality can be get from php session,
+        // if js then nothing send, locality can be get from php session or (new Geolocation)->getLocality(),
         // data can be send from other controller by url for js fetch
     }
 
+    /**
+     * set header('Content-Type: application/json');
+     * echo json_encode($data, JSON_UNESCAPED_UNICODE);
+     * exit from script.
+     */
     public function sendJson($data)
     {
         header('Content-Type: application/json');

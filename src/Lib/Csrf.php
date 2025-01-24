@@ -4,12 +4,11 @@ namespace Ijurij\Geolocation\Lib;
 
 /**
  * Cross Site Request Forgery (CSRF) Class.
+ * session_start(); must be called before this is utilised.
  *
  * @Author Matt Kent (Matt_Kent9)
  *
  * @License MIT
- *
- * session_start(); must be called before this is utilised.
  */
 class Csrf
 {

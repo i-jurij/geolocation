@@ -1,16 +1,7 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Ijurij\Geolocation;
-
-use Ijurij\Geolocation\Lib\Isbot;
-use Ijurij\Geolocation\Lib\Locality;
-use Ijurij\Geolocation\Lib\Router;
-use Ijurij\Geolocation\Lib\Session;
-use Ijurij\Geolocation\Mvc\Controller;
-
-/**
+/*
+ * Example
  * $geo = new Ijurij\Geolocation\Geolocation();
  * // url for getting data by locality
  * $geo->url_location_to_server = '/';
@@ -26,9 +17,27 @@ use Ijurij\Geolocation\Mvc\Controller;
  *
  * Then on page
  *  <!-- for outputting city and location -->
- * <div id="location_div"><?php print_r($geo->run()); ?></div>
+ * <div id="location_div"><?php print_r($geo->getHtml()); ?></div>
  * <!-- for outputting data from server after sending location to server -->
  * <div id="data_by_location"><?php echo (isset($data)) ? $data : ''; ?></div>
+ */
+
+declare(strict_types=1);
+
+namespace Ijurij\Geolocation;
+
+use Ijurij\Geolocation\Lib\Isbot;
+use Ijurij\Geolocation\Lib\Locality;
+use Ijurij\Geolocation\Lib\Router;
+use Ijurij\Geolocation\Lib\Session;
+use Ijurij\Geolocation\Mvc\Controller;
+
+/**
+ * Class display locality of users browser.
+ * Class arguments that the user can set:
+ * $ip_provider ('geoplugin' or 'sypexgeo') and $lang for ip_provider,
+ * $url_location_to_server (to process the received location),
+ * and params for yandex geocoder ($yandex_api_key, $yandex_format, $yandex_kind, $yandex_results).
  */
 final class Geolocation
 {
@@ -51,7 +60,7 @@ final class Geolocation
         Session::start();
     }
 
-    public function display()
+    public function getHtml()
     {
         // set provider and lang for class Locality
         $this->locality->ip_provider = $this->ip_provider;
@@ -80,7 +89,7 @@ final class Geolocation
         }
 
         // get locality and receive to controller
-        $params['locality'] = $this->locality->get();
+        $params['locality'] = $this->getLocality();
 
         // url for processing locality after users city choice
         $params['url_location_to_server'] = $this->url_location_to_server;
@@ -94,5 +103,10 @@ final class Geolocation
         }
 
         return $params;
+    }
+
+    public function getLocality()
+    {
+        return $this->locality->get();
     }
 }

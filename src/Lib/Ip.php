@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Ijurij\Geolocation\Lib;
 
 /**
- * Get ip from request headers, call Ip->get().
+ * Get ip from request headers, call Ip::get().
  */
 class Ip
 {

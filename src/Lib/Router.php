@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Ijurij\Geolocation\Lib;
 
+/**
+ * Class sets the controller method and parameters depending on the request parameters.
+ */
 final class Router
 {
     public array $callback;
