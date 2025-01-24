@@ -62,10 +62,6 @@ final class Geolocation
 
     public function getHtml()
     {
-        // set provider and lang for class Locality
-        $this->locality->ip_provider = $this->ip_provider;
-        $this->locality->lang = $this->lang;
-
         return call_user_func_array($this->getControllerMethod(), ['params' => $this->getParams()]);
     }
 
@@ -107,6 +103,10 @@ final class Geolocation
 
     public function getLocality()
     {
+        // set provider and lang for class Locality
+        $this->locality->ip_provider = $this->ip_provider;
+        $this->locality->lang = $this->lang;
+
         return $this->locality->get();
     }
 }

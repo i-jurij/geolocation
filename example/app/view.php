@@ -3,7 +3,7 @@
 
 		<head>
 			<meta charset="utf-8" />
-			<title>Geo Location 2</title>
+			<title>Geo Location</title>
 			<meta name="description" content="Geolocation back and front">
 			<META NAME="keywords" CONTENT="geolocation">
 			<meta HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">

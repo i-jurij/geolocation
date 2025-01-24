@@ -16,15 +16,14 @@ $geo->yandex_results = 1;
 */
 
 $html = $geo->getHtml();
-$city = $geo->session->has('city') ? $geo->session->get('city') : 'default';
-$region = $geo->session->has('region') ? $geo->session->get('region') : '';
-$param = [$html, $city, $region];
+$locality = $geo->getLocality();
+$param = [$html, $locality];
 
 function controllerMethodBefore(array $args)
 {
     return [
         'html' => $args[0],
-        'dataFromModel' => model($args[1]),
+        'dataFromModel' => model($args[1]['city']),
     ];
 }
 
@@ -38,9 +37,9 @@ function controllerMethodAfterJs(array $args)
 {
     header('Content-Type: application/json');
     echo json_encode([
-        'city' => $args[1],
-        'region' => $args[2],
-        'dataFromModel' => model($args[1]),
+        'city' => $args[1]['city'],
+        'region' => $args[2]['region'],
+        'dataFromModel' => model($args[1]['city']),
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }

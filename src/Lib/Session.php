@@ -20,7 +20,6 @@ class Session
 {
     public static function start()
     {
-        // Если сессия еще не запущена
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
