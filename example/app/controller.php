@@ -30,6 +30,9 @@ function controllerMethodBefore(array $args)
 function controllerMethodAfter(array $args)
 {
     // save input data to model or other action then
+    // refresh page in order to prevent the form submitted again
+    header("Refresh:0; url='/'");
+
     return controllerMethodBefore($args);
 }
 

@@ -25,6 +25,8 @@ $geo->yandex_results = 1;
 $data = 'Before city change';
 // get post data after request by url_location_to_server
 if (!empty($_POST['city'])) {
+    // refresh page in order to prevent the form submitted again
+    header("Refresh:0; url='/'");
     $data = 'After city change';
 }
 ?>
