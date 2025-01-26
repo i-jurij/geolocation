@@ -36,21 +36,7 @@ if (!empty($data['locations']['district']) && is_array($data['locations']['distr
 
 function alllocHtml(array $all_loc): string
 {
-    $html = '<style type="text/css">
-                .checked1 .toggle1,
-                .checked2 .toggle2 {
-                    display:none;
-                }
-
-                .checked1 input[type=radio]:checked ~ .toggle1,
-                .checked1 input[type=checkbox]:checked ~ .toggle1,
-                .checked2 input[type=radio]:checked ~ .toggle2,
-                .checked2 input[type=checkbox]:checked ~ .toggle2
-                {
-                    display:block;
-                }
-                
-                </style>';
+    $html = '';
 
     foreach ($all_loc['district'] as $district) {
         $html .= '<div class="checked1 mt2">';
@@ -88,6 +74,12 @@ function alllocHtml(array $all_loc): string
         </span>
     &ensp;&#8250;
 </label>
+
+<style type="text/css">
+<?php
+    include_once Ijurij\Geolocation\Config::$style;
+?>
+</style>
 
 <div class="modal"  id="location_message_modal">
 	<input id="modal_1" type="checkbox" <?php echo $checked; ?> />

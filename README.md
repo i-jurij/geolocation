@@ -50,7 +50,8 @@ The received data is stored in LocalStorage and receive to server backend.
 ## Install
 It contain two parts:   
 php and js (+ small css into js),   
-it can be install by composer (composer.json) or npm (package.json) or both.   
+it can be install by composer (composer.json) or npm (package.json) or both.  
+JS part include [autoComplete.js](https://github.com/TarekRaafat/autoComplete.js).   
 
 Create:   
 **composer.json**:   
@@ -101,11 +102,7 @@ Or get css other ways (npm | github | source + webpack, rollup, gulp etc) and
 ```
 <link rel="stylesheet" type="text/css" href="assets/css/oswc2_styles.min.css">
 ```   
-or create link to "node_modules/oswc2_styles/oswc2_styles.min.css".  
-
-JS part of this module use small css with [autoComplete.js](https://github.com/TarekRaafat/autoComplete.js) that inject into code until minify with rollup.   
-If your optimizator (minimizator) extract css from js then need link css manually from assets dir eg:   
-`<link rel="stylesheet" type="text/css" href="assets/css/geolocation.css">`   
+or create link to "node_modules/oswc2_styles/oswc2_styles.min.css".    
 
 ## Example
 Working example is in  directory "example".  

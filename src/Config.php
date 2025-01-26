@@ -11,6 +11,7 @@ class Config
     public const REGEX_LAT = '^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$';
     public const REGEX_LONG = '^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$';
     public static string $template = __DIR__.DIRECTORY_SEPARATOR.'Template'.DIRECTORY_SEPARATOR.'template.php';
+    public static string $style = __DIR__.DIRECTORY_SEPARATOR.'Template'.DIRECTORY_SEPARATOR.'style.css';
 
     /*
     public static function getSrcDir()
