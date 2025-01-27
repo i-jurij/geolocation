@@ -89,7 +89,7 @@ final class Controller
     public function afterUserCityChoice($params)
     {
         // check not js fetch request (post var 'js' must be set in form on page or into formdata from js)
-        if (!isset($params['locality']['js'])) {
+        if (!isset($params['js'])) {
             return $this->default($params);
         }
         // if js then nothing send, locality can be get from php session or (new Geolocation)->getLocality(),

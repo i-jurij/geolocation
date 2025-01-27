@@ -1,11 +1,11 @@
 <?php
-
+$unknown_location = 'Местоположение';
 $scrf = Ijurij\Geolocation\Lib\Csrf::display();
-$city = !empty($data['locality']['city']) ? $data['locality']['city'] : 'Местоположение';
+$city = !empty($data['locality']['city']) ? $data['locality']['city'] : $unknown_location;
 $region = !empty($data['locality']['region']) ? $data['locality']['region'] : '';
 
 $checked = '';
-if ($city === 'Местоположение') {
+if ($city === $unknown_location) {
     $checked = 'checked';
     $message = 'Ваше местоположение неизвестно. </br>Выберите его, нажав на кнопку "Выбрать"';
 // $button = '<label for="show_city_select" class="button button_shoose" id="shoose_location">Выбрать</label>';
@@ -129,3 +129,10 @@ function alllocHtml(array $all_loc): string
 		</footer>
 	</article>
 </div>
+
+<script>
+    let unknown_location = '<?php echo $unknown_location; ?>';
+    let city_from_back = '<?php echo $city; ?>';
+    let region_from_back = '<?php echo $region; ?>';
+    let csrf = '<?php echo Ijurij\Geolocation\Lib\Session::get('token'); ?>';
+</script>

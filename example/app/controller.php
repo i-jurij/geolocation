@@ -39,11 +39,7 @@ function controllerMethodAfter(array $args)
 function controllerMethodAfterJs(array $args)
 {
     header('Content-Type: application/json');
-    echo json_encode([
-        'city' => $args[1]['city'],
-        'region' => $args[2]['region'],
-        'dataFromModel' => model($args[1]['city']),
-    ], JSON_UNESCAPED_UNICODE);
+    echo json_encode(model($args[1]['city']), JSON_UNESCAPED_UNICODE);
     exit;
 }
 

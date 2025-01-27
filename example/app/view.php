@@ -22,8 +22,8 @@
 		<script>
             // url or route for js fetch to geolocation class
 			let url_for_fetch = '/'; // Url::get('Home', 'default') eg
-			let url_location_to_server_js = 'url_location_to_server_js'; 
+			let url_location_to_server_js = 'location_to_server_js'; 
 		</script>
-		<!-- <script src="https://cdn.statically.io/gh/i-jurij/geolocation2/refs/heads/main/build/geolocation2.min.js"></script> -->
+		<script type="module" src="geolocation.js"></script>
 		</body>
 		</html>
