@@ -21,19 +21,24 @@ $param = [$html, $locality];
 
 function controllerMethodBefore(array $args)
 {
-    return [
+    $data = [
         'html' => $args[0],
         'dataFromModel' => model($args[1]['city']),
     ];
+    require_once realpath('../app/view.php');
 }
 
 function controllerMethodAfter(array $args)
 {
     // save input data to model or other action then
-    // refresh page in order to prevent the form submitted again
+    // redirect in order to prevent the form submitted again
     header("Refresh:0; url='/'");
 
     return controllerMethodBefore($args);
+}
+// return nothing, json send from Geolocation
+function locality_by_coords(array $args)
+{
 }
 
 function controllerMethodAfterJs(array $args)
@@ -43,4 +48,4 @@ function controllerMethodAfterJs(array $args)
     exit;
 }
 
-$data = call_user_func($route, $param);
+return call_user_func($route, $param);

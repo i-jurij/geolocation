@@ -107,7 +107,7 @@ final class Model
             }
         }
 
-        return (is_array($locality)) ? $locality : [];
+        return (!empty($locality) && is_array($locality)) ? $locality : [];
     }
 
     public function getDistrict($city): array

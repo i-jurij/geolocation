@@ -1,5 +1,5 @@
-class LocSt {
-    getLocalStorage(name) {
+export class LocalStorage {
+    getFromLocalStorage(name) {
         let item = localStorage.getItem(name);
         if (item != null) {
             return JSON.parse(item);
@@ -7,18 +7,16 @@ class LocSt {
         return null;
     }
 
-    setLocality({ city, region = '' }) {
+    setLocalityToLocalStorage({ city, region = '' }) {
         let data_object = { city, region };
         localStorage.setItem('locality', JSON.stringify(data_object));
     }
 
-    removeLocality() {
+    removeLocalityFromLocalStorage() {
         localStorage.removeItem("locality");
     }
 
-    setAllLocality(data_array) {
+    setAllLocalityFromDBToLocalStorage(data_array) {
         localStorage.setItem('all_locality', JSON.stringify(data_array));
     }
 }
-
-export let LS = new LocSt();
