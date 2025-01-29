@@ -84,3 +84,24 @@ export function htmlInfo({ city, region }) {
 		showHideModal("modal_1", 'hide');
 	}
 }
+
+export function htmlFromDB(all_locations) {
+	let district = all_locations.district;
+	districtOut(district);
+
+
+	//regionOutAndCityOutAndSave(district);
+	//aC(all_locations);
+
+}
+
+function districtOut(districts) {
+	let inner = '<option value="" id="empty_district">Округ</option>';
+	for (const key of Object.keys(districts)) {
+		// console.log(district[key]['id'] + ' ' + district[key]['name'])
+		inner = inner + '<option value="' + districts[key]['id'] + '">' + districts[key]['name'] + '</option>'
+	}
+	newData('shoose_district', inner);
+	newData('shoose_region', '<option value="">Регион</option>');
+	newData('shoose_city', '<option value="">Город</option>');
+}

@@ -1,4 +1,3 @@
-import { getCoords } from './getCoords.js'
 /**
  * Get location from browser geolocation and yandex geocoder.
  * Required user permission for geolocation
@@ -9,7 +8,7 @@ export class LocalityByCoord {
     type = '';
 
     async get() {
-        this.coords = await getCoords();
+        this.coords = await this.getCoords();
         this.type = 'db';
         let loc = await this.fetchCoord();
         if (this.checkResponce(loc) === false) {
@@ -22,6 +21,19 @@ export class LocalityByCoord {
         return await loc;
     }
 
+    async getCoords() {
+        const getCoords = async () => {
+            const pos = await new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject);
+            });
+            return {
+                long: pos.coords.longitude,
+                lat: pos.coords.latitude,
+            };
+        };
+        return await getCoords();
+    }
+
     async fetchCoord() {
         const response = await fetch(this.url + '?long=' + this.coords.long + '&lat=' + this.coords.lat + '&' + this.type + '=' + this.type, {
             credentials: 'same-origin',
@@ -29,7 +41,6 @@ export class LocalityByCoord {
                 'Accept': 'application/json'
             }
         });
-
         return await response.json();
     }
 

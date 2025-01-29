@@ -37,7 +37,7 @@ function controllerMethodAfter(array $args)
     return controllerMethodBefore($args);
 }
 // return nothing, json send from Geolocation
-function locality_by_coords(array $args)
+function url_js_fetch(array $args)
 {
 }
 

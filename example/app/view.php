@@ -21,7 +21,7 @@
 
 		<script>
             // url or route for js fetch to geolocation class
-			let url_from_coord = 'locality_by_coords'; // Url::get('Home', 'default') eg
+			let url_js_fetch = 'url_js_fetch'; // Url::get('Geo', 'jsFetch') eg
 			let url_location_to_server_js = 'location_to_server_js'; 
 		</script>
 		<script type="module" src="geolocation.js"></script>

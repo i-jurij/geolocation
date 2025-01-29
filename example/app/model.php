@@ -2,15 +2,7 @@
 
 function model(string $city): string
 {
-    $data = [
-        'nondefault' => '<p class="center">'.$city.'<br>Content after city choice</p>',
-        'default' => '<p class="center">Content</p>',
-    ];
+    $text = (!empty($city)) ? $city : 'Location not yet determined';
 
-    if ($city != 'default') {
-        return $data['nondefault'];
-    }
-    if ($city == 'default') {
-        return $data['default'];
-    }
+    return '<p class="center">'.$text.'</p>';
 }
