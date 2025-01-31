@@ -31,6 +31,7 @@ $checkd = '';
 $alllochtml = '';
 if (!empty($data['locations']['district']) && is_array($data['locations']['district'])) {
     $checkd = 'checked';
+    $checked = '';
     $alllochtml = allLocHtml($data['locations']);
 }
 

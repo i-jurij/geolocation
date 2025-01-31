@@ -3,42 +3,42 @@ import { LocalStorage } from './localStorage.js'
 import { LocalityByCoord } from './localityByCoord.js'
 
 export class Locality {
-    l = { city: '', region: '' };
-
     constructor() {
         this.LS = new LocalStorage();
-        this.lfls = this.LS.getFromLocalStorage('locality');
+        let lfls = this.LS.getFromLocalStorage('locality');
+        this.l = lfls ?? { city: '', region: '' };
     }
 
     async init() {
         htmlReplace();
-
-        if (this.lfls) {
-            if (city_from_back && !city_from_back.toLowerCase().includes(this.lfls.city.toLowerCase())) {
-                this.localityToServer(url_location_to_server_js, csrf, this.lfls.city, this.lfls.region)
-                htmlInfo({ city: this.lfls.city, region: this.lfls.region });
+        this.fromDB();
+        if (this.l.city) {
+            if (city_from_back && !city_from_back.toLowerCase().includes(this.l.city.toLowerCase())) {
+                this.localityToServer(url_location_to_server_js, csrf, this.l.city, this.l.region)
+                htmlInfo({ city: this.l.city, region: this.l.region });
             }
         } else {
             if (city_from_back == unknown_location) {
-                // get city from coord throw browser.navigator
-                this.LC = new LocalityByCoord();
-                this.LC.url = url_js_fetch;
-                this.l = await this.LC.get();
-                htmlInfo(this.l);
-                if (this.LC.checkResponce(this.l)) {
-                    this.LS.setLocalityToLocalStorage({ city: this.l.city, region: this.l.region });
-                    this.localityToServer(url_location_to_server_js, csrf, this.l.city, this.l.region)
-                }
+                await this.fromCoord();
             } else {
                 this.LS.setLocalityToLocalStorage({ city: city_from_back, region: region_from_back });
             }
         }
+    }
 
-        this.fromDB();
+    async fromCoord() {
+        this.LC = new LocalityByCoord();
+        this.LC.url = url_js_fetch;
+        this.l = await this.LC.get();
+        if (this.LC.checkResponce(this.l)) {
+            this.LS.setLocalityToLocalStorage({ city: this.l.city, region: this.l.region });
+            this.localityToServer(url_location_to_server_js, csrf, this.l.city, this.l.region)
+            htmlInfo(this.l);
+        }
     }
 
     fromDB() {
-        const shoose_location = document.querySelector('#shoose_location');
+        let shoose_location = document.querySelector('#shoose_location');
         if (shoose_location) {
             shoose_location.onpointerdown = async (event) => {
                 //get all locations (from LS or server)
@@ -47,6 +47,8 @@ export class Locality {
                 htmlFromDB(await al);
             };
         }
+
+
     }
 
     async getAllLocations() {

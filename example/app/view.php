@@ -9,9 +9,9 @@
 			<meta HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
 			<meta HTTP-EQUIV="Content-language" CONTENT="ru-RU">
 			<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
-			<meta name="author" content="ijuij" >
-			<!-- <link rel="icon" href="favicon.png" /> -->
-			<link rel="stylesheet" type="text/css" href="https://cdn.statically.io/gh/i-jurij/oswc2_styles/refs/heads/main/oswc2_styles.min.css">
+			<meta name="author" content="i-jurij" >
+			<!-- <link rel="stylesheet" type="text/css" href="https://cdn.statically.io/gh/i-jurij/oswc2_styles/refs/heads/main/oswc2_styles.min.css"> -->
+			<link rel="stylesheet" type="text/css" href="oswc2_styles.min.css">
 		</head>
 
 		<body>

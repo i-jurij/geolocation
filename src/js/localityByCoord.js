@@ -4,38 +4,40 @@
  */
 export class LocalityByCoord {
     url = '';
-    coords = '';
     type = '';
 
     async get() {
-        this.coords = await this.getCoords();
-        this.type = 'db';
-        let loc = await this.fetchCoord();
-        if (this.checkResponce(loc) === false) {
-            this.type = 'yg';
-            loc = await this.fetchCoord();
-            if (this.checkResponce(loc) === false) {
-                loc = { city: '', region: '' }
+        let coords = await this.getCoords();
+        if (coords) {
+            this.type = 'db';
+            let loc = await this.fetchCoord(coords);
+            if (this.checkResponce(await loc) === false) {
+                this.type = 'yg';
+                loc = await this.fetchCoord(coords);
+                if (this.checkResponce(await loc) === false) {
+                    loc = { city: '', region: '' }
+                }
             }
+            return await loc;
         }
-        return await loc;
+
     }
 
     async getCoords() {
-        const getCoords = async () => {
-            const pos = await new Promise((resolve, reject) => {
-                navigator.geolocation.getCurrentPosition(resolve, reject);
-            });
-            return {
-                long: pos.coords.longitude,
-                lat: pos.coords.latitude,
-            };
+        const pos = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+            function reject(error) {
+                console.log(error);
+            }
+        });
+        return {
+            long: pos.coords.longitude,
+            lat: pos.coords.latitude,
         };
-        return await getCoords();
-    }
+    };
 
-    async fetchCoord() {
-        const response = await fetch(this.url + '?long=' + this.coords.long + '&lat=' + this.coords.lat + '&' + this.type + '=' + this.type, {
+    async fetchCoord(coords) {
+        const response = await fetch(this.url + '?long=' + coords.long + '&lat=' + coords.lat + '&' + this.type + '=' + this.type, {
             credentials: 'same-origin',
             headers: {
                 'Accept': 'application/json'

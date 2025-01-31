@@ -1,5 +1,5 @@
 function showHideModal(id, action) {
-	const modal = document.getElementById(id);
+	let modal = document.getElementById(id);
 	if (modal) {
 		modal.checked = (action == 'show') ? true : false;
 	}
@@ -13,6 +13,8 @@ function newData(elem_id, new_inner) {
 }
 
 export function htmlReplace() {
+	showHideModal("modal_1", 'hide');
+
 	let inner_message_footer = '<label for="show_city_select" class="button" id="shoose_location">\
 						Выбрать\
 					</label>\
@@ -40,15 +42,10 @@ export function htmlReplace() {
 								<label for="show_city_select" class="button dangerous">\
 									Закрыть\
 								</label>';
-	showHideModal("modal_1", 'hide');
+
 	newData('footer_city_message', inner_message_footer);
 	newData('section_city_choice', inner_choice_section);
 	newData('footer_city_choice', inner_choice_footer);
-
-	document.getElementById('shoose_location').onpointerdown = function () {
-		showHideModal("show_city_select", 'show');
-		showHideModal("modal_1", 'hide');
-	};
 
 	/* <!-- js for esc on modal --> */
 	document.onkeydown = function (event) {
@@ -88,11 +85,10 @@ export function htmlInfo({ city, region }) {
 export function htmlFromDB(all_locations) {
 	let district = all_locations.district;
 	districtOut(district);
-
-
-	//regionOutAndCityOutAndSave(district);
+	regionOutAndCityOut(district);
 	//aC(all_locations);
-
+	showHideModal("show_city_select", 'show');
+	showHideModal("modal_1", 'hide');
 }
 
 function districtOut(districts) {
@@ -104,4 +100,88 @@ function districtOut(districts) {
 	newData('shoose_district', inner);
 	newData('shoose_region', '<option value="">Регион</option>');
 	newData('shoose_city', '<option value="">Город</option>');
+}
+
+function regionOutAndCityOut(districts) {
+	let shoose_district = document.querySelector('#shoose_district');
+	if (shoose_district) {
+		shoose_district.addEventListener('change', function () {
+			let options_empty_district = document.querySelector('#empty_district');
+			if (options_empty_district) {
+				options_empty_district.remove();
+			}
+
+			let district_id = this.value;
+			const district_text = this.options[this.selectedIndex].text;
+
+			if (district_id) {
+				let regions0 = districts[district_id];
+				if (regions0) {
+					let regions = regions0['regions'];
+					regionOut(regions);
+					cityOut(regions);
+				}
+			}
+		})
+	}
+}
+
+function regionOut(regions) {
+	let inner = '<option value="" id="empty_region">Регион</option>';
+	for (const key of Object.keys(regions)) {
+		inner = inner + '<option value="' + regions[key]['id'] + '">' + regions[key]['name'] + '</option>'
+	}
+	let shoose_region = document.querySelector('#shoose_region');
+	if (shoose_region) {
+		shoose_region.disabled = false;
+		shoose_region.innerHTML = inner;
+	}
+	let shoose_city = document.querySelector('#shoose_city');
+	if (shoose_city) {
+		shoose_city.innerHTML = '<option value="">Город</option>';
+	}
+}
+
+function cityOut(regions) {
+	let shoose_region = document.querySelector('#shoose_region');
+	let shoose_city = document.querySelector('#shoose_city');
+	if (shoose_region) {
+		shoose_region.addEventListener('change', function () {
+			let options_empty_region = document.querySelector('#empty_region');
+			if (options_empty_region) {
+				options_empty_region.remove();
+			}
+			let region_id = this.value;
+			const region_text = this.options[this.selectedIndex].text;
+			if (region_id) {
+				let cities0 = regions[region_id];
+				if (cities0) {
+					let cities = cities0['cities'];
+					if (cities) {
+						let inner = '<option value="" id="empty_city">Город</option>';
+						for (const key of Object.keys(cities)) {
+							inner = inner + '<option value="' + cities[key]['id'] + '">' + cities[key]['name'] + '</option>'
+						}
+						if (shoose_city) {
+							shoose_city.disabled = false;
+							shoose_city.innerHTML = inner;
+						}
+					}
+				}
+
+				if (shoose_city) {
+					shoose_city.addEventListener('change', function () {
+						let options_empty_city = document.querySelector('#empty_city');
+						if (options_empty_city) {
+							options_empty_city.remove();
+						}
+						//let city_id = this.value;
+						const city_text = this.options[this.selectedIndex].text;
+
+						//saveCity(city_text, region_text, city_id);
+					});
+				}
+			}
+		})
+	}
 }
