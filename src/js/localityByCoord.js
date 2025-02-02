@@ -7,6 +7,9 @@ export class LocalityByCoord {
     type = '';
 
     async get() {
+        // Джанкой Крым { long: 34.392634, lat: 45.713365 }
+        //Евпатория { long: 33.367613, lat: 45.190805 }
+        // Riyah мухафаза Дияла, Ирак { long: 45.190805, lat: 33.367613 }
         let coords = await this.getCoords();
         if (coords) {
             this.type = 'db';
@@ -24,7 +27,8 @@ export class LocalityByCoord {
 
     async getCoords() {
         const pos = await new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject);
+            let positionOption = { timeout: 5000, maximumAge: 60 * 60 * 1000, enableHighAccuracy: false };
+            navigator.geolocation.getCurrentPosition(resolve, reject, positionOption);
             function reject(error) {
                 console.log(error.message);
             }
@@ -36,10 +40,10 @@ export class LocalityByCoord {
     };
 
     async fetchCoord(coords) {
+        let longlat = '?long=' + coords.long + '&lat=' + coords.lat;
         let token = '&token=' + csrf;
-        let longlat = '&long = ' + coords.long + ' & lat=' + coords.lat;
         let type = '&' + this.type + '=' + this.type;
-        const response = await fetch(this.url + '?' + longlat + type + token, {
+        const response = await fetch(this.url + longlat + type + token, {
             credentials: 'same-origin',
             headers: {
                 'Accept': 'application/json'

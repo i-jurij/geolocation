@@ -79,7 +79,7 @@ class Csrf
         if (isset($_GET['token'])) {
             $user_token = $_GET['token'];
         }
-        if (isset($user_token)) {
+        if (!empty($user_token)) {
             if (Session::has('token')) {
                 $stored_token = Session::get('token');
 

@@ -27,16 +27,18 @@ class YandexGeocoder
 
                 $res = json_decode($res, true);
 
-                $name = $res['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['name'];
-                $description = $res['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['description'];
+                if (!empty($res['response']['GeoObjectCollection']['featureMember'][0])) {
+                    $name = $res['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['name'];
+                    $description = $res['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['description'];
+                }
 
                 if (isset($name) && isset($description)) {
                     $locality = ['city' => $name, 'region' => $description];
                 } else {
-                    return ['error' => 'City name not received. Check response structure.'];
+                    return ['error' => 'City name not received. Check structure of yandex geocoders response.'];
                 }
             } else {
-                return ['error' => 'Longitude or latitude has wrong value'];
+                return ['error' => 'Requests longitude or latitude has wrong value'];
             }
         } else {
             return ['error' => 'API key not isset'];
