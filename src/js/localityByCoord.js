@@ -27,7 +27,8 @@ export class LocalityByCoord {
 
     async getCoords() {
         const pos = await new Promise((resolve, reject) => {
-            let positionOption = { timeout: 5000, maximumAge: 60 * 60 * 1000, enableHighAccuracy: false };
+            // let positionOption = { timeout: 5000, maximumAge: 60 * 60 * 1000, enableHighAccuracy: false };
+            let positionOption = { maximumAge: 60 * 60 * 1000 };
             navigator.geolocation.getCurrentPosition(resolve, reject, positionOption);
             function reject(error) {
                 console.log(error.message);
