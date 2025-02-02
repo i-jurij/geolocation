@@ -1,6 +1,6 @@
-import configure from "./services/configure";
-import extend from "./services/extend";
-import init from "./services/init";
+import configure from "./services/configure.js";
+import extend from "./services/extend.js";
+import init from "./services/init.js";
 
 /**
  * @class autoComplete

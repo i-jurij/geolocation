@@ -1,6 +1,6 @@
-import start from "../services/start";
-import { debounce as debouncer } from "../helpers/io";
-import { click, navigate, close } from "./listController";
+import start from "../services/start.js";
+import { debounce as debouncer } from "../helpers/io.js";
+import { click, navigate, close } from "./listController.js";
 
 /**
  * Manage all given events

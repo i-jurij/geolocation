@@ -82,11 +82,13 @@ export function htmlInfo({ city, region }) {
 	}
 }
 
+////////////////////////////////////////////////////////
+// from db part
+////////////////////////////////////////////////////////
 export function htmlFromDB(all_locations) {
 	let district = all_locations.district;
 	districtOut(district);
 	regionOutAndCityOut(district);
-	//aC(all_locations);
 	showHideModal("show_city_select", 'show');
 	showHideModal("modal_1", 'hide');
 }
@@ -177,8 +179,6 @@ function cityOut(regions) {
 						}
 						//let city_id = this.value;
 						const city_text = this.options[this.selectedIndex].text;
-
-						//saveCity(city_text, region_text, city_id);
 					});
 				}
 			}

@@ -1,7 +1,7 @@
-import { create } from "../helpers/io";
-import { getData } from "../controllers/dataController";
-import { addEvents } from "../controllers/eventController";
-import eventEmitter from "../helpers/eventEmitter";
+import { create } from "../helpers/io.js";
+import { getData } from "../controllers/dataController.js";
+import { addEvents } from "../controllers/eventController.js";
+import eventEmitter from "../helpers/eventEmitter.js";
 
 /**
  * Initialization stage

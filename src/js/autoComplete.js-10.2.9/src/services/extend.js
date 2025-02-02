@@ -1,8 +1,8 @@
-import init from "./init";
-import start from "./start";
-import { removeEvents } from "../controllers/eventController";
-import { open, goTo, next, previous, select, close } from "../controllers/listController";
-import search from "../controllers/searchController";
+import init from "./init.js";
+import start from "./start.js";
+import { removeEvents } from "../controllers/eventController.js";
+import { open, goTo, next, previous, select, close } from "../controllers/listController.js";
+import search from "../controllers/searchController.js";
 
 /**
  * autoComplete.js API extension

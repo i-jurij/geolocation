@@ -20,14 +20,13 @@ export class LocalityByCoord {
             }
             return await loc;
         }
-
     }
 
     async getCoords() {
         const pos = await new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject);
             function reject(error) {
-                console.log(error);
+                console.log(error.message);
             }
         });
         return {

@@ -1,4 +1,4 @@
-import { select } from "../helpers/io";
+import { select } from "../helpers/io.js";
 
 /**
  * Configuring options stage

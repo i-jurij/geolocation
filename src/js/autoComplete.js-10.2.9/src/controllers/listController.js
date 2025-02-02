@@ -1,5 +1,5 @@
-import { create } from "../helpers/io";
-import eventEmitter from "../helpers/eventEmitter";
+import { create } from "../helpers/io.js";
+import eventEmitter from "../helpers/eventEmitter.js";
 
 // String holders
 const Expand = "aria-expanded";

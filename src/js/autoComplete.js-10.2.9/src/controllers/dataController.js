@@ -1,5 +1,5 @@
-import eventEmitter from "../helpers/eventEmitter";
-import search from "./searchController";
+import eventEmitter from "../helpers/eventEmitter.js";
+import search from "./searchController.js";
 
 /**
  * Get data from source
@@ -44,10 +44,10 @@ const findMatches = (query, ctx) => {
         typeof searchEngine === "function"
           ? searchEngine(query, record)
           : search(query, record, {
-              mode: searchEngine,
-              diacritics: ctx.diacritics,
-              highlight: ctx.resultItem.highlight,
-            });
+            mode: searchEngine,
+            diacritics: ctx.diacritics,
+            highlight: ctx.resultItem.highlight,
+          });
 
       if (!match) return;
 

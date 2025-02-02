@@ -1,4 +1,4 @@
-import { format, mark } from "../helpers/io";
+import { format, mark } from "../helpers/io.js";
 
 /**
  * Find matching characters in record

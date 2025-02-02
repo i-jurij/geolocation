@@ -1,6 +1,6 @@
-import { getQuery, checkTrigger } from "../helpers/io";
-import { getData, findMatches } from "../controllers/dataController";
-import { render, close } from "../controllers/listController";
+import { getQuery, checkTrigger } from "../helpers/io.js";
+import { getData, findMatches } from "../controllers/dataController.js";
+import { render, close } from "../controllers/listController.js";
 
 /**
  * Start stage
