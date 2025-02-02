@@ -8,10 +8,6 @@ use Ijurij\Geolocation\Config;
 
 class YandexGeocoder
 {
-    public function __construct(
-    ) {
-    }
-
     public function getLocation($yandex_api_key, $long, $lat, $format, $results, $kind): array
     {
         $locality = [];

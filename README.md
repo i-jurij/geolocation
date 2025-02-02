@@ -14,7 +14,7 @@ $_SESSION['city'] и $_SESSION['region'].
 
 JS проверяет наличие сохраненных данных о местоположении в LocalStorage   
 (`{ city: 'city name', region: 'region name'}`), и, если они там есть,   
-выводит их на страницу и передает эти данные на сервер для возможной обработки по адресу, указанному на странице (или шаблоне) (`let url_save_to_backend = '<?php echo $geo->url_location_to_server; ?>';`).  
+выводит их на страницу и передает эти данные на сервер для возможной обработки по адресу, указанному на странице (или шаблоне) (`let url_location_to_server = '<?php echo $geo->url_location_to_server; ?>';`).  
 Если данных о местоположении в LocalStorage нет, JS часть пытается получить координаты браузера   
 и по этим координатам определить местоположение сначала через запрос на сервер к базе данных,   
 потом через яндекс геокодер (отключен по умочанию).  
@@ -46,38 +46,36 @@ If both LocalStorage and the server have not provided data, Javascript tries to 
 If the data is not received, the user is asked to select their location independently.
 The received data is stored in LocalStorage and receive to server backend. 
 
-!!!!!
 ## Install
 It contain two parts:   
 php and js (+ small css into js),   
 it can be install by composer (composer.json) or npm (package.json) or both.  
-JS part include [autoComplete.js](https://github.com/TarekRaafat/autoComplete.js).   
 
-Create:   
+Create in root directory of your project next files:   
 **composer.json**:   
 ```
 {
     ...
     "repositories": [
         {
-            "url": "https://github.com/i-jurij/geolocation2.git",
+            "url": "https://github.com/i-jurij/geolocation.git",
             "type": "vcs"
         }
     ],
     "require": {
-        "i-jurij/geolocation2": "dev-main"
+        "i-jurij/geolocation": "dev-main"
     }
 }
 ```
 
-or   
+or/and   
 
 **package.json**:   
 ```
 {
     ...
     "dependencies": {
-        "geolocation2": "github:i-jurij/geolocation2"
+        "geolocation": "github:i-jurij/geolocation"
   }
 }
 ```
@@ -90,45 +88,62 @@ For automatic resolving autoloading of php class from "vendor" directory and
 javascript import from "node_modules" directory you can `composer install` and `npm install` both execute.   
 
 ### Dependencies
-CSS   
-[oswc2_styles](https://github.com/i-jurij/oswc2_styles)  
-Put to head    
-`<link rel="stylesheet" type="text/css" href="https://cdn.statically.io/gh/i-jurij/oswc2_styles/refs/heads/main/oswc2_styles.min.css">`    
-or   
-[Picnic CSS](https://github.com/franciscop/picnic)   
-Put to head    
-`<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/picnic/7.1.0/picnic.min.css">`    
-Or get css other ways (npm | github | source + webpack, rollup, gulp etc) and   
+The library has CSS styles [oswc2_styles](https://github.com/i-jurij/oswc2_styles) as dependencies.  
+***If you install this library by npm this dependencies will be installed too.***   
+So you can create link
+```
+<link rel="stylesheet" type="text/css" href="node_modules/oswc2_styles/oswc2_styles.min.css">
+```
+or if you use optimizator/minimizator (webpack, rollup, gulp etc) for your project
 ```
 <link rel="stylesheet" type="text/css" href="assets/css/oswc2_styles.min.css">
-```   
-or create link to "node_modules/oswc2_styles/oswc2_styles.min.css".    
+``` 
+
+If you not use npm, css can be get from CDN  
+`<link rel="stylesheet" type="text/css" href="https://cdn.statically.io/gh/i-jurij/oswc2_styles/refs/heads/main/oswc2_styles.min.css">`   
+
+Or download it from github https://raw.githubusercontent.com/i-jurij/oswc2_styles/refs/heads/main/oswc2_styles.min.css.
+
+Because "oswc2_styles" based in part on [Picnic CSS](https://github.com/franciscop/picnic) you can use it
+`<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/picnic/7.1.0/picnic.min.css">` 
 
 ## Example
 Working example is in  directory "example".  
-Run php server into "example/public directory" and test it.   
+Run php server into "example/public" directory and test it.   
 ```
 cd ./example/public
 php -S 127.0.0.8:8000
 ```
 
-If MVC:   
+## Work 
 Class Geolocation must be called on every page where you need locality data.  
 Controllers (or presenters) method could be like this:
 ```
 function _construct(){
     $this->geo = new Ijurij\Geolocation\Geolocation();
+    /// not necessary ///
+    $this->geo->ip_provider = 'location_to_server';
+    $this->geo->lang = 'ru'; // language for ip_provider
+    $this->geo->yandex_api_key = '';
+    $this->geo->yandex_format = 'json';
+    $this->geo->yandex_kind = 'locality';
+    $this->geo->yandex_results = 1;
     $this->geo->url_location_to_server = 'location_to_server';
+    /// end not necessary ///
     $this->geohtml = $this->geo->getHtml();
     $this->locality = $this->geo->getLocality();
 }
-function default(){
-    return View::(['geo' => $this->geohtml], $template);
-}
 
-// for using this with php you must set "url_location_to_server"  
-// for using this with javascript you must set "url_location_to_server_js"   
-// and set routes if you use framework eg
+function main(){
+    $data = Model::get($this->locality);
+    return View::(['geo' => $this->geohtml, 'data' => $data], $template);
+}
+```
+
+After receiving the location we send it to the server, so we must set routes for your application,  
+php variable "$this->geo->url_location_to_server" and javascript variable "url_location_to_server_js"  
+then we can use method in controller like this 
+```
 function getDataByLocation(): void {
     $data = Model::get($this->locality);
      // prepare html for output on page for js or php
@@ -138,27 +153,30 @@ function getDataByLocation(): void {
         echo json_encode($html);
         exit;
     } else {
-        return View::(['geo' => $this->geohtml, 'data' => $data], $template);
+        return View::(['geo' => $this->geohtml, 'dataFromModel' => $data], $template);
     }
 }
-```  
-
-Put to template or View:   
+``` 
+Also we must set javascript variable "url_js_fetch" for other js request
 ```
-	<div id="location_div"><?php echo $geo; ?></div>
-    <div id="data_by_location"><?php echo $data; ?></div>
+// return nothing, json send from Geolocation
+function url_js_fetch(array $args)
+{
+}
+```
 
-	<script>
-        let url_for_fetch = 'url_for_fetch'; // or {Url::('Controller:fetch')} eg
-        let url_save_to_backend = 'url_for_save_city_after_user_selects'; // {Url::('Controller:saveLoc')} eg
-    </script>
+Put to template or view:   
+```
+		<div id="location_div"><?php echo $data['geo']; ?></div>
+        <div id="data_by_location"><?php echo $data['dataFromModel']; ?></div>
+
+		<script>
+			let url_js_fetch = 'url_js_fetch';
+			let url_location_to_server_js = 'location_to_server_js'; 
+		</script>
 	<script src="assets/js/geolocation.min.js"></script>
-    <!-- or <script src="https://cdn.statically.io/gh/i-jurij/geolocation2/refs/heads/main/build/geolocation2.min.js"></script> -->
 ```   
-
-## Class Ijurij\Geolocation\Geolocation
-
 
 ## Errors
 PHP errors, exceptions, warnings are not intercepted or processed.   
-JS print errors in console.log 
+JS are processed and print some errors in console.log 
