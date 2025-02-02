@@ -36,7 +36,10 @@ export class LocalityByCoord {
     };
 
     async fetchCoord(coords) {
-        const response = await fetch(this.url + '?long=' + coords.long + '&lat=' + coords.lat + '&' + this.type + '=' + this.type, {
+        let token = '&token=' + csrf;
+        let longlat = '&long = ' + coords.long + ' & lat=' + coords.lat;
+        let type = '&' + this.type + '=' + this.type;
+        const response = await fetch(this.url + '?' + longlat + type + token, {
             credentials: 'same-origin',
             headers: {
                 'Accept': 'application/json'

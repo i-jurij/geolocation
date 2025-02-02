@@ -60,9 +60,11 @@ final class Controller
      */
     public function fromCoord($params)
     {
-        $long = $params['long'];
-        $lat = $params['lat'];
-        $this->sendJson((new Model())->fromCoord($long, $lat));
+        if (Csrf::isValid() || Csrf::isRecent()) {
+            $long = $params['long'];
+            $lat = $params['lat'];
+            $this->sendJson((new Model())->fromCoord($long, $lat));
+        }
     }
 
     /**
@@ -73,13 +75,15 @@ final class Controller
      */
     public function fromCoordYg($params)
     {
-        $long = $params['long'];
-        $lat = $params['lat'];
-        $yandex_api_key = $params['yandex_api_key'];
-        $format = $params['yandex_format'];
-        $results = $params['yandex_results'];
-        $kind = $params['yandex_kind'];
-        $this->sendJson((new YandexGeocoder())->getLocation($yandex_api_key, $long, $lat, $format, $results, $kind));
+        if (Csrf::isValid() || Csrf::isRecent()) {
+            $long = $params['long'];
+            $lat = $params['lat'];
+            $yandex_api_key = $params['yandex_api_key'];
+            $format = $params['yandex_format'];
+            $results = $params['yandex_results'];
+            $kind = $params['yandex_kind'];
+            $this->sendJson((new YandexGeocoder())->getLocation($yandex_api_key, $long, $lat, $format, $results, $kind));
+        }
     }
     // END ONLY FOR JS FETCH -----------------------------
 

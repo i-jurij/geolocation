@@ -75,7 +75,11 @@ class Csrf
     {
         if (isset($_POST['token'])) {
             $user_token = $_POST['token'];
-
+        }
+        if (isset($_GET['token'])) {
+            $user_token = $_GET['token'];
+        }
+        if (isset($user_token)) {
             if (Session::has('token')) {
                 $stored_token = Session::get('token');
 
