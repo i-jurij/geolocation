@@ -10,8 +10,8 @@
 			<meta HTTP-EQUIV="Content-language" CONTENT="ru-RU">
 			<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 			<meta name="author" content="i-jurij" >
-			<!-- <link rel="stylesheet" type="text/css" href="https://cdn.statically.io/gh/i-jurij/oswc2_styles/refs/heads/main/oswc2_styles.min.css"> -->
-			<link rel="stylesheet" type="text/css" href="oswc2_styles.min.css">
+			<link rel="stylesheet" type="text/css" href="https://cdn.statically.io/gh/i-jurij/oswc2_styles/refs/heads/main/oswc2_styles.min.css">
+			<!-- <link rel="stylesheet" type="text/css" href="oswc2_styles.min.css"> -->
 		</head>
 
 		<body>
@@ -24,6 +24,8 @@
 			let url_js_fetch = 'url_js_fetch'; // Url::get('Geo', 'jsFetch') eg
 			let url_location_to_server_js = 'location_to_server_js'; 
 		</script>
-		<script type="module" src="geolocation.js"></script>
+		<!-- <script type="module" src="geolocation.js"></script> -->
+		 <script src="https://cdn.statically.io/gh/i-jurij/geolocation/refs/heads/main/build/geolocation.iife.min.js"></script>
+
 		</body>
 		</html>
