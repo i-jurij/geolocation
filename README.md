@@ -164,6 +164,18 @@ function url_js_fetch(array $args)
 {
 }
 ```
+or 
+```
+let url_js_fetch = {link :Home:Geo:jsFetch};
+```
+```
+    public function actionJsFetch(): void
+    {
+        $geo = new \Ijurij\Geolocation\Geolocation();
+        $this->sendJson($geo->run());
+    }
+```
+in framework that make own response (eg Nette).
 
 Put to template or view:   
 ```
