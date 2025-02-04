@@ -1186,7 +1186,7 @@ class Locality {
     fromDB() {
         let shoose_location = document.querySelector('#shoose_location');
         if (shoose_location) {
-            shoose_location.onpointerdown = async (event) => {
+            shoose_location.onpointerdown = async () => {
                 //get all locations (from LS or server)
                 let al = await this.getAllLocations();
                 // html output
@@ -1200,7 +1200,7 @@ class Locality {
                 let shoose_city = document.querySelector('#shoose_city');
 
                 if (save_city) {
-                    save_city.addEventListener('pointerdown', (event) => {
+                    save_city.addEventListener('pointerdown', () => {
                         let region_from_select = shoose_region.options[shoose_region.selectedIndex].text;
                         let city_from_select = shoose_city.options[shoose_city.selectedIndex].text;
                         if (city_from_select && region_from_select) {
