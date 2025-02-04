@@ -130,7 +130,7 @@ function _construct(){
     $this->geo->yandex_results = 1;
     $this->geo->url_location_to_server = 'location_to_server';
     /// end not necessary ///
-    $this->geohtml = $this->geo->getHtml();
+    $this->geohtml = $this->geo->run();
     $this->locality = $this->geo->getLocality();
 }
 

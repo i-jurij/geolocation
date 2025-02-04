@@ -15,7 +15,7 @@ $geo->yandex_kind = 'locality';
 $geo->yandex_results = 1;
 */
 
-$html = $geo->getHtml();
+$html = $geo->run();
 $locality = $geo->getLocality();
 $param = [$html, $locality];
 

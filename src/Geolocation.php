@@ -17,7 +17,7 @@
  *
  * Then on page
  *  <!-- for outputting city and location -->
- * <div id="location_div"><?php print_r($geo->getHtml()); ?></div>
+ * <div id="location_div"><?php print_r($geo->run()); ?></div>
  * <!-- for outputting data from server after sending location to server -->
  * <div id="data_by_location"><?php echo (isset($data)) ? $data : ''; ?></div>
  */
@@ -60,7 +60,7 @@ final class Geolocation
         Session::start();
     }
 
-    public function getHtml()
+    public function run()
     {
         return call_user_func_array($this->getControllerMethod(), ['params' => $this->getParams()]);
     }
