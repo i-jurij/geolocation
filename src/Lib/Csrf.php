@@ -23,7 +23,7 @@ class Csrf
     /**
      * Generates token for use but doesn't store it.
      */
-    private static function token(int $length): string
+    public static function token(int $length): string
     {
         $randomString = bin2hex(random_bytes($length));
 
