@@ -50,7 +50,7 @@ class Csrf
     /**
      * Return CSRF token in user session.
      */
-    private static function getToken(): string
+    public static function getToken(): string
     {
         if (Session::has('token')) {
             return Session::get('token');
