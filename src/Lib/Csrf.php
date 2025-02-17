@@ -48,6 +48,18 @@ class Csrf
     }
 
     /**
+     * Return CSRF token in user session.
+     */
+    private static function getToken(): string
+    {
+        if (Session::has('token')) {
+            return Session::get('token');
+        } else {
+            return self::createToken();
+        }
+    }
+
+    /**
      * Destroys a token by removing it from the session.
      */
     private static function destroyToken(): bool
