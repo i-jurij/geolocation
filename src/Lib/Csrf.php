@@ -17,8 +17,14 @@ class Csrf
     {
     }
 
-    // Used for is_recent() method.
+    /**
+     * Used for is_recent() method.
+     */
     private static $max_elapsed = 60 * 60 * 24; // 1 day
+    /**
+     * name of token in sessin variable.
+     */
+    public static string $token_name = 'csrf_token';
 
     /**
      * Generates token for use but doesn't store it.
@@ -39,7 +45,7 @@ class Csrf
         $token = self::token(64);
 
         $data = [
-            'token' => $token,
+            self::$token_name => $token,
             'token_time' => time(),
         ];
         Session::setArray($data);
@@ -52,8 +58,8 @@ class Csrf
      */
     public static function getToken(): string
     {
-        if (Session::has('token')) {
-            return Session::get('token');
+        if (Session::has(self::$token_name)) {
+            return Session::get(self::$token_name);
         } else {
             return self::createToken();
         }
@@ -64,7 +70,7 @@ class Csrf
      */
     private static function destroyToken(): bool
     {
-        Session::destroy('token');
+        Session::destroy(self::$token_name);
         Session::destroy('token_time');
 
         return true;
@@ -85,15 +91,15 @@ class Csrf
      */
     public static function isValid()
     {
-        if (isset($_POST['token'])) {
-            $user_token = $_POST['token'];
+        if (isset($_POST[self::$token_name])) {
+            $user_token = $_POST[self::$token_name];
         }
-        if (isset($_GET['token'])) {
-            $user_token = $_GET['token'];
+        if (isset($_GET[self::$token_name])) {
+            $user_token = $_GET[self::$token_name];
         }
         if (!empty($user_token)) {
-            if (Session::has('token')) {
-                $stored_token = Session::get('token');
+            if (Session::has(self::$token_name)) {
+                $stored_token = Session::get(self::$token_name);
 
                 return hash_equals($stored_token, $user_token);
             } else {
