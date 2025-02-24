@@ -86,9 +86,11 @@ function htmlInfo({ city, region }) {
 ////////////////////////////////////////////////////////
 function htmlFromDB(all_locations) {
 	let district = all_locations.district;
-	districtOut(district);
-	regionOutAndCityOut(district);
-	showHideModal("show_city_select", 'show');
+	if (district) {
+		districtOut(district);
+		regionOutAndCityOut(district);
+		showHideModal("show_city_select", 'show');
+	}
 	showHideModal("modal_1", 'hide');
 }
 
@@ -252,7 +254,7 @@ class LocalityByCoord {
 
     async fetchCoord(coords) {
         let longlat = '?long=' + coords.long + '&lat=' + coords.lat;
-        let token = '&token=' + csrf;
+        let token = '&' + csrf_name + '=' + csrf;
         let type = '&' + this.type + '=' + this.type;
         const response = await fetch(this.url + longlat + type + token, {
             credentials: 'same-origin',
@@ -1191,32 +1193,31 @@ class Locality {
                 let al = await this.getAllLocations();
                 // html output
                 htmlFromDB(await al);
-
                 this.autoComplete(await al);
-
-                let save_city = document.querySelector('#save_city');
-                let show_city_select = document.getElementById('show_city_select');
-                let shoose_region = document.querySelector('#shoose_region');
-                let shoose_city = document.querySelector('#shoose_city');
-
-                if (save_city) {
-                    save_city.addEventListener('pointerdown', () => {
-                        let region_from_select = shoose_region.options[shoose_region.selectedIndex].text;
-                        let city_from_select = shoose_city.options[shoose_city.selectedIndex].text;
-                        if (city_from_select && region_from_select) {
-                            this.localitySaveAndShow(url_location_to_server_js, csrf, city_from_select, region_from_select);
-                            if (show_city_select) {
-                                show_city_select.checked = false;
-                            }
-                        }
-                    });
-                }            };
+            };
         }
-    }
+
+        let save_city = document.querySelector('#save_city');
+        let show_city_select = document.getElementById('show_city_select');
+        let shoose_region = document.querySelector('#shoose_region');
+        let shoose_city = document.querySelector('#shoose_city');
+
+        if (save_city) {
+            save_city.addEventListener('pointerdown', () => {
+                let region_from_select = shoose_region.options[shoose_region.selectedIndex].text;
+                let city_from_select = shoose_city.options[shoose_city.selectedIndex].text;
+                if (city_from_select && region_from_select && city_from_select != 'Город') {
+                    this.localitySaveAndShow(url_location_to_server_js, csrf, city_from_select, region_from_select);
+                    if (show_city_select) {
+                        show_city_select.checked = false;
+                    }
+                }
+            });
+        }    }
 
     async getAllLocations() {
         let all_locality = this.LS.getFromLocalStorage('all_locality');
-        if (all_locality === null) {
+        if (all_locality === null || all_locality.length < 1 || all_locality === 'undefined') {
             all_locality = await this.getAllLocationsFromDb();
             this.LS.setAllLocalityFromDBToLocalStorage(await all_locality);
         }
@@ -1225,7 +1226,7 @@ class Locality {
 
     async getAllLocationsFromDb() {
         const formData = new FormData();
-        formData.set("token", csrf);
+        formData.set(csrf_name, csrf);
         formData.set("all_loc", 'fromdb');
 
         const response = await fetch(url_js_fetch, {
@@ -1243,7 +1244,7 @@ class Locality {
     localityToServer(url_location_to_server_js, csrf, city, region) {
         const formData = new FormData();
 
-        formData.set("token", csrf);
+        formData.set(csrf_name, csrf);
         formData.set("city", city);
         formData.set("region", region);
         formData.set("js", 'js');
@@ -1266,6 +1267,11 @@ class Locality {
     }
 
     autoComplete(loc) {
+
+        if (loc.length < 1 || loc == 'undefined') {
+            return;
+        }
+
         function sanitize(string) {
             let regex = /^[\p{L}\p{N}\s?\-?]+[\s]?[\(]+[\p{L}\p{N}\s?\-?]+[\)]+$/;
             if (regex.test(string)) {

@@ -39,6 +39,10 @@ function controllerMethodAfter(array $args)
 // return nothing, json send from Geolocation
 function url_js_fetch(array $args)
 {
+    header('Content-Type: application/json');
+    // echo $args[0] ?? json_encode([]);
+    echo $args[0];
+    exit;
 }
 
 function controllerMethodAfterJs(array $args)

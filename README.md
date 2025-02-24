@@ -121,15 +121,18 @@ Controllers (or presenters) method could be like this:
 ```
 function _construct(){
     $this->geo = new Ijurij\Geolocation\Geolocation();
+    // url for getting data by locality (only for php or if js rewrite hole page)
+    $this->geo->url_location_to_server = 'location_to_server';
+
     /// not necessary ///
-    $this->geo->ip_provider = 'location_to_server';
+    $this->geo->ip_provider = 'geoplugin'; // geoplugin, sypexgeo
     $this->geo->lang = 'ru'; // language for ip_provider
     $this->geo->yandex_api_key = '';
     $this->geo->yandex_format = 'json';
     $this->geo->yandex_kind = 'locality';
     $this->geo->yandex_results = 1;
-    $this->geo->url_location_to_server = 'location_to_server';
     /// end not necessary ///
+
     $this->geohtml = $this->geo->run();
     $this->locality = $this->geo->getLocality();
 }
@@ -159,12 +162,18 @@ function getDataByLocation(): void {
 ``` 
 Also we must set javascript variable "url_js_fetch" for other js request
 ```
-// return nothing, json send from Geolocation
+//json send from Geolocation
 function url_js_fetch(array $args)
 {
+    $geo = new Ijurij\Geolocation\Geolocation();
+    $html = $geo->run();
+
+    header('Content-Type: application/json');
+    echo $html; //because $geo returned json in this case
+    exit;
 }
 ```
-or 
+or for framework that make own response (eg Nette)
 ```
 let url_js_fetch = {link :Home:Geo:jsFetch};
 ```
@@ -175,7 +184,6 @@ let url_js_fetch = {link :Home:Geo:jsFetch};
         $this->sendJson($geo->run());
     }
 ```
-in framework that make own response (eg Nette).
 
 Put to template or view:   
 ```

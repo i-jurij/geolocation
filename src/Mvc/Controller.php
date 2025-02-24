@@ -31,6 +31,8 @@ final class Controller
     {
         if (Csrf::isValid() && Csrf::isRecent()) {
             $params['locations'] = (new Model())->getAll();
+        } else {
+            $params['locations'] = 'Check if cookies enabled.';
         }
 
         return $this->default($params);
@@ -47,9 +49,11 @@ final class Controller
      */
     public function fromDb($params)
     {
-        if (Csrf::isValid() || Csrf::isRecent()) {
-            $this->sendJson((new Model())->getAll());
+        $data = [];
+        if (Csrf::isValid() && Csrf::isRecent()) {
+            $data = (new Model())->getAll();
         }
+        $this->sendJson($data);
     }
 
     /**
@@ -60,11 +64,13 @@ final class Controller
      */
     public function fromCoord($params)
     {
-        if (Csrf::isValid() || Csrf::isRecent()) {
+        $data = [];
+        if (Csrf::isValid() && Csrf::isRecent()) {
             $long = $params['long'];
             $lat = $params['lat'];
-            $this->sendJson((new Model())->fromCoord($long, $lat));
+            $data = (new Model())->fromCoord($long, $lat);
         }
+        $this->sendJson($data);
     }
 
     /**
@@ -75,15 +81,17 @@ final class Controller
      */
     public function fromCoordYg($params)
     {
-        if (Csrf::isValid() || Csrf::isRecent()) {
+        $data = [];
+        if (Csrf::isValid() && Csrf::isRecent()) {
             $long = $params['long'];
             $lat = $params['lat'];
             $yandex_api_key = $params['yandex_api_key'];
             $format = $params['yandex_format'];
             $results = $params['yandex_results'];
             $kind = $params['yandex_kind'];
-            $this->sendJson((new YandexGeocoder())->getLocation($yandex_api_key, $long, $lat, $format, $results, $kind));
+            $data = (new YandexGeocoder())->getLocation($yandex_api_key, $long, $lat, $format, $results, $kind);
         }
+        $this->sendJson($data);
     }
     // END ONLY FOR JS FETCH -----------------------------
 

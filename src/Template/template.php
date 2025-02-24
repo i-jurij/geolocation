@@ -5,9 +5,22 @@ $city = !empty($data['locality']['city']) ? $data['locality']['city'] : $unknown
 $region = !empty($data['locality']['region']) ? $data['locality']['region'] : '';
 
 $checked = '';
+$button = ' <noscript>
+                <form action="/" method="post" id="to_city_choice" class="left">
+                    '.$scrf.'
+                </form>
+                <input type="submit" form="to_city_choice" name="all_loc" value="Выбрать" class="button" />
+            </noscript>';
 if ($city === $unknown_location) {
     $checked = 'checked';
-    $message = 'Ваше местоположение неизвестно. </br>Выберите его, нажав на кнопку "Выбрать"';
+    if (!empty($data['locations']) && is_string($data['locations'])) {
+        $message = 'Выбор местоположения невозможен. </br>Проверьте, разрешены ли куки браузера и перезагрузите страницу.';
+        // $message = htmlspecialchars($data['locations']);
+        $button = '';
+    } else {
+        $message = 'Ваше местоположение неизвестно. </br>Выберите его, нажав на кнопку "Выбрать"';
+    }
+
 // $button = '<label for="show_city_select" class="button button_shoose" id="shoose_location">Выбрать</label>';
 } else {
     if ($city != $region) {
@@ -19,12 +32,6 @@ if ($city === $unknown_location) {
     }
     $message = '<p>Ваше местоположение:</p><p>'.$locality.'</p><p>Если нет - выберите его, нажав на кнопку "Выбрать"</p>';
 }
-$button = ' <noscript>
-                <form action="/" method="post" id="to_city_choice" class="left">
-                    '.$scrf.'
-                </form>
-                <input type="submit" form="to_city_choice" name="all_loc" value="Выбрать" class="button" />
-            </noscript>';
 
 // for city choice form
 $checkd = '';
@@ -135,5 +142,6 @@ function alllocHtml(array $all_loc): string
     let unknown_location = '<?php echo $unknown_location; ?>';
     let city_from_back = '<?php echo $city; ?>';
     let region_from_back = '<?php echo $region; ?>';
-    let csrf = '<?php echo Ijurij\Geolocation\Lib\Session::get('token'); ?>';
+    let csrf_name = '<?php echo Ijurij\Geolocation\Lib\Csrf::$token_name; ?>';
+    let csrf = '<?php echo Ijurij\Geolocation\Lib\Csrf::getToken(); ?>';
 </script>

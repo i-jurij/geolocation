@@ -87,9 +87,11 @@ export function htmlInfo({ city, region }) {
 ////////////////////////////////////////////////////////
 export function htmlFromDB(all_locations) {
 	let district = all_locations.district;
-	districtOut(district);
-	regionOutAndCityOut(district);
-	showHideModal("show_city_select", 'show');
+	if (district) {
+		districtOut(district);
+		regionOutAndCityOut(district);
+		showHideModal("show_city_select", 'show');
+	}
 	showHideModal("modal_1", 'hide');
 }
 

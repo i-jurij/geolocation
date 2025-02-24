@@ -42,7 +42,7 @@ export class LocalityByCoord {
 
     async fetchCoord(coords) {
         let longlat = '?long=' + coords.long + '&lat=' + coords.lat;
-        let token = '&token=' + csrf;
+        let token = '&' + csrf_name + '=' + csrf;
         let type = '&' + this.type + '=' + this.type;
         const response = await fetch(this.url + longlat + type + token, {
             credentials: 'same-origin',

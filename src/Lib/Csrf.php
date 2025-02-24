@@ -22,9 +22,13 @@ class Csrf
      */
     private static $max_elapsed = 60 * 60 * 24; // 1 day
     /**
-     * name of token in sessin variable.
+     * name of token in session variable.
      */
     public static string $token_name = 'csrf_token';
+    /**
+     * name of token in session variable.
+     */
+    public static string $token_time_name = 'csrf_token_time';
 
     /**
      * Generates token for use but doesn't store it.
@@ -46,7 +50,7 @@ class Csrf
 
         $data = [
             self::$token_name => $token,
-            'token_time' => time(),
+            self::$token_time_name => time(),
         ];
         Session::setArray($data);
 
@@ -71,7 +75,7 @@ class Csrf
     private static function destroyToken(): bool
     {
         Session::destroy(self::$token_name);
-        Session::destroy('token_time');
+        Session::destroy(self::$token_time_name);
 
         return true;
     }
@@ -81,7 +85,7 @@ class Csrf
      */
     public static function display(): string
     {
-        return '<input type="hidden" name="token" value="'.self::createToken().'" />';
+        return '<input type="hidden" name="'.self::$token_name.'" value="'.self::createToken().'" />';
     }
 
     /**
@@ -105,9 +109,9 @@ class Csrf
             } else {
                 return false;
             }
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -128,8 +132,8 @@ class Csrf
      */
     public static function isRecent()
     {
-        if (isset($_SESSION['token_time'])) {
-            $stored_time = $_SESSION['token_time'];
+        if (isset($_SESSION[self::$token_time_name])) {
+            $stored_time = $_SESSION[self::$token_time_name];
 
             return ($stored_time + self::$max_elapsed) >= time();
         } else {

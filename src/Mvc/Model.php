@@ -61,7 +61,7 @@ final class Model
      * Get location by coordinates.
      * Response is array of nested arrays: [district [regions => [cities]]].
      */
-    public function fromCoord($long, $lat)
+    public function fromCoord($long, $lat): array
     {
         $regex_lat = '/'.Config::REGEX_LAT.'/';
         $regex_long = '/'.Config::REGEX_LONG.'/';
