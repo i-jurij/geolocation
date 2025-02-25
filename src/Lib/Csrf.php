@@ -20,7 +20,7 @@ class Csrf
     /**
      * Used for is_recent() method.
      */
-    private static $max_elapsed = 60 * 60 * 24; // 1 day
+    public static $max_elapsed = 60 * 60 * 24; // 1 day
     /**
      * name of token in session variable.
      */
