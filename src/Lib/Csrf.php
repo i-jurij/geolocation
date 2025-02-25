@@ -132,8 +132,8 @@ class Csrf
      */
     public static function isRecent()
     {
-        if (isset($_SESSION[self::$token_time_name])) {
-            $stored_time = $_SESSION[self::$token_time_name];
+        if (Session::has(self::$token_time_name)) {
+            $stored_time = Session::get(self::$token_time_name);
 
             return ($stored_time + self::$max_elapsed) >= time();
         } else {
