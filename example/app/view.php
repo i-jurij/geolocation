@@ -25,8 +25,7 @@
 			let url_location_to_server_js = 'location_to_server_js'; 
 		</script>
 		<!--  <script type="module" src="geolocation.es.js"></script> -->
-		<!--  <script src="assets/geolocation.iife.min.js"></script> -->
-		<script src="https://cdn.statically.io/gh/i-jurij/geolocation/refs/heads/main/build/geolocation.iife.min.js"></script>
+		<script src="geolocation.iife.min.js"></script>
 
 		</body>
 		</html>
