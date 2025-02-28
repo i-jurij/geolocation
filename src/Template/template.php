@@ -14,7 +14,7 @@ $button = ' <noscript>
 if ($city === $unknown_location) {
     $checked = 'checked';
     if (!empty($data['locations']) && is_string($data['locations'])) {
-        $message = 'Выбор местоположения невозможен. </br>Проверьте, разрешены ли куки браузера и перезагрузите страницу.';
+        $message = 'Выбор местоположения невозможен. </br>Проверьте, разрешены ли куки, очистите кеш и перезагрузите страницу.';
         // $message = htmlspecialchars($data['locations']);
         $button = '';
     } else {
