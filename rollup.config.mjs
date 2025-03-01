@@ -2,6 +2,7 @@
 import terser from '@rollup/plugin-terser';
 import css from "rollup-plugin-import-css";
 import { nodeResolve } from '@rollup/plugin-node-resolve';
+import copy from 'rollup-plugin-copy'
 
 export default {
 	input: 'src/geolocation.js',
@@ -22,6 +23,11 @@ export default {
 			minify: true,
 			inject: true
 		}),
-		nodeResolve()
+		nodeResolve(),
+		copy({
+			targets: [
+			  { src: 'build/geolocation.iife.min.js', dest: 'example/public' },
+			]
+		  })
 	]
 };
