@@ -20,7 +20,7 @@ class Csrf
     /**
      * Used for is_recent() method.
      */
-    public static $max_elapsed = 60 * 60 * 24; // 1 day
+    public static int $max_elapsed = 60 * 60; // 1 hour
     /**
      * name of token in session variable.
      */
@@ -35,9 +35,9 @@ class Csrf
      */
     public static function token(int $length): string
     {
-        $randomString = bin2hex(random_bytes($length));
+        $randomString = \bin2hex(random_bytes($length));
 
-        return substr($randomString, 0, $length);
+        return \substr($randomString, 0, $length);
     }
 
     /**
@@ -50,7 +50,7 @@ class Csrf
 
         $data = [
             self::$token_name => $token,
-            self::$token_time_name => time(),
+            self::$token_time_name => \time(),
         ];
         Session::setArray($data);
 
@@ -105,7 +105,7 @@ class Csrf
             if (Session::has(self::$token_name)) {
                 $stored_token = Session::get(self::$token_name);
 
-                return hash_equals($stored_token, $user_token);
+                return \hash_equals($stored_token, $user_token);
             } else {
                 return false;
             }
@@ -135,7 +135,7 @@ class Csrf
         if (Session::has(self::$token_time_name)) {
             $stored_time = Session::get(self::$token_time_name);
 
-            return ($stored_time + self::$max_elapsed) >= time();
+            return ($stored_time + self::$max_elapsed) >= \time();
         } else {
             self::destroyToken();
 
