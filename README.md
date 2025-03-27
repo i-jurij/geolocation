@@ -179,8 +179,6 @@ function getDataByLocation(): void {
 }
 ```
 
-Or if you uncomfortable get only json after fetch you can to use redirect to another page with data by location from session or class Geolocation->getLocality().
-
 Also we must set javascript variable "url_js_fetch" for other js request.
 
 ```
