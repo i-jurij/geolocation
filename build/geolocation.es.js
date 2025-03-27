@@ -1256,7 +1256,7 @@ class Locality {
                 'X_TOBACKEND': 'tobackend',
             },
             body: formData,
-        })
+        });/*
             .then(response => response.json())
             .then(json => {
                 const data_elem = document.getElementById('data_by_location');
@@ -1264,6 +1264,7 @@ class Locality {
                     data_elem.innerHTML = json;
                 }
             });
+            */
     }
 
     autoComplete(loc) {
