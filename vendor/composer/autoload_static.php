@@ -23,15 +23,20 @@ class ComposerStaticInit651d553758db8401ae6f4617adcfa173
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Ijurij\\Geolocation\\Config' => __DIR__ . '/../..' . '/src/Config.php',
-        'Ijurij\\Geolocation\\Controller' => __DIR__ . '/../..' . '/src/Controller.php',
         'Ijurij\\Geolocation\\Geolocation' => __DIR__ . '/../..' . '/src/Geolocation.php',
         'Ijurij\\Geolocation\\Lib\\Csrf' => __DIR__ . '/../..' . '/src/Lib/Csrf.php',
         'Ijurij\\Geolocation\\Lib\\Ip' => __DIR__ . '/../..' . '/src/Lib/Ip.php',
         'Ijurij\\Geolocation\\Lib\\Isbot' => __DIR__ . '/../..' . '/src/Lib/Isbot.php',
+        'Ijurij\\Geolocation\\Lib\\Locality' => __DIR__ . '/../..' . '/src/Lib/Locality.php',
         'Ijurij\\Geolocation\\Lib\\Router' => __DIR__ . '/../..' . '/src/Lib/Router.php',
-        'Ijurij\\Geolocation\\Model' => __DIR__ . '/../..' . '/src/Model.php',
+        'Ijurij\\Geolocation\\Lib\\Session' => __DIR__ . '/../..' . '/src/Lib/Session.php',
+        'Ijurij\\Geolocation\\Mvc\\Controller' => __DIR__ . '/../..' . '/src/Mvc/Controller.php',
+        'Ijurij\\Geolocation\\Mvc\\Model' => __DIR__ . '/../..' . '/src/Mvc/Model.php',
+        'Ijurij\\Geolocation\\Mvc\\View' => __DIR__ . '/../..' . '/src/Mvc/View.php',
         'Ijurij\\Geolocation\\Provider\\GeoPlugin' => __DIR__ . '/../..' . '/src/Provider/GeoPlugin.php',
-        'Ijurij\\Geolocation\\View' => __DIR__ . '/../..' . '/src/View.php',
+        'Ijurij\\Geolocation\\Provider\\Ipprovider' => __DIR__ . '/../..' . '/src/Provider/Ipprovider.php',
+        'Ijurij\\Geolocation\\Provider\\SypexGeo' => __DIR__ . '/../..' . '/src/Provider/SypexGeo.php',
+        'Ijurij\\Geolocation\\Provider\\YandexGeocoder' => __DIR__ . '/../..' . '/src/Provider/YandexGeocoder.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
