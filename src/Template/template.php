@@ -80,7 +80,7 @@ function alllocHtml(array $all_loc): string
 		<span id="location">
             <?php echo $city; ?>
         </span>
-    &ensp;&#8250;
+    &nbsp;&#8250;
 </label>
 
 <style type="text/css">
