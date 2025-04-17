@@ -42,37 +42,40 @@ if (!empty($data['locations']['district']) && is_array($data['locations']['distr
     $alllochtml = allLocHtml($data['locations']);
 }
 
-function alllocHtml(array $all_loc): string
-{
-    $html = '';
+if (!function_exists('alllocHtml')) {
+    function alllocHtml(array $all_loc): string
+    {
+        $html = '';
 
-    foreach ($all_loc['district'] as $district) {
-        $html .= '<div class="checked1 mt2">';
-        $html .= '  <input type="radio" name="district" id="'.$district['id'].'" value="'.$district['name'].'">
+        foreach ($all_loc['district'] as $district) {
+            $html .= '<div class="checked1 mt2">';
+            $html .= '  <input type="radio" name="district" id="'.$district['id'].'" value="'.$district['name'].'">
                         <label class="checkable" for="'.$district['id'].'">'.$district['name'].'</label>';
 
-        $html .= '<div class="regions toggle1">';
-        foreach ($district['regions'] as $k => $region) {
-            $html .= '<div class="checked2 ml3 mt2">';
-            $html .= '  <input type="radio" name="region" id="'.$district['id'].'_'.$region['id'].'" value="'.$region['name'].'" >
+            $html .= '<div class="regions toggle1">';
+            foreach ($district['regions'] as $k => $region) {
+                $html .= '<div class="checked2 ml3 mt2">';
+                $html .= '  <input type="radio" name="region" id="'.$district['id'].'_'.$region['id'].'" value="'.$region['name'].'" >
                             <label class=" checkable" for="'.$district['id'].'_'.$region['id'].'">'.$region['name'].'</label>';
 
-            $html .= '<div class="cities toggle2  ml3 mt2">';
-            foreach ($district['regions'][$k]['cities'] as $city) {
-                $html .= '  <label class="button" >
+                $html .= '<div class="cities toggle2  ml3 mt2">';
+                foreach ($district['regions'][$k]['cities'] as $city) {
+                    $html .= '  <label class="button" >
                                         <input type="radio" name="city" value="'.$city['name'].'">
                                         <span class="checkable">'.$city['name'].'</span>
                                     </label>';
+                }
+                $html .= '</div>';
+                $html .= '</div>';
             }
             $html .= '</div>';
             $html .= '</div>';
         }
-        $html .= '</div>';
-        $html .= '</div>';
-    }
 
-    return '<div class="">'.$html.'</div>';
+        return '<div class="">'.$html.'</div>';
+    }
 }
+
 ?>
 
 <label for="modal_1" class="">
