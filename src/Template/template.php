@@ -6,7 +6,7 @@ $region = !empty($data['locality']['region']) ? $data['locality']['region'] : ''
 
 $checked = '';
 $button = ' <noscript>
-                <form action="/" method="post" id="to_city_choice" class="left">
+                <form action="" method="post" id="to_city_choice" class="left">
                     '.$scrf.'
                 </form>
                 <input type="submit" form="to_city_choice" name="all_loc" value="Выбрать" class="button" />
