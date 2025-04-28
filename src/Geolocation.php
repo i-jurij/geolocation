@@ -47,7 +47,7 @@ final class Geolocation
         public string $ip_provider = 'geoplugin',// sypexgeo
         public string $lang = 'ru',
 
-        public string $url_location_to_server = '/',
+        public string $url_location_to_server = '',
 
         public string $yandex_api_key = '',
         public string $yandex_format = 'json',
