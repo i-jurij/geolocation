@@ -56,13 +56,13 @@ export class Locality {
   fromDB() {
     let shoose_location = document.querySelector("#shoose_location");
     if (shoose_location) {
-      shoose_location.onpointerdown = async () => {
+      shoose_location.addEventListener("pointerdown", async () => {
         //get all locations (from LS or server)
         let al = await this.getAllLocations();
         // html output
         htmlFromDB(await al);
         this.autoComplete(await al);
-      };
+      });
     }
 
     let save_city = document.querySelector("#save_city");
@@ -251,6 +251,6 @@ export class Locality {
       if (show_city_select) {
         show_city_select.checked = false;
       }
-    }, 150);
+    }, 300);
   }
 }
