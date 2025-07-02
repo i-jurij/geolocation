@@ -143,11 +143,6 @@ export class Locality {
         if (data_elem) {
           data_elem.innerHTML = json;
         }
-
-        let show_city_select = document.getElementById("show_city_select");
-        if (show_city_select) {
-          show_city_select.checked = false;
-        }
       });
   }
 
@@ -250,5 +245,12 @@ export class Locality {
     this.LS.setLocalityToLocalStorage({ city: city_name, region: region_name });
     this.localityToServer(url_to_server, csrf_value, city_name, region_name);
     htmlInfo({ city: city_name, region: region_name });
+
+    setTimeout(() => {
+      let show_city_select = document.querySelector("#show_city_select");
+      if (show_city_select) {
+        show_city_select.checked = false;
+      }
+    }, 150);
   }
 }
