@@ -1214,7 +1214,6 @@ class Locality {
     }
 
     let save_city = document.querySelector("#save_city");
-    let show_city_select = document.getElementById("show_city_select");
     let shoose_region = document.querySelector("#shoose_region");
     let shoose_city = document.querySelector("#shoose_city");
 
@@ -1235,9 +1234,6 @@ class Locality {
             city_from_select,
             region_from_select
           );
-          if (show_city_select) {
-            show_city_select.checked = false;
-          }
         }
       });
     }
@@ -1294,6 +1290,11 @@ class Locality {
         const data_elem = document.getElementById("data_by_location");
         if (data_elem) {
           data_elem.innerHTML = json;
+        }
+
+        let show_city_select = document.getElementById("show_city_select");
+        if (show_city_select) {
+          show_city_select.checked = false;
         }
       });
   }
@@ -1390,10 +1391,6 @@ class Locality {
           vall.city,
           vall.region
         );
-        let show_city_select = document.getElementById("show_city_select");
-        if (show_city_select) {
-          show_city_select.checked = false;
-        }
       });
   }
 
