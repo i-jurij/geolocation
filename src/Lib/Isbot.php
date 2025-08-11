@@ -11,11 +11,21 @@ class Isbot
 {
     // прочие боты
     public const BOTS = [
-        'bot', 'crawler', 'curl', 'parser', 'spider', 'python-requests', 'Monitoring',
-        'Accoona', 'Analyzer', 'Ask Jeeves', 'a.pr-cy.ru',
+        'bot',
+        'crawler',
+        'curl',
+        'parser',
+        'spider',
+        'python-requests',
+        'Monitoring',
+        'Accoona',
+        'Analyzer',
+        'Ask Jeeves',
+        'a.pr-cy.ru',
         'Baiduspider',
         'DomainVader',
-        'facebookexternalhit', 'findlinks',
+        'facebookexternalhit',
+        'findlinks',
         'google',
         'heritrix',
         'Ezooms',
@@ -23,12 +33,23 @@ class Isbot
         'ltx71',
         'Nigma.ru',
         'OpenindexSpider',
-        'proximic', 'PEAR',
+        'proximic',
+        'PEAR',
         'Riddler',
-        'SiteStatus', 'SISTRIX', 'StackRambler', 'statdom.ru', 'Spider', 'Snoopy', 'slurp',
+        'SiteStatus',
+        'SISTRIX',
+        'StackRambler',
+        'statdom.ru',
+        'Spider',
+        'Snoopy',
+        'slurp',
         'vkShare',
-        'W3C_Validator', 'WebAlta',
-        'YahooFeedSeeker', 'Yahoo!', 'yandex', 'Yeti',
+        'W3C_Validator',
+        'WebAlta',
+        'YahooFeedSeeker',
+        'Yahoo!',
+        'yandex',
+        'Yeti',
     ];
 
     /**
@@ -36,7 +57,7 @@ class Isbot
      */
     public static function check(): bool
     {
-        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
         if (empty($user_agent)) {
             return false;
         }
