@@ -4,7 +4,7 @@ $geo = new Ijurij\Geolocation\Geolocation();
 // url for getting data by locality
 $geo->url_location_to_server = 'location_to_server';
 // provider for getting locality by ip (can be not set, default GeoPlugin)
-$geo->ip_provider = 'geoplugin'; // geoplugin, sypexgeo
+$geo->ip_provider = 'sypexgeo'; // geoplugin now pay
 // for language of provider answer
 $geo->lang = 'ru';
 // if you plan to use yandex geocoder (in most cases this is not necessary)

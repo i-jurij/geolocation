@@ -96,6 +96,7 @@ class GeoPlugin
         $response = $this->fetch($host);
 
         if ($response != false && \is_string($response)) {
+            //            print_r($response);
             $data = unserialize($response);
         }
         // set the geoPlugin vars
@@ -166,7 +167,7 @@ class GeoPlugin
             return $amount;
         }
         if ($symbol === true) {
-            return $this->currencySymbol.round($amount * $this->currencyConverter, $float);
+            return $this->currencySymbol . round($amount * $this->currencyConverter, $float);
         } else {
             return round($amount * $this->currencyConverter, $float);
         }
@@ -180,7 +181,7 @@ class GeoPlugin
             return [[]];
         }
 
-        $host = 'http://www.geoplugin.net/extras/nearby.gp?lat='.$this->latitude.'&long='.$this->longitude."&radius={$radius}";
+        $host = 'http://www.geoplugin.net/extras/nearby.gp?lat=' . $this->latitude . '&long=' . $this->longitude . "&radius={$radius}";
 
         if (is_numeric($limit)) {
             $host .= "&limit={$limit}";

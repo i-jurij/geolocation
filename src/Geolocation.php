@@ -18,9 +18,10 @@
  * Then on page
  *  <!-- for outputting city and location -->
  * <div id="location_div"><?php print_r($geo->run()); ?></div>
- * <!-- for outputting data from server after sending location to server -->
- * <div id="data_by_location"><?php echo (isset($data)) ? $data : ''; ?></div>
- */
+*
+<!-- for outputting data from server after sending location to server -->
+* <div id="data_by_location"><?php echo (isset($data)) ? $data : ''; ?></div>
+*/
 
 declare(strict_types=1);
 
@@ -44,7 +45,7 @@ final class Geolocation
     public function __construct(
         private Locality $locality = new Locality(),
         private Router $router = new Router(),
-        public string $ip_provider = 'geoplugin',// sypexgeo
+        public string $ip_provider = 'sypexgeo',// geoplugin now pay
         public string $lang = 'ru',
 
         public string $url_location_to_server = '',
