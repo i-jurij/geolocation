@@ -47,12 +47,13 @@ class Ip
         }
         $ipSus = array_unique($ipSus);
         $ipAll = array_unique($ipAll);
-        $ip = (sizeof($ipSus) > 0) ? $ipSus[0] : $ip;
+        $ip = (\sizeof($ipSus) > 0) ? $ipSus[0] : $ip;
 
         return [
             'ip' => $ip,
             'suspected' => $ipSus,
             'network' => $ipAll,
         ];
+
     }
 }

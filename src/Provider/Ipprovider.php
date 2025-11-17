@@ -11,12 +11,15 @@ final class Ipprovider
     private string $ip;
 
     public function __construct(
-        public string $ip_provider = 'geoplugin',
+        public string $ip_provider = 'ipapi',
         public string $lang = 'ru',
     ) {
         $ip = (new Ip())->get()['ip'];
-        $userIP = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE);
+        // $ip = '188.127.239.183'; // Москва, Москва
+        // $ip = '78.128.211.35'; // Прага, Прага
+        // $ip = '2.63.182.224';// Simferopol
 
+        $userIP = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE);
         $this->ip = ($userIP != false) ? $userIP : '';
     }
 
@@ -34,9 +37,6 @@ final class Ipprovider
         $geoplugin = new GeoPlugin();
         $geoplugin->lang = $this->lang;
         $geoplugin->locate($this->ip);
-        // Simferopol
-        // $geoplugin->locate('2.63.182.224');
-
         $city_name = $geoplugin->city ?? '';
         $region = $geoplugin->region ?? '';
 
@@ -47,11 +47,25 @@ final class Ipprovider
     {
         $res = ['city' => '', 'region' => ''];
         $geoplugin = new SypexGeo();
+        $ar = $geoplugin->locate($this->ip);
+        if ($ar !== false) {
+            $city_name = !empty($ar['city']['name_ru']) ? $ar['city']['name_ru'] : '';
+            $region = !empty($ar['region']['name_ru']) ? $ar['region']['name_ru'] : '';
+            $res = ['city' => $city_name, 'region' => $region];
+        }
 
-        $res = $geoplugin->locate($this->ip);
-        if ($res !== false) {
-            $city_name = $geo['city']['name_ru'] ?? '';
-            $region = $geo['region']['name_ru'] ?? '';
+        return $res;
+    }
+
+    public function ipapi(): array
+    {
+        $res = ['city' => '', 'region' => ''];
+        $geoplugin = new IpApi();
+        $geoplugin->lang = $this->lang;
+        $ar = $geoplugin->locate($this->ip);
+        if ($ar !== false) {
+            $city_name = $ar['city'] ?? '';
+            $region = $ar['regionName'] ?? '';
             $res = ['city' => $city_name, 'region' => $region];
         }
 

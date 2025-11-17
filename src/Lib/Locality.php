@@ -9,7 +9,7 @@ use Ijurij\Geolocation\Provider\Ipprovider;
 final class Locality
 {
     public function __construct(
-        public string $ip_provider = 'geoplugin',// sypexgeo
+        public string $ip_provider = 'ipapi',// sypexgeo, geoplugin
         public string $lang = 'ru',
         private Ipprovider $provider = new Ipprovider(),
     ) {
@@ -45,8 +45,10 @@ final class Locality
      */
     public function get(): array
     {
-        if ((Csrf::isValid() || Csrf::isRecent())
-                && !empty($_POST['region']) && !empty($_POST['city'])) {
+        if (
+            (Csrf::isValid() || Csrf::isRecent())
+            && !empty($_POST['region']) && !empty($_POST['city'])
+        ) {
             $locality = [
                 'city' => preg_replace("/[^- ()\p{Cyrillic}\p{Latin}]/ui", '', filter_input(INPUT_POST, 'city', FILTER_SANITIZE_SPECIAL_CHARS)),
                 'region' => preg_replace("/[^- ()\p{Cyrillic}\p{Latin}]/ui", '', filter_input(INPUT_POST, 'region', FILTER_SANITIZE_SPECIAL_CHARS)),
