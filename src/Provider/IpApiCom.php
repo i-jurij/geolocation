@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Ijurij\Geolocation\Provider;
 
-final class IpApi
+final class IpApiCom
 {
     public string $lang = 'ru';
     public function locate($ip)
     {
+        $req = "http://ip-api.com/json/$ip?lang=$this->lang";
         if (!$this->getUserGeoLimits()) {
             $ch = curl_init();
             if ($ch !== FALSE) {
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($ch, CURLOPT_HEADER, 0);
-                curl_setopt($ch, CURLOPT_URL, "http://ip-api.com/json/$ip?lang=$this->lang");
+                curl_setopt($ch, CURLOPT_URL, $req);
                 curl_setopt($ch, CURLOPT_HEADERFUNCTION, function ($ch, $header) {
                     $len = strlen($header);
                     $header = explode(':', $header, 2);
@@ -31,22 +32,20 @@ final class IpApi
 
                 $res = curl_exec($ch);
                 curl_close($ch);
-                return json_decode($res, true);
             } else {
                 if (\filter_var(\ini_get('allow_url_fopen'), \FILTER_VALIDATE_BOOLEAN)) {
-                    $res = file_get_contents("http://ip-api.com/json/$ip?lang=$this->lang");
-
-                    if ($res && $res['status'] == 'success') {
-                        return json_decode($res, true);
-                    }
-
-                    return false;
+                    $res = file_get_contents($req);
                 }
-                return false;
             }
+
+            if ($res) {
+                $res = json_decode($res, true);
+                return $res;
+            }
+
+            return false;
         } else {
-            $data = ['status' => false, 'message' => 'Достигнут лимит сервиса'];
-            return $data;
+            return ['status' => 'fail', 'message' => 'Достигнут лимит сервиса'];
         }
     }
 

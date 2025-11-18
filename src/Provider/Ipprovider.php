@@ -11,7 +11,7 @@ final class Ipprovider
     private string $ip;
 
     public function __construct(
-        public string $ip_provider = 'ipapi',
+        public string $ip_provider = 'ipapico',
         public string $lang = 'ru',
     ) {
         $ip = (new Ip())->get()['ip'];
@@ -57,15 +57,45 @@ final class Ipprovider
         return $res;
     }
 
-    public function ipapi(): array
+    public function ipapicom(): array
     {
         $res = ['city' => '', 'region' => ''];
-        $geoplugin = new IpApi();
+        $geoplugin = new IpApiCom();
         $geoplugin->lang = $this->lang;
         $ar = $geoplugin->locate($this->ip);
         if ($ar !== false) {
             $city_name = $ar['city'] ?? '';
             $region = $ar['regionName'] ?? '';
+            $res = ['city' => $city_name, 'region' => $region];
+        }
+
+        return $res;
+    }
+
+    public function ipapico(): array
+    {
+        $res = ['city' => '', 'region' => ''];
+        $geoplugin = new IpapiCo();
+        // $geoplugin->lang = $this->lang;
+        $ar = $geoplugin->locate($this->ip);
+        if ($ar !== false) {
+            $city_name = $ar['city'] ?? '';
+            $region = $ar['region'] ?? '';
+            $res = ['city' => $city_name, 'region' => $region];
+        }
+
+        return $res;
+    }
+
+    public function ipwho(): array
+    {
+        $res = ['city' => '', 'region' => ''];
+        $geoplugin = new IpWho();
+        $geoplugin->lang = $this->lang;
+        $ar = $geoplugin->locate($this->ip);
+        if ($ar !== false) {
+            $city_name = $ar['city'] ?? '';
+            $region = $ar['region'] ?? '';
             $res = ['city' => $city_name, 'region' => $region];
         }
 

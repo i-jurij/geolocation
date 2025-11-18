@@ -3,10 +3,17 @@
 /*
  * Example
  * $geo = new Ijurij\Geolocation\Geolocation();
+ * 
  * // url for getting data by locality
  * $geo->url_location_to_server = '/';
- * // provider for getting locality by ip (can be not set, default GeoPlugin)
- * $geo->ip_provider = 'geoplugin'; // geoplugin, sypexgeo, ipapi
+ * 
+ * // Provider for getting locality by ip (can be not set, default GeoPlugin)
+ * $geo->ip_provider = 'sypexgeo'; // geoplugin, sypexgeo, ipapicom, ipapico, ipwho
+ * sypexgeo (10000 req/mo free), 
+ * ipapicom (45 req/min free), 
+ * ipapico (1000 req/day free) - only english, 
+ * ipwho (10000 req/mo free)
+ * 
  * // for language of provider answer
  * $geo->lang = 'ru';
  * // if you plan to use yandex geocoder (in most cases this is not necessary)
@@ -45,7 +52,7 @@ final class Geolocation
     public function __construct(
         private Locality $locality = new Locality(),
         private Router $router = new Router(),
-        public string $ip_provider = 'sypexgeo',// geoplugin now pay, sypexgeo, ipapi
+        public string $ip_provider = 'ipapicom',// geoplugin now pay, sypexgeo, ipapicom, ipwho
         public string $lang = 'ru',
 
         public string $url_location_to_server = '',

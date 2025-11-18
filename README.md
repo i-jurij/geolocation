@@ -143,7 +143,7 @@ function _construct(){
     $this->geo->url_location_to_server = 'location_to_server';
 
     /// not necessary ///
-    $this->geo->ip_provider = 'sypexgeo'; // sypexgeo, geoplugin now pay
+    $this->geo->ip_provider = 'sypexgeo'; // geoplugin (only pay), sypexgeo, ipapicom, ipapico, ipwho
     $this->geo->lang = 'ru'; // language for ip_provider
     $this->geo->yandex_api_key = '';
     $this->geo->yandex_format = 'json';
